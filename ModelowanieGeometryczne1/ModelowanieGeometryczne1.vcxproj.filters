@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;def</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{fceecfc8-a1d1-4f59-aee8-571df72a6247}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{fa081de0-14f3-4259-ab30-0c615023316e}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{0259b8c6-5ff0-4a24-ab66-61a743e0b916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{7098b053-30ad-402e-835b-4ec71b5d04ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{b6b1d003-d33c-4172-9195-830c24f1e3c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects">
+      <UniqueIdentifier>{7cdd74ce-f14c-4c36-9be5-77c6eafd0749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{55615f0c-fc46-424a-80d0-8f2f0da9aa5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Curves">
+      <UniqueIdentifier>{6fc217f4-b75c-412c-8d99-75396da39268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Curves">
+      <UniqueIdentifier>{d6ddba07-d3b0-4cd0-b214-6c9797f4b1ea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_modelowaniegeometryczne1.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_modelowaniegeometryczne1.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_modelowaniegeometryczne1.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_myglwidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="float3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cursor3d.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="drawableObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="point3d.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="torus.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="modelowaniegeometryczne1.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="myglwidget.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="bezierCurveC0.cpp">
+      <Filter>Source Files\Objects\Curves</Filter>
+    </ClCompile>
+    <ClCompile Include="curveQuadratic.cpp">
+      <Filter>Source Files\Objects\Curves</Filter>
+    </ClCompile>
+    <ClCompile Include="curveCubic.cpp">
+      <Filter>Source Files\Objects\Curves</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_listwidgetobjects.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_listwidgetobjects.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="listwidgetobjects.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="listwidgetparameters.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_listwidgetparameters.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_listwidgetparameters.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_uiBezierCurveC0.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="uiBezierCurveC0.cpp">
+      <Filter>Source Files\Objects\Curves</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_uiBezierCurveC0.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_uiScene.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="uiScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_uiScene.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_myglwidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Scene.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Scene.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_uiPoint3d.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="uiPoint3d.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_uiPoint3d.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_comboboxBezierCurveC0.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="comboboxBezierCurveC0.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_comboboxBezierCurveC0.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="uiTorus.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_comboboxTorus.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_uiTorus.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="comboboxTorus.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_uiTorus.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_comboboxTorus.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="modelowaniegeometryczne1.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="modelowaniegeometryczne1.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="myglwidget.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="modelowaniegeometryczne1.h">
+      <Filter>Header Files\UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="myglwidget.h">
+      <Filter>Header Files\UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="listwidgetobjects.h">
+      <Filter>Header Files\UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="listwidgetparameters.h">
+      <Filter>Header Files\UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="uiBezierCurveC0.h">
+      <Filter>Header Files\Objects\Curves</Filter>
+    </CustomBuild>
+    <CustomBuild Include="uiScene.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Scene.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="uiPoint3d.h">
+      <Filter>Header Files\Objects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="comboboxBezierCurveC0.h">
+      <Filter>Header Files\UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="comboboxTorus.h">
+      <Filter>Header Files\UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="uiTorus.h">
+      <Filter>Header Files\Objects</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GeneratedFiles\ui_modelowaniegeometryczne1.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_myglwidget.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="float3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cursor3d.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="drawableObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="point3d.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="torus.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="bezierCurveC0.h">
+      <Filter>Header Files\Objects\Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="curve.h">
+      <Filter>Header Files\Objects\Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="curveCubic.h">
+      <Filter>Header Files\Objects\Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="curveQuadratic.h">
+      <Filter>Header Files\Objects\Curves</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
