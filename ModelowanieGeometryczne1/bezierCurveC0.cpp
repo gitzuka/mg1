@@ -1,10 +1,16 @@
 #include "bezierCurveC0.h"
 #include <QtGui>
 #include "camera.h"
+#include "curveQuadratic.h"
 
 BezierCurveC0::BezierCurveC0(ObjectType type, QString name) :
 	DrawableObject(type, name), m_uiBCC0(*this)
 {
+}
+
+BezierCurveC0::~BezierCurveC0()
+{
+	m_uiBCC0.deleteCurve();
 }
 
 void BezierCurveC0::draw(std::vector<QVector4D>& vec) const
@@ -37,8 +43,9 @@ void BezierCurveC0::setModelMatrix(const QMatrix4x4 &matrix)
 		//QVector3D a = vec * matrix;
 		//QVector3D vec2 = m_controlPoints.at(i)->getModelMatrix().column(3).toVector3D();
 		//m_controlPoints.at(i)->setModelMatrix(m_controlPoints.at(i)->getModelMatrix() * matrix);
-		//m_controlPoints.at(i)->setModelMatrix(matrix);
-		m_controlPoints.at(i)->setCenter(m_controlPoints.at(i)->getCenter() * matrix);
+		m_controlPoints.at(i)->setCenter(matrix);
+		//m_controlPoints.at(i)->setModelMatrix(m_modelMatrix);
+		//m_controlPoints.at(i)->setCenter(m_controlPoints.at(i)->getCenter());
 	}
 	m_modelMatrix = matrix;
 }
@@ -90,16 +97,15 @@ void BezierCurveC0::generateIndices()
 	}
 }
 
-//TODO: generate indices?
 void BezierCurveC0::addControlPoint(const std::shared_ptr<DrawableObject> &point)
 {
 	m_controlPoints.push_back(std::static_pointer_cast<Point3D>(point));
-	m_uiBCC0.addPoint(point->getId());
+	//m_uiBCC0.addPoint(point->getId());
+	m_uiBCC0.getPointsIds(this->getId());
 	createVertices();
 	generateIndices();
 }
 
-//TODO: generate indices?
 void BezierCurveC0::removeControlPoint(const std::shared_ptr<DrawableObject> &point)
 {
 	for (int i = 0; i < m_controlPoints.count(); ++i)
@@ -107,7 +113,8 @@ void BezierCurveC0::removeControlPoint(const std::shared_ptr<DrawableObject> &po
 		if (point->getId() == m_controlPoints.at(i)->getId())
 		{
 			m_controlPoints.removeAt(i);
-			m_uiBCC0.removePoint(point->getId());
+			//m_uiBCC0.removePoint(point->getId());
+			m_uiBCC0.getPointsIds(this->getId());
 		}
 	}
 	createVertices();
@@ -124,9 +131,12 @@ QList<int> BezierCurveC0::getControlPointIds() const
 	return pointIds;
 }
 
-void BezierCurveC0::connectToUI(ComboBoxBezierCurveC0 *comboBox, ListWidgetObjects *listWidget, Scene *scene) const
+const QList<std::shared_ptr<Point3D>>& BezierCurveC0::getControlPoints() const
 {
-	m_uiBCC0.connectToUi(comboBox, listWidget, scene);
-	//QObject::connect(&m_uiBCC0, &UiBezierCurveC0::pointAdded, widget, &ListWidgetParameters::pointAddedToBC0);
-	//QObject::connect(&m_uiBCC0, &UiBezierCurveC0::pointRemoved, widget, &ListWidgetParameters::pointRemovedFromBC0);
+	return m_controlPoints;
+}
+
+void BezierCurveC0::connectToUI(ComboBoxBezierCurveC0 *comboBox, ListWidgetObjects *listWidget, Scene *scene, ListWidgetParameters *listWidgetParams) const
+{
+	m_uiBCC0.connectToUi(comboBox, listWidget, scene, listWidgetParams);
 }

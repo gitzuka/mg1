@@ -200,17 +200,9 @@ void Scene::updateCursorPosition(float x, float y, int width, int heigth)
 	m_cursor->m_worldCoords = QVector3D(m_cursorPosX - m_camera.m_viewMatrix.row(0).w(),
 		m_cursorPosY - m_camera.m_viewMatrix.row(1).w(),
 		m_cursorPosZ - m_camera.m_viewMatrix.row(2).w() - 1);
-	/*m_cursor->m_modelMatrix = (Camera::createRotationX(m_camera.m_pitch) * Camera::createRotationY(m_camera.m_yaw)).inverted()
-		* Camera::createTranslation(m_cursor->m_worldCoords);	*/
 	m_cursor->setModelMatrix((Camera::createRotationX(m_camera.m_pitch) * Camera::createRotationY(m_camera.m_yaw)).inverted()
-		* Camera::createTranslation(m_cursor->m_worldCoords));
-	//* Camera::createRotationX(180);
-//m_cursorPosX = 0.5f;
-//m_cursorPosY = 0;
-//m_cursor->m_modelMatrix = PVinv * Camera::createTranslation(m_cursorPosX + m_camera.m_viewMatrix.row(0).w(), m_cursorPosY, 0);
-//m_cursor->m_modelMatrix = PVinv * Camera::createTranslation(m_cursorPosX, m_cursorPosY, 0);
-//m_cursor->m_modelMatrix(0, 3) = (m_cursorPosX - m_camera.m_viewMatrix.row(0).w());
-//m_cursor->m_modelMatrix(1, 3) = m_cursorPosY - m_camera.m_viewMatrix.row(1).w();// +yTrans;
+		* Camera::createTranslation(m_cursor->m_worldCoords));	
+
 	if (m_cursor->m_obtainedObject != nullptr)
 	{
 		m_cursor->m_obtainedObject->setModelMatrix(m_cursor->getModelMatrix());
@@ -250,7 +242,7 @@ int Scene::createDrawableObject(QString name)
 	}
 	else if (name == "Point3D")
 	{
-		object = std::make_shared<Point3D>(Point3D::ObjectType::point3D, name, m_camera.m_projectionMatrix);
+		object = std::make_shared<Point3D>(Point3D::ObjectType::point3D, name, m_camera.m_projectionMatrix, m_camera.m_viewMatrix);
 		emit addedPoint3D(name, object->getId(), object);
 	}
 	else if (name == "BezierCurveC0")

@@ -17,10 +17,17 @@ public:
 private:
 	QList<int> m_bezierCurveC0Ids;
 
+signals:
+	void itemSelected(int curveId);
+	void itemRemoved();
+
 public slots:
 	void changeItemText(int objectId, const QString &text);
 	void deleteItem(int objectId);
 	//void pointRemovedFromBC0(int id);
+
+private slots:
+	void selectCurve(int itemId);
 
 };
 

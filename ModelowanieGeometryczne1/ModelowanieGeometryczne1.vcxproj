@@ -195,6 +195,7 @@
   <ItemGroup>
     <ClInclude Include="bezierCurveC0.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="utilsUi.h" />
     <CustomBuild Include="comboboxBezierCurveC0.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing comboboxBezierCurveC0.h...</Message>

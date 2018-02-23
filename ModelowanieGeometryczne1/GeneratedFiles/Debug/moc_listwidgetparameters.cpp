@@ -9,6 +9,7 @@
 #include "../../listwidgetparameters.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
+#include <QtCore/QList>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'listwidgetparameters.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
@@ -21,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ListWidgetParameters_t {
-    QByteArrayData data[10];
-    char stringdata0[133];
+    QByteArrayData data[12];
+    char stringdata0[151];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,17 +36,19 @@ QT_MOC_LITERAL(0, 0, 20), // "ListWidgetParameters"
 QT_MOC_LITERAL(1, 21, 10), // "rightClick"
 QT_MOC_LITERAL(2, 32, 0), // ""
 QT_MOC_LITERAL(3, 33, 3), // "pos"
-QT_MOC_LITERAL(4, 37, 35), // "comboBox_BezierCurveC0Display..."
-QT_MOC_LITERAL(5, 73, 15), // "pointAddedToBC0"
-QT_MOC_LITERAL(6, 89, 2), // "id"
-QT_MOC_LITERAL(7, 92, 19), // "pointRemovedFromBC0"
-QT_MOC_LITERAL(8, 112, 15), // "updatePointName"
-QT_MOC_LITERAL(9, 128, 4) // "name"
+QT_MOC_LITERAL(4, 37, 13), // "displayPoints"
+QT_MOC_LITERAL(5, 51, 32), // "QList<std::shared_ptr<Point3D> >"
+QT_MOC_LITERAL(6, 84, 6), // "points"
+QT_MOC_LITERAL(7, 91, 15), // "pointAddedToBC0"
+QT_MOC_LITERAL(8, 107, 2), // "id"
+QT_MOC_LITERAL(9, 110, 19), // "pointRemovedFromBC0"
+QT_MOC_LITERAL(10, 130, 15), // "updatePointName"
+QT_MOC_LITERAL(11, 146, 4) // "name"
 
     },
     "ListWidgetParameters\0rightClick\0\0pos\0"
-    "comboBox_BezierCurveC0DisplayPoints\0"
-    "pointAddedToBC0\0id\0pointRemovedFromBC0\0"
+    "displayPoints\0QList<std::shared_ptr<Point3D> >\0"
+    "points\0pointAddedToBC0\0id\0pointRemovedFromBC0\0"
     "updatePointName\0name"
 };
 #undef QT_MOC_LITERAL
@@ -68,18 +71,18 @@ static const uint qt_meta_data_ListWidgetParameters[] = {
 
  // slots: name, argc, parameters, tag, flags
        4,    1,   42,    2, 0x0a /* Public */,
-       5,    1,   45,    2, 0x0a /* Public */,
-       7,    1,   48,    2, 0x0a /* Public */,
-       8,    2,   51,    2, 0x0a /* Public */,
+       7,    1,   45,    2, 0x0a /* Public */,
+       9,    1,   48,    2, 0x0a /* Public */,
+      10,    2,   51,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QPoint,    3,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::Int,    2,
-    QMetaType::Void, QMetaType::Int,    6,
-    QMetaType::Void, QMetaType::Int,    6,
-    QMetaType::Void, QMetaType::QString, QMetaType::Int,    9,    6,
+    QMetaType::Void, 0x80000000 | 5,    6,
+    QMetaType::Void, QMetaType::Int,    8,
+    QMetaType::Void, QMetaType::Int,    8,
+    QMetaType::Void, QMetaType::Int, QMetaType::QString,    8,   11,
 
        0        // eod
 };
@@ -91,10 +94,10 @@ void ListWidgetParameters::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->rightClick((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
-        case 1: _t->comboBox_BezierCurveC0DisplayPoints((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 1: _t->displayPoints((*reinterpret_cast< const QList<std::shared_ptr<Point3D> >(*)>(_a[1]))); break;
         case 2: _t->pointAddedToBC0((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 3: _t->pointRemovedFromBC0((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 4: _t->updatePointName((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 4: _t->updatePointName((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

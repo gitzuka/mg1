@@ -4,6 +4,8 @@
 #include "float3.h"
 
 
+class Ui_ModelowanieGeometryczne1Class;
+
 class DrawableObject
 {
 public:
@@ -17,8 +19,8 @@ public:
 	virtual void draw(std::vector<QVector4D> &vec, float3 color) const = 0;
 	virtual void setModelMatrix(const QMatrix4x4 &matrix) = 0;
 	virtual QVector4D getPosition() const = 0;
-	virtual QMatrix4x4 getModelMatrix();
-
+	virtual const QMatrix4x4& getModelMatrix() const;
+	virtual void connectToUI(const Ui_ModelowanieGeometryczne1Class) const = 0;
 
 	//void setCenter(const QVector4D &point);
 	//QVector4D getPosition() const;
@@ -26,12 +28,12 @@ public:
 	void drawLine(const QVector4D &p1, const QVector4D &p2, float3 color) const;
 	int getId() const;
 	const std::vector<QVector4D>& getVertices() const;
-	const QString getName() const;
-	void setName(QString name);
+	const QString& getName() const;
+	void setName(const QString &name);
 	
 
 protected:
-	DrawableObject(ObjectType type, QString name);
+	DrawableObject(ObjectType type, const QString &name);
 
 	std::vector<QVector4D> m_vertices;
 	std::vector<int> m_indices;

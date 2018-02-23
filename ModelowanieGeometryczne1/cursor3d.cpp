@@ -20,9 +20,6 @@ void Cursor3D::draw(std::vector<QVector4D>& vec) const
 		}
 		drawLine(vec.at(*it), vec.at(*(it + 1)), float3(1.0f, 0, 0));
 	}
-	/*drawLine(vec.at(0), vec.at(1), float3(1.0f, 0, 0));
-	drawLine(vec.at(0), vec.at(2), float3(0, 1.0f, 0));
-	drawLine(vec.at(0), vec.at(3), float3(0, 0, 1.0f));*/
 }
 
 void Cursor3D::draw(std::vector<QVector4D>& vec, float3 color) const
@@ -37,9 +34,6 @@ void Cursor3D::draw(std::vector<QVector4D>& vec, float3 color) const
 		}
 		drawLine(vec.at(*it), vec.at(*(it + 1)), color);
 	}
-	/*drawLine(vec.at(0), vec.at(1), float3(1.0f, 0, 0));
-	drawLine(vec.at(0), vec.at(2), float3(0, 1.0f, 0));
-	drawLine(vec.at(0), vec.at(3), float3(0, 0, 1.0f));*/
 }
 
 void Cursor3D::setModelMatrix(const QMatrix4x4 &matrix)
@@ -54,10 +48,6 @@ QVector4D Cursor3D::getPosition() const
 
 void Cursor3D::createVertices()
 {
-	/*m_vertices.push_back(QVector4D(0.0, 0.0, 0.0, 1));
-	m_vertices.push_back(QVector4D(20, 0.0, 0.0, 1));
-	m_vertices.push_back(QVector4D(0.0, 20, 0.0, 1));
-	m_vertices.push_back(QVector4D(0.0, 0, 20, 1));*/
 	m_vertices.push_back(QVector4D(0, 0.0, 0.0, 1));
 	m_vertices.push_back(QVector4D(0.08, 0.0, 0.0, 1));
 	m_vertices.push_back(QVector4D(0, 0.08, 0.0, 1));
@@ -112,7 +102,8 @@ void Cursor3D::updatePosition(float x, float y, float z, int width, int heigth, 
 		* Camera::createTranslation(m_worldCoords);
 	if (m_obtainedObject != nullptr)
 	{
-		m_obtainedObject->getModelMatrix() = m_modelMatrix;
+		//m_obtainedObject->getModelMatrix() = m_modelMatrix;
+		m_obtainedObject->setModelMatrix(m_modelMatrix);
 	}
 }
 
@@ -134,9 +125,6 @@ float Cursor3D::calculateDistance3D(float x1, float x2, float y1, float y2, floa
 
 float Cursor3D::calculateDistance3D(const std::shared_ptr<DrawableObject> &object1, const std::shared_ptr<DrawableObject> &object2) const
 {
-	//return calculateDistance3D(object1->getModelMatrix().row(0).w(), object2->getModelMatrix().row(0).w(),
-	//	object1->getModelMatrix().row(1).w(), object2->getModelMatrix().row(1).w(),
-	//	object1->getModelMatrix().row(2).w(), object2->getModelMatrix().row(2).w());
 	return calculateDistance3D(object1->getPosition().x(), object2->getPosition().x(),
 		object1->getPosition().y(), object2->getPosition().y(),
 		object1->getPosition().z(), object2->getPosition().z());

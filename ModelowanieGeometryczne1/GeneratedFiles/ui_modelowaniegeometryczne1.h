@@ -183,7 +183,7 @@ public:
         toolBox->setObjectName(QStringLiteral("toolBox"));
         page_Torus = new QWidget();
         page_Torus->setObjectName(QStringLiteral("page_Torus"));
-        page_Torus->setGeometry(QRect(0, 0, 293, 500));
+        page_Torus->setGeometry(QRect(0, 0, 293, 505));
         verticalLayout_8 = new QVBoxLayout(page_Torus);
         verticalLayout_8->setSpacing(0);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -261,7 +261,7 @@ public:
         toolBox->addItem(page_Torus, QStringLiteral("Torus"));
         page_BezierCurveC0 = new QWidget();
         page_BezierCurveC0->setObjectName(QStringLiteral("page_BezierCurveC0"));
-        page_BezierCurveC0->setGeometry(QRect(0, 0, 293, 500));
+        page_BezierCurveC0->setGeometry(QRect(0, 0, 293, 505));
         verticalLayout_11 = new QVBoxLayout(page_BezierCurveC0);
         verticalLayout_11->setSpacing(0);
         verticalLayout_11->setContentsMargins(11, 11, 11, 11);
@@ -385,8 +385,8 @@ public:
 
         retranslateUi(ModelowanieGeometryczne1Class);
 
-        myTabWidget->setCurrentIndex(1);
-        toolBox->setCurrentIndex(0);
+        myTabWidget->setCurrentIndex(0);
+        toolBox->setCurrentIndex(1);
         toolBox->layout()->setSpacing(0);
 
 

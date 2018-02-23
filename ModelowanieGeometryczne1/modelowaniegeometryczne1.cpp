@@ -45,7 +45,12 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.checkBox_pointer, SIGNAL(stateChanged(int)), ui.myGLWidget, SLOT(checkBox_pointerStateChanged(int)));
 	connect(ui.pushButton_AddObject, SIGNAL(clicked()), this, SLOT(pushButton_AddObjectClicked()));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.listWidget_ObjectsList, SLOT(removeItem()));
-	connect(ui.comboBox_BezierCurveC0, SIGNAL(currentIndexChanged(int)), ui.listWidget_Parameters, SLOT(comboBox_BezierCurveC0DisplayPoints(int)));
+	//connect(ui.comboBox_BezierCurveC0, SIGNAL(currentIndexChanged(int)), ui.listWidget_Parameters, SLOT(comboBox_BezierCurveC0DisplayPoints(int)));
+	//connect(ui.comboBox_BezierCurveC0, SIGNAL(itemSelected(int)), ui.listWidget_Parameters, SLOT(comboBox_BezierCurveC0DisplayPoints(int)));
+	connect(ui.comboBox_BezierCurveC0, SIGNAL(itemRemoved()), ui.listWidget_Parameters, SLOT(clear()));
+
+
+	connect(ui.comboBox_BezierCurveC0, SIGNAL(currentIndexChanged(int)), ui.comboBox_BezierCurveC0, SLOT(selectCurve(int)));
 
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BezierCurveC0, SLOT(deleteItem(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_Torus, SLOT(deleteItem(int)));
@@ -91,7 +96,7 @@ void ModelowanieGeometryczne1::comboBox_Torus_AddItem(QString name, int id, cons
 
 void ModelowanieGeometryczne1::comboBox_BezierCurveC0_AddItem(const QString &name, int id, const std::shared_ptr<BezierCurveC0> &object)
 {
-	object->connectToUI(ui.comboBox_BezierCurveC0, ui.listWidget_ObjectsList, &m_scene);
+	object->connectToUI(ui.comboBox_BezierCurveC0, ui.listWidget_ObjectsList, &m_scene, ui.listWidget_Parameters);
 	ui.comboBox_BezierCurveC0->addItem(id, name);
 
 }

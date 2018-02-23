@@ -273,5 +273,8 @@
     <ClInclude Include="curveQuadratic.h">
       <Filter>Header Files\Objects\Curves</Filter>
     </ClInclude>
+    <ClInclude Include="utilsUi.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

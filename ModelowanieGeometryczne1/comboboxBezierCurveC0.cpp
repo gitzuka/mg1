@@ -2,6 +2,7 @@
 
 ComboBoxBezierCurveC0::ComboBoxBezierCurveC0(QWidget* parent)
 {
+	//connect(this, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, SLOT(selectCurve(int)));
 }
 
 ComboBoxBezierCurveC0::~ComboBoxBezierCurveC0()
@@ -10,8 +11,8 @@ ComboBoxBezierCurveC0::~ComboBoxBezierCurveC0()
 
 void ComboBoxBezierCurveC0::addItem(int objectId, const QString &name)
 {
-	QComboBox::addItem(name);
 	m_bezierCurveC0Ids.append(objectId);
+	QComboBox::addItem(name);
 }
 
 void ComboBoxBezierCurveC0::deleteItem(int objectId)
@@ -20,10 +21,22 @@ void ComboBoxBezierCurveC0::deleteItem(int objectId)
 	{
 		if (objectId == m_bezierCurveC0Ids.at(i))
 		{
-			this->removeItem(i);
+			if (i == this->currentIndex())
+			{
+				emit itemRemoved();
+			}
+			this->removeItem(this->currentIndex());
 			m_bezierCurveC0Ids.removeAt(i);
 			return;
 		}
+	}
+}
+
+void ComboBoxBezierCurveC0::selectCurve(int itemId)
+{
+	if (itemId >= 0)
+	{
+		emit itemSelected(m_bezierCurveC0Ids.at(itemId));
 	}
 }
 

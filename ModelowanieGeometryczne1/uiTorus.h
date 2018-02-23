@@ -1,6 +1,7 @@
 #pragma once
 #include <QObject>
 #include "listwidgetobjects.h"
+#include "listwidgetparameters.h"
 #include "comboboxTorus.h"
 
 class Torus;

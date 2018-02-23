@@ -1,7 +1,6 @@
 #pragma once
 #include "point3d.h"
 #include "torus.h"
-#include "curveQuadratic.h"
 #include "curveCubic.h"
 #include "listwidgetobjects.h"
 #include "uiBezierCurveC0.h"
@@ -11,6 +10,7 @@ class BezierCurveC0 : public DrawableObject
 {
 public:
 	BezierCurveC0(ObjectType type, QString name);
+	~BezierCurveC0();
 
 	friend class UiBezierCurveC0;
 
@@ -22,7 +22,8 @@ public:
 	void addControlPoint(const std::shared_ptr<DrawableObject> &point);
 	void removeControlPoint(const std::shared_ptr<DrawableObject> &point);
 	QList<int> getControlPointIds() const;
-	void connectToUI(ComboBoxBezierCurveC0 *comboBox, ListWidgetObjects *listWidget, Scene *scene) const;
+	const QList<std::shared_ptr<Point3D>>& getControlPoints() const;
+	void connectToUI(ComboBoxBezierCurveC0 *comboBox, ListWidgetObjects *listWidget, Scene *scene, ListWidgetParameters *listWidgetParams) const;
 
 private:
 	//float calculateDistanceBetweenPoints(std::shared_ptr<DrawableObject> &point1, std::shared_ptr<DrawableObject> &point2);
