@@ -10,6 +10,7 @@ void CurveCubic::generateCurve(std::vector<QVector4D>& vec)
 	int length = floor(genLength());
 	float step = 1.0 / length;
 
+	vec.reserve(2 * length);
 	for (int i = 0; i <= length; ++i)
 	{
 		vec.push_back(deCasteljau(step * i));

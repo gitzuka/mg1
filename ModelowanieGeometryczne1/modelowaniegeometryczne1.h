@@ -5,6 +5,9 @@
 #include "ui_modelowaniegeometryczne1.h"
 #include "scene.h"
 
+class UiPoint3D;
+class UiTorus;
+
 class ModelowanieGeometryczne1 : public QMainWindow
 {
 	Q_OBJECT
@@ -20,6 +23,7 @@ private:
 	Ui::ModelowanieGeometryczne1Class ui;
 	QStringListModel *model;
 	QStringList ui_drawableObjects = { "Torus", "Point3D", "BezierCurveC0" };
+	//QVector<UiConnector> m_uiConnectors;
 	//QList<int> m_torusIds;
 	//QList<int> m_bezierCurveC0Ids;
 	QList<int> m_selectedObjectsIds;
@@ -38,8 +42,9 @@ private slots:
 	void label_screenCoordsChangeText(QMouseEvent *event);
 	//void highlightItem(int id);
 	//void listWidget_itemRightClicked(const QPoint &point) const;
-	void comboBox_Torus_AddItem(QString name, int id, const std::shared_ptr<Torus> &object);
-	void comboBox_BezierCurveC0_AddItem(const QString &name, int id, const std::shared_ptr<BezierCurveC0> &object);
+	void comboBox_Torus_AddItem(const QString &name, int id, const UiTorus *uiTorus);
+	void comboBox_BezierCurveC0_AddItem(const QString &name, int id, const UiBezierCurveC0 *uiBezierC0);
+	void connectPoint3D(const QString &name, int id, const UiPoint3D *uiPoint3d);
 	//void point3dItemAdded(int id);
 	//void comboBox_BezierCurveC0DisplayPoints(int id);
 	void myGLWidgetKeyPressed(QKeyEvent *event);

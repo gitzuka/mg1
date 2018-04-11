@@ -12,7 +12,6 @@ public:
 	explicit ListWidgetObjects(QWidget *parent = 0);
 	~ListWidgetObjects();
 
-
 private:
 	QList<QPair<QListWidgetItem*, int>> m_objectsList;
 	QList<int> m_bezierCurveC0Ids;

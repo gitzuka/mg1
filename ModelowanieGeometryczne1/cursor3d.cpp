@@ -1,8 +1,9 @@
 #include "cursor3d.h"
 #include "camera.h"
+#include "uiConnector.h"
 
 Cursor3D::Cursor3D(ObjectType type) : DrawableObject(type, "Cursor3D"),
-m_worldCoords(QVector3D(0, 0, 0))
+m_worldCoords(QVector3D(0, 0, 0)), m_obtainedColor(1,1,0)
 {
 	Cursor3D::createVertices();
 	Cursor3D::generateIndices();
@@ -78,7 +79,7 @@ int Cursor3D::acquireObject(const QList<std::shared_ptr<DrawableObject>> &object
 	if (index != -1)
 	{
 		m_obtainedObject = objects.at(index);
-		m_obtainedObject->setColor(1, 1, 0);// = color;
+		m_obtainedObject->setColor(m_obtainedColor.x(), m_obtainedColor.y(), m_obtainedColor.z());
 	}
 	return index;
 }
@@ -89,22 +90,32 @@ void Cursor3D::releaseObject()
 	m_obtainedObject = nullptr;
 }
 
-void Cursor3D::updatePosition(float x, float y, float z, int width, int heigth, const Camera &camera)
+void Cursor3D::updatePosition(float posX, float posY, float posZ, const Camera &camera)
 {
-	float posX = x / (width * 0.5f) - 1.0f;
-	float posY = -y / (heigth * 0.5f) + 1.0f;
-	float posZ = 0;
-
 	m_worldCoords = QVector3D(posX - camera.m_viewMatrix.row(0).w(),
 		posY - camera.m_viewMatrix.row(1).w(),
 		posZ - camera.m_viewMatrix.row(2).w() - 1);
-	m_modelMatrix = (Camera::createRotationX(camera.m_pitch) * Camera::createRotationY(camera.m_yaw)).inverted()
-		* Camera::createTranslation(m_worldCoords);
+	setModelMatrix((Camera::createRotationX(camera.m_pitch) * Camera::createRotationY(camera.m_yaw)).inverted()
+		* Camera::createTranslation(m_worldCoords));
+
 	if (m_obtainedObject != nullptr)
 	{
-		//m_obtainedObject->getModelMatrix() = m_modelMatrix;
-		m_obtainedObject->setModelMatrix(m_modelMatrix);
+		m_obtainedObject->setModelMatrix(getModelMatrix());
 	}
+	//float posX = x / (width * 0.5f) - 1.0f;
+	//float posY = -y / (heigth * 0.5f) + 1.0f;
+	//float posZ = 0;
+
+	//m_worldCoords = QVector3D(posX - camera.m_viewMatrix.row(0).w(),
+	//	posY - camera.m_viewMatrix.row(1).w(),
+	//	posZ - camera.m_viewMatrix.row(2).w() - 1);
+	//m_modelMatrix = (Camera::createRotationX(camera.m_pitch) * Camera::createRotationY(camera.m_yaw)).inverted()
+	//	* Camera::createTranslation(m_worldCoords);
+	//if (m_obtainedObject != nullptr)
+	//{
+	//	//m_obtainedObject->getModelMatrix() = m_modelMatrix;
+	//	m_obtainedObject->setModelMatrix(m_modelMatrix);
+	//}
 }
 
 float Cursor3D::calculateDistance2D(float x1, float x2, float y1, float y2) const
@@ -155,6 +166,26 @@ int Cursor3D::getClosestObject(const QList<std::shared_ptr<DrawableObject>> &obj
 			index = i;
 		}
 	}
+	return index;
+}
 
+int Cursor3D::getClosestObject(std::unordered_map<int, std::unique_ptr<UiConnector>> sceneObjects) const
+{
+	float minDistance = std::numeric_limits<float>::max();
+	float distance;
+	int index = -1;
+	for (auto const& object : sceneObjects)
+	{
+		if (object.second.get()->getObject()->getId() == this->getId())
+		{
+			continue;
+		}
+		distance = calculateDistance3D(this->getPosition(), object.second.get()->getObject()->getPosition());
+		if (distance < TARGETING_DISTANCE && distance < minDistance)
+		{
+			minDistance = distance;
+			index = object.second.get()->getObject()->getId();
+		}
+	}
 	return index;
 }

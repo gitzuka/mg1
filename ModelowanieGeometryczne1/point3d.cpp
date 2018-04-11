@@ -2,7 +2,8 @@
 #include "ui_modelowaniegeometryczne1.h"
 
 Point3D::Point3D(ObjectType type, QString name, const QMatrix4x4 &projMatrix, const QMatrix4x4 &viewMatrix) :
-	DrawableObject(type, name), m_projMatrix(projMatrix), m_viewMatrix(viewMatrix), m_uiPoint3D(*this), m_center(QVector4D(0, 0, 0, 1))
+	//DrawableObject(type, name), m_projMatrix(projMatrix), m_viewMatrix(viewMatrix), m_uiPoint3D(*this), m_center(QVector4D(0, 0, 0, 1))
+	DrawableObject(type, name), m_projMatrix(projMatrix), m_viewMatrix(viewMatrix), m_center(QVector4D(0, 0, 0, 1))
 {
 	Point3D::createVertices();
 	Point3D::generateIndices();
@@ -54,10 +55,10 @@ QVector4D Point3D::getPosition() const
 	return m_center;// +m_modelMatrix.column(3).toVector3D();
 }
 
-void Point3D::connectToUI(const Ui_ModelowanieGeometryczne1Class ui) const
-{
-	m_uiPoint3D.connect(ui.listWidget_Parameters, ui.listWidget_ObjectsList);
-}
+//void Point3D::connectToUI(const Ui_ModelowanieGeometryczne1Class ui) const
+//{
+//	m_uiPoint3D.connect(ui.listWidget_Parameters, ui.listWidget_ObjectsList);
+//}
 
 //void Point3D::setCenter(const QVector3D &point)
 //{
@@ -80,10 +81,10 @@ const QVector4D& Point3D::getCenter() const
 	return m_center;
 }
 
-void Point3D::connectToUI(ListWidgetParameters* listWidget, ListWidgetObjects* listWidgetObj) const
-{
-	m_uiPoint3D.connect(listWidget, listWidgetObj);
-}
+//void Point3D::connectToUI(ListWidgetParameters* listWidget, ListWidgetObjects* listWidgetObj) const
+//{
+//	m_uiPoint3D.connect(listWidget, listWidgetObj);
+//}
 
 void Point3D::createVertices()
 {

@@ -13,6 +13,7 @@ ListWidgetObjects::ListWidgetObjects(QWidget* parent)
 
 ListWidgetObjects::~ListWidgetObjects()
 {
+	this->clear();
 }
 
 void ListWidgetObjects::mousePressEvent(QMouseEvent *event)
@@ -82,7 +83,9 @@ void ListWidgetObjects::removeItem()
 	}
 	emit removeItemEvent(m_objectsList.at(currentRow()).second);
 	m_objectsList.removeAt(currentRow());
-	this->removeItemWidget(takeItem(currentRow()));
+	QListWidgetItem *item = takeItem(currentRow());
+	this->removeItemWidget(item);
+	delete item;
 }
 
 void ListWidgetObjects::highlightItem(int objectId)
@@ -106,18 +109,6 @@ void ListWidgetObjects::itemClick(QListWidgetItem *item)
 	int id = m_objectsList.at(this->currentRow()).second;
 	updatePointsList(id);
 
-	//ui.myGLWidget->drawableItemClicked(m_objectsList.at(ui.listWidget_ObjectsList->currentRow()).second);
-	//ui.myGLWidget->drawableItemClicked(id);
-
-
-	//void MyGLWidget::drawableItemClicked(int id)
-	//{
-	//	if (m_scene.m_isCursor3d)
-	//	{
-	//		m_scene.updateCursor();
-	//	}
-	//	updateGL();
-	//}
 }
 
 void ListWidgetObjects::itemTextChanged(QListWidgetItem* item)

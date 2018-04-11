@@ -32,11 +32,11 @@
 #include <QtWidgets/QToolBox>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include <comboboxBezierCurveC0.h>
-#include <comboboxTorus.h>
-#include <listwidgetobjects.h>
-#include <listwidgetparameters.h>
-#include <myglwidget.h>
+#include <comboBoxBezierCurveC0.h>
+#include <comboBoxTorus.h>
+#include <listWidgetObjects.h>
+#include <listWidgetParameters.h>
+#include <myGLWidget.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -76,9 +76,9 @@ public:
     QSpacerItem *verticalSpacer;
     QWidget *page_BezierCurveC0;
     QVBoxLayout *verticalLayout_11;
-    QVBoxLayout *verticalLayout_10;
+    QVBoxLayout *verticalLayout_BC0;
     ComboBoxBezierCurveC0 *comboBox_BezierCurveC0;
-    ListWidgetParameters *listWidget_Parameters;
+    ListWidgetParameters *listWidget_BC0Parameters;
     QWidget *tab_Other;
     QVBoxLayout *verticalLayout_6;
     QVBoxLayout *verticalLayout_5;
@@ -267,21 +267,22 @@ public:
         verticalLayout_11->setContentsMargins(11, 11, 11, 11);
         verticalLayout_11->setObjectName(QStringLiteral("verticalLayout_11"));
         verticalLayout_11->setContentsMargins(0, 0, 0, 0);
-        verticalLayout_10 = new QVBoxLayout();
-        verticalLayout_10->setSpacing(5);
-        verticalLayout_10->setObjectName(QStringLiteral("verticalLayout_10"));
+        verticalLayout_BC0 = new QVBoxLayout();
+        verticalLayout_BC0->setSpacing(5);
+        verticalLayout_BC0->setObjectName(QStringLiteral("verticalLayout_BC0"));
         comboBox_BezierCurveC0 = new ComboBoxBezierCurveC0(page_BezierCurveC0);
         comboBox_BezierCurveC0->setObjectName(QStringLiteral("comboBox_BezierCurveC0"));
 
-        verticalLayout_10->addWidget(comboBox_BezierCurveC0);
+        verticalLayout_BC0->addWidget(comboBox_BezierCurveC0);
 
-        listWidget_Parameters = new ListWidgetParameters(page_BezierCurveC0);
-        listWidget_Parameters->setObjectName(QStringLiteral("listWidget_Parameters"));
+        listWidget_BC0Parameters = new ListWidgetParameters(page_BezierCurveC0);
+        listWidget_BC0Parameters->setObjectName(QStringLiteral("listWidget_BC0Parameters"));
+        listWidget_BC0Parameters->setSelectionMode(QAbstractItemView::SingleSelection);
 
-        verticalLayout_10->addWidget(listWidget_Parameters);
+        verticalLayout_BC0->addWidget(listWidget_BC0Parameters);
 
 
-        verticalLayout_11->addLayout(verticalLayout_10);
+        verticalLayout_11->addLayout(verticalLayout_BC0);
 
         toolBox->addItem(page_BezierCurveC0, QStringLiteral("Bezier Curve C0"));
 

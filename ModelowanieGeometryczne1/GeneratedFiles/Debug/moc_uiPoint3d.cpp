@@ -96,7 +96,7 @@ void UiPoint3D::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
 }
 
 const QMetaObject UiPoint3D::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_UiPoint3D.data,
+    { &UiConnector::staticMetaObject, qt_meta_stringdata_UiPoint3D.data,
       qt_meta_data_UiPoint3D,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
 };
 
@@ -111,12 +111,12 @@ void *UiPoint3D::qt_metacast(const char *_clname)
     if (!_clname) return Q_NULLPTR;
     if (!strcmp(_clname, qt_meta_stringdata_UiPoint3D.stringdata0))
         return static_cast<void*>(const_cast< UiPoint3D*>(this));
-    return QObject::qt_metacast(_clname);
+    return UiConnector::qt_metacast(_clname);
 }
 
 int UiPoint3D::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QObject::qt_metacall(_c, _id, _a);
+    _id = UiConnector::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {

@@ -359,7 +359,7 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <layout class="QVBoxLayout" name="verticalLayout_10" stretch="0,0">
+                   <layout class="QVBoxLayout" name="verticalLayout_BC0" stretch="0,0">
                     <property name="spacing">
                      <number>5</number>
                     </property>
@@ -367,7 +367,11 @@
                      <widget class="ComboBoxBezierCurveC0" name="comboBox_BezierCurveC0"/>
                     </item>
                     <item>
-                     <widget class="ListWidgetParameters" name="listWidget_Parameters"/>
+                     <widget class="ListWidgetParameters" name="listWidget_BC0Parameters">
+                      <property name="selectionMode">
+                       <enum>QAbstractItemView::SingleSelection</enum>
+                      </property>
+                     </widget>
                     </item>
                    </layout>
                   </item>
@@ -554,27 +558,27 @@
   <customwidget>
    <class>MyGLWidget</class>
    <extends>QOpenGLWidget</extends>
-   <header location="global">myglwidget.h</header>
+   <header location="global">myGLWidget.h</header>
   </customwidget>
   <customwidget>
    <class>ListWidgetObjects</class>
    <extends>QListWidget</extends>
-   <header location="global">listwidgetobjects.h</header>
+   <header location="global">listWidgetObjects.h</header>
   </customwidget>
   <customwidget>
    <class>ListWidgetParameters</class>
    <extends>QListWidget</extends>
-   <header location="global">listwidgetparameters.h</header>
+   <header location="global">listWidgetParameters.h</header>
   </customwidget>
   <customwidget>
    <class>ComboBoxBezierCurveC0</class>
    <extends>QComboBox</extends>
-   <header location="global">comboboxBezierCurveC0.h</header>
+   <header location="global">comboBoxBezierCurveC0.h</header>
   </customwidget>
   <customwidget>
    <class>ComboBoxTorus</class>
    <extends>QComboBox</extends>
-   <header location="global">comboboxTorus.h</header>
+   <header location="global">comboBoxTorus.h</header>
   </customwidget>
  </customwidgets>
  <resources>

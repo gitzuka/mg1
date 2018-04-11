@@ -1,16 +1,16 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'comboboxBezierCurveC0.h'
+** Meta object code from reading C++ file 'comboBoxBezierCurveC0.h'
 **
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../comboboxBezierCurveC0.h"
+#include "../../comboBoxBezierCurveC0.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'comboboxBezierCurveC0.h' doesn't include <QObject>."
+#error "The header file 'comboBoxBezierCurveC0.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
 #error "This file was generated using the moc from 5.8.0. It"
 #error "cannot be used with the include files from this version of Qt."

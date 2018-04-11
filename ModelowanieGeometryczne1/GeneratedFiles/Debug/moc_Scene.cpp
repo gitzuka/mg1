@@ -1,17 +1,17 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'Scene.h'
+** Meta object code from reading C++ file 'scene.h'
 **
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../Scene.h"
+#include "../../scene.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #include <QtCore/QList>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'Scene.h' doesn't include <QObject>."
+#error "The header file 'scene.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
 #error "This file was generated using the moc from 5.8.0. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Scene_t {
-    QByteArrayData data[17];
-    char stringdata0[208];
+    QByteArrayData data[20];
+    char stringdata0[201];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,26 +37,29 @@ QT_MOC_LITERAL(1, 6, 10), // "addedTorus"
 QT_MOC_LITERAL(2, 17, 0), // ""
 QT_MOC_LITERAL(3, 18, 4), // "name"
 QT_MOC_LITERAL(4, 23, 2), // "id"
-QT_MOC_LITERAL(5, 26, 22), // "std::shared_ptr<Torus>"
-QT_MOC_LITERAL(6, 49, 6), // "object"
-QT_MOC_LITERAL(7, 56, 18), // "addedBezierCurveC0"
-QT_MOC_LITERAL(8, 75, 30), // "std::shared_ptr<BezierCurveC0>"
-QT_MOC_LITERAL(9, 106, 12), // "addedPoint3D"
-QT_MOC_LITERAL(10, 119, 31), // "std::shared_ptr<DrawableObject>"
-QT_MOC_LITERAL(11, 151, 6), // "update"
-QT_MOC_LITERAL(12, 158, 16), // "createObjectMenu"
-QT_MOC_LITERAL(13, 175, 3), // "pos"
-QT_MOC_LITERAL(14, 179, 10), // "QList<int>"
-QT_MOC_LITERAL(15, 190, 3), // "ids"
-QT_MOC_LITERAL(16, 194, 13) // "removedObject"
+QT_MOC_LITERAL(5, 26, 14), // "const UiTorus*"
+QT_MOC_LITERAL(6, 41, 7), // "uiTorus"
+QT_MOC_LITERAL(7, 49, 18), // "addedBezierCurveC0"
+QT_MOC_LITERAL(8, 68, 22), // "const UiBezierCurveC0*"
+QT_MOC_LITERAL(9, 91, 10), // "uiBezierC0"
+QT_MOC_LITERAL(10, 102, 12), // "addedPoint3D"
+QT_MOC_LITERAL(11, 115, 16), // "const UiPoint3D*"
+QT_MOC_LITERAL(12, 132, 6), // "object"
+QT_MOC_LITERAL(13, 139, 6), // "update"
+QT_MOC_LITERAL(14, 146, 16), // "createObjectMenu"
+QT_MOC_LITERAL(15, 163, 3), // "pos"
+QT_MOC_LITERAL(16, 167, 10), // "QList<int>"
+QT_MOC_LITERAL(17, 178, 3), // "ids"
+QT_MOC_LITERAL(18, 182, 12), // "deleteObject"
+QT_MOC_LITERAL(19, 195, 5) // "index"
 
     },
-    "Scene\0addedTorus\0\0name\0id\0"
-    "std::shared_ptr<Torus>\0object\0"
-    "addedBezierCurveC0\0std::shared_ptr<BezierCurveC0>\0"
-    "addedPoint3D\0std::shared_ptr<DrawableObject>\0"
+    "Scene\0addedTorus\0\0name\0id\0const UiTorus*\0"
+    "uiTorus\0addedBezierCurveC0\0"
+    "const UiBezierCurveC0*\0uiBezierC0\0"
+    "addedPoint3D\0const UiPoint3D*\0object\0"
     "update\0createObjectMenu\0pos\0QList<int>\0"
-    "ids\0removedObject"
+    "ids\0deleteObject\0index"
 };
 #undef QT_MOC_LITERAL
 
@@ -76,22 +79,22 @@ static const uint qt_meta_data_Scene[] = {
  // signals: name, argc, parameters, tag, flags
        1,    3,   44,    2, 0x06 /* Public */,
        7,    3,   51,    2, 0x06 /* Public */,
-       9,    3,   58,    2, 0x06 /* Public */,
-      11,    0,   65,    2, 0x06 /* Public */,
+      10,    3,   58,    2, 0x06 /* Public */,
+      13,    0,   65,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      12,    2,   66,    2, 0x0a /* Public */,
-      16,    0,   71,    2, 0x08 /* Private */,
+      14,    2,   66,    2, 0x0a /* Public */,
+      18,    1,   71,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 5,    3,    4,    6,
-    QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 8,    3,    4,    6,
-    QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 10,    3,    4,    6,
+    QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 8,    3,    4,    9,
+    QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 11,    3,    4,   12,
     QMetaType::Void,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QPoint, 0x80000000 | 14,   13,   15,
-    QMetaType::Void,
+    QMetaType::Void, QMetaType::QPoint, 0x80000000 | 16,   15,   17,
+    QMetaType::Void, QMetaType::Int,   19,
 
        0        // eod
 };
@@ -102,12 +105,12 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         Scene *_t = static_cast<Scene *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->addedTorus((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const std::shared_ptr<Torus>(*)>(_a[3]))); break;
-        case 1: _t->addedBezierCurveC0((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const std::shared_ptr<BezierCurveC0>(*)>(_a[3]))); break;
-        case 2: _t->addedPoint3D((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const std::shared_ptr<DrawableObject>(*)>(_a[3]))); break;
+        case 0: _t->addedTorus((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiTorus*(*)>(_a[3]))); break;
+        case 1: _t->addedBezierCurveC0((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiBezierCurveC0*(*)>(_a[3]))); break;
+        case 2: _t->addedPoint3D((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiPoint3D*(*)>(_a[3]))); break;
         case 3: _t->update(); break;
         case 4: _t->createObjectMenu((*reinterpret_cast< const QPoint(*)>(_a[1])),(*reinterpret_cast< const QList<int>(*)>(_a[2]))); break;
-        case 5: _t->removedObject(); break;
+        case 5: _t->deleteObject((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -125,21 +128,21 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         int *result = reinterpret_cast<int *>(_a[0]);
         void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (Scene::*_t)(QString , int , const std::shared_ptr<Torus> & );
+            typedef void (Scene::*_t)(const QString & , int , const UiTorus * );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::addedTorus)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (Scene::*_t)(QString , int , const std::shared_ptr<BezierCurveC0> & );
+            typedef void (Scene::*_t)(const QString & , int , const UiBezierCurveC0 * );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::addedBezierCurveC0)) {
                 *result = 1;
                 return;
             }
         }
         {
-            typedef void (Scene::*_t)(QString , int , const std::shared_ptr<DrawableObject> & );
+            typedef void (Scene::*_t)(const QString & , int , const UiPoint3D * );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::addedPoint3D)) {
                 *result = 2;
                 return;
@@ -192,21 +195,21 @@ int Scene::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void Scene::addedTorus(QString _t1, int _t2, const std::shared_ptr<Torus> & _t3)
+void Scene::addedTorus(const QString & _t1, int _t2, const UiTorus * _t3)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
-void Scene::addedBezierCurveC0(QString _t1, int _t2, const std::shared_ptr<BezierCurveC0> & _t3)
+void Scene::addedBezierCurveC0(const QString & _t1, int _t2, const UiBezierCurveC0 * _t3)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
-void Scene::addedPoint3D(QString _t1, int _t2, const std::shared_ptr<DrawableObject> & _t3)
+void Scene::addedPoint3D(const QString & _t1, int _t2, const UiPoint3D * _t3)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);

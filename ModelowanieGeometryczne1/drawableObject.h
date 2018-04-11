@@ -1,10 +1,6 @@
 #pragma once
 #include <QtOpenGL>
-#include "utils.h"
 #include "float3.h"
-
-
-class Ui_ModelowanieGeometryczne1Class;
 
 class DrawableObject
 {
@@ -20,7 +16,7 @@ public:
 	virtual void setModelMatrix(const QMatrix4x4 &matrix) = 0;
 	virtual QVector4D getPosition() const = 0;
 	virtual const QMatrix4x4& getModelMatrix() const;
-	virtual void connectToUI(const Ui_ModelowanieGeometryczne1Class) const = 0;
+	//virtual void connectToUI(const Ui_ModelowanieGeometryczne1Class) const = 0;
 
 	//void setCenter(const QVector4D &point);
 	//QVector4D getPosition() const;

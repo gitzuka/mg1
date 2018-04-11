@@ -7,18 +7,9 @@
 
 
 MyGLWidget::MyGLWidget(QWidget *parent)
-	: QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
+	: QGLWidget(QGLFormat(QGL::SampleBuffers), parent), m_width(800), m_height(600)
 {
-	//initializeObjects();
 }
-
-//void MyGLWidget::initializeObjects()
-//{
-//	m_scene.m_cursor = std::make_shared<Cursor3D>(Cursor3D::ObjectType::cursor3D);
-//	m_scene.m_cursor->createVertices();
-//	m_scene.m_cursor->generateIndices();
-//}
-
 
 MyGLWidget::~MyGLWidget()
 {
@@ -116,44 +107,3 @@ void MyGLWidget::checkBox_pointerStateChanged(int checked)
 	m_scene->toggleCursor3D(checked);
 	updateGL();
 }
-//
-//void MyGLWidget::createCurveC0fromPoints(const QList<int> &ids)
-//{
-//	std::shared_ptr<BezierCurveC0> object = std::make_shared<BezierCurveC0>(BezierCurveC0::ObjectType::bezierCurveC0);
-//	for (int i=0; i<ids.count(); ++i)
-//	{
-//		object->addControlPoint(m_scene.getObjectByID(ids.at(i)));
-//	}
-//	emit bezierCurveC0Added(object->getId());
-//	object->createVertices();
-//	object->generateIndices();
-//	m_scene.addObject(object);
-//	updateGL();
-//}
-
-//void MyGLWidget::drawableItemClicked(int id)
-//{
-//	if (m_scene.m_isCursor3d)
-//	{
-//		m_scene.updateCursor();
-//	}
-//	updateGL();
-//}
-
-//void MyGLWidget::listWidget_itemRightClicked(const QList<int> &selectedObjects, const QPoint &pos)
-//{
-//	for (int i = 0; i < selectedObjects.count(); ++i)
-//	{
-//		if (m_scene.getObjectByID(selectedObjects.at(i)) == nullptr || m_scene.getObjectByID(selectedObjects.at(i))->m_type != DrawableObject::ObjectType::point3D)
-//		{
-//			return;
-//		}
-//	}
-//	QMenu myMenu;
-//	QAction *createBC0 = myMenu.addAction("Create Bezier Curve C0");
-//	connect(createBC0, &QAction::triggered, this, [this, &selectedObjects]()
-//	{
-//		//createCurveC0fromPoints(selectedObjects);
-//	});
-//	myMenu.exec(pos);
-//}

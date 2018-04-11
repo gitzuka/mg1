@@ -1,8 +1,8 @@
 #pragma once
 #include "drawableObject.h"
-#include "uiPoint3d.h"
+//#include "uiPoint3d.h"
 
-class Ui_ModelowanieGeometryczne1Class;
+//class Ui_ModelowanieGeometryczne1Class;
 
 class Point3D : public DrawableObject
 {
@@ -15,7 +15,7 @@ public:
 	const QMatrix4x4& getModelMatrix() const override;
 	QVector4D getPosition() const override;
 	//void connectToUI(ListWidgetParameters *listWidget, ListWidgetObjects *listWidgetObj) const override;
-	void connectToUI(const Ui_ModelowanieGeometryczne1Class ui) const override;
+	//void connectToUI(const Ui_ModelowanieGeometryczne1Class ui) const override;
 
 	//void setCenter(const QVector3D &point);
 	void setCenter(const QMatrix4x4 &matrix);
@@ -29,7 +29,7 @@ private:
 	QVector4D m_center;
 	const QMatrix4x4 &m_projMatrix;
 	const QMatrix4x4 &m_viewMatrix;
-	UiPoint3D m_uiPoint3D;
+	//UiPoint3D m_uiPoint3D;
 
 	void createVertices() override;
 	void generateIndices() override;

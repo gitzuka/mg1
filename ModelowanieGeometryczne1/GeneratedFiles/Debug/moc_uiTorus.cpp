@@ -118,7 +118,7 @@ void UiTorus::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
 }
 
 const QMetaObject UiTorus::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_UiTorus.data,
+    { &UiConnector::staticMetaObject, qt_meta_stringdata_UiTorus.data,
       qt_meta_data_UiTorus,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
 };
 
@@ -133,12 +133,12 @@ void *UiTorus::qt_metacast(const char *_clname)
     if (!_clname) return Q_NULLPTR;
     if (!strcmp(_clname, qt_meta_stringdata_UiTorus.stringdata0))
         return static_cast<void*>(const_cast< UiTorus*>(this));
-    return QObject::qt_metacast(_clname);
+    return UiConnector::qt_metacast(_clname);
 }
 
 int UiTorus::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QObject::qt_metacall(_c, _id, _a);
+    _id = UiConnector::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {

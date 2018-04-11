@@ -1,4 +1,5 @@
 #include "drawableObject.h"
+#include "utils.h"
 int DrawableObject::current_id = 0;
 
 DrawableObject::DrawableObject(ObjectType type, const QString &name)

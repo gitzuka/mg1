@@ -1,8 +1,10 @@
 #pragma once
 #include "drawableObject.h"
 #include <memory>
+#include <unordered_map>
 
 class Camera;
+class UiConnector;
 
 class Cursor3D : public DrawableObject
 {
@@ -19,10 +21,14 @@ public:
 	
 	int acquireObject(const QList<std::shared_ptr<DrawableObject>> &objects);
 	void releaseObject();
-	void updatePosition(float x, float y, float z, int width, int heigth, const Camera &camera);
+	void updatePosition(float posX, float posY, float posZ, const Camera &camera);
 	int getClosestObject(const QList<std::shared_ptr<DrawableObject>> &objects) const;
+	int getClosestObject(std::unordered_map<int, std::unique_ptr<UiConnector>> sceneObjects) const;
 
 private:
+	float3 m_obtainedColor;
+	std::vector<std::shared_ptr<DrawableObject>> m_obtainedObjects;
+
 	void createVertices() override;
 	void generateIndices() override;
 	float calculateDistance2D(float x1, float x2, float y1, float y2) const;

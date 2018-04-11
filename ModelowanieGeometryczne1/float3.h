@@ -5,6 +5,7 @@ class float3
 public:
 	float3();
 	float3(float, float, float);
+
 	void setX(float);
 	void setY(float);
 	void setZ(float);
@@ -16,6 +17,7 @@ public:
 	float3 operator-(const float3& f) const;
 	float3 operator*(const float3& f) const;
 	float3 operator/(const float3& f) const;
+
 private:
 	float m_x;
 	float m_y;
