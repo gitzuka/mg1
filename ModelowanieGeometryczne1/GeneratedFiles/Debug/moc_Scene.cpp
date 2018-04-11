@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Scene_t {
-    QByteArrayData data[20];
-    char stringdata0[201];
+    QByteArrayData data[19];
+    char stringdata0[195];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -50,8 +50,7 @@ QT_MOC_LITERAL(14, 146, 16), // "createObjectMenu"
 QT_MOC_LITERAL(15, 163, 3), // "pos"
 QT_MOC_LITERAL(16, 167, 10), // "QList<int>"
 QT_MOC_LITERAL(17, 178, 3), // "ids"
-QT_MOC_LITERAL(18, 182, 12), // "deleteObject"
-QT_MOC_LITERAL(19, 195, 5) // "index"
+QT_MOC_LITERAL(18, 182, 12) // "deleteObject"
 
     },
     "Scene\0addedTorus\0\0name\0id\0const UiTorus*\0"
@@ -59,7 +58,7 @@ QT_MOC_LITERAL(19, 195, 5) // "index"
     "const UiBezierCurveC0*\0uiBezierC0\0"
     "addedPoint3D\0const UiPoint3D*\0object\0"
     "update\0createObjectMenu\0pos\0QList<int>\0"
-    "ids\0deleteObject\0index"
+    "ids\0deleteObject"
 };
 #undef QT_MOC_LITERAL
 
@@ -94,7 +93,7 @@ static const uint qt_meta_data_Scene[] = {
 
  // slots: parameters
     QMetaType::Void, QMetaType::QPoint, 0x80000000 | 16,   15,   17,
-    QMetaType::Void, QMetaType::Int,   19,
+    QMetaType::Void, QMetaType::Int,    4,
 
        0        // eod
 };

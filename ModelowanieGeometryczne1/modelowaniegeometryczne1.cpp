@@ -11,6 +11,7 @@ ModelowanieGeometryczne1::ModelowanieGeometryczne1(QWidget *parent)
 {
 	ui.setupUi(this);
 	m_scene.m_cursor = std::make_shared<Cursor3D>(Cursor3D::ObjectType::cursor3D);
+	//m_scene.m_cursor = std::make_unique<UiCursor3D>(std::make_shared<Cursor3D>(Cursor3D::ObjectType::cursor3D));
 
 	connectSignals();
 	model = new QStringListModel(this);
@@ -143,11 +144,17 @@ void ModelowanieGeometryczne1::myGLWidgetMousePressed(QMouseEvent *event)
 	m_scene.m_camera.m_mousePos = event->pos();
 	if (event->button() == Qt::LeftButton && m_scene.m_isCursor3d)
 	{
-		int index = m_scene.updateCursor();
-		if (index != -1)
+		int id = m_scene.updateCursor();
+		if (id != -1)
 		{
-			emit cursor3dItemAcquired(m_scene.getObject(index)->getId());
+			emit cursor3dItemAcquired(id);
 		}
+		//int index = m_scene.updateCursor();
+		//if (index != -1)
+		//{
+		//	//emit cursor3dItemAcquired(m_scene.getObject(index)->getId());
+		//	emit cursor3dItemAcquired(m_scene.getObject(index)->getId());
+		//}
 	}
 }
 

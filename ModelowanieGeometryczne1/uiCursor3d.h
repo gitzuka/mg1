@@ -8,7 +8,11 @@ class UiCursor3D : public UiConnector
 public:
 	explicit UiCursor3D(std::shared_ptr<Cursor3D> cursor3d);
 	void connectToUi(const Ui_ModelowanieGeometryczne1Class *ui) const override;
+	std::shared_ptr<DrawableObject> getObject() override;
 
 private:
 	std::shared_ptr<Cursor3D> m_cursor3d;
+
+public slots:
+	void changeName(const QString &name, int id) override;
 };

@@ -19,11 +19,12 @@ public:
 	void setModelMatrix(const QMatrix4x4 &matrix) override;
 	QVector4D getPosition() const override;
 	
-	int acquireObject(const QList<std::shared_ptr<DrawableObject>> &objects);
+	//int acquireObject(const QList<std::shared_ptr<DrawableObject>> &objects);
+	int acquireObject(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects);
 	void releaseObject();
 	void updatePosition(float posX, float posY, float posZ, const Camera &camera);
-	int getClosestObject(const QList<std::shared_ptr<DrawableObject>> &objects) const;
-	int getClosestObject(std::unordered_map<int, std::unique_ptr<UiConnector>> sceneObjects) const;
+	//int getClosestObject(const QList<std::shared_ptr<DrawableObject>> &objects) const;
+	int getClosestObject(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects) const;
 
 private:
 	float3 m_obtainedColor;

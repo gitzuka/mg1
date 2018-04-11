@@ -9,6 +9,7 @@
 
 class UiPoint3D;
 class UiTorus;
+class UiCursor3D;
 
 class Scene : public QObject
 {
@@ -21,21 +22,22 @@ public:
 	float m_cursorPosZ;
 	bool m_stereoscopy;
 	bool m_isCursor3d;
+	//std::shared_ptr<Cursor3D> m_cursor;
 	std::shared_ptr<Cursor3D> m_cursor;
 	Camera m_camera;
 
 	//int countObjects() const;
-	void deleteObject(const std::shared_ptr<DrawableObject> &object);
+	//void deleteObject(const std::shared_ptr<DrawableObject> &object);
 	void draw() const;
 	void toggleCursor3D(bool isActive);
 	void updateCursorPosition(float x, float y, int width, int heigth);
 	int updateCursor();
-	std::shared_ptr<DrawableObject> getObject(int index) const;
+	//std::shared_ptr<DrawableObject> getObject(int index) const;
 	//std::shared_ptr<DrawableObject> getObjectByID(int id) const;
 	int createDrawableObject(const QString &name);
 
 private:
-	QList<std::shared_ptr<DrawableObject>> m_objects;
+	//QList<std::shared_ptr<DrawableObject>> m_objects;
 	std::unordered_map<int, std::unique_ptr<UiConnector>> m_uiConnectors;
 	float3 m_colorL;
 	float3 m_colorR;
@@ -51,7 +53,7 @@ private:
 
 public slots:
 	void createObjectMenu(const QPoint &pos, const QList<int> &ids);
-	void deleteObject(int index);
+	void deleteObject(int id);
 
 signals:
 	void addedTorus(const QString &name, int id, const UiTorus *uiTorus);

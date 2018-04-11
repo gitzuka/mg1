@@ -68,20 +68,36 @@ void Cursor3D::generateIndices()
 	m_indices.push_back(-1);
 }
 
-int Cursor3D::acquireObject(const QList<std::shared_ptr<DrawableObject>> &objects)
+//int Cursor3D::acquireObject(const QList<std::shared_ptr<DrawableObject>> &objects)
+//{
+//	if (m_obtainedObject != nullptr)
+//	{
+//		releaseObject();
+//		return -1;
+//	}
+//	int index = getClosestObject(objects);
+//	if (index != -1)
+//	{
+//		m_obtainedObject = objects.at(index);
+//		m_obtainedObject->setColor(m_obtainedColor.x(), m_obtainedColor.y(), m_obtainedColor.z());
+//	}
+//	return index;
+//}
+
+int Cursor3D::acquireObject(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects)
 {
 	if (m_obtainedObject != nullptr)
 	{
 		releaseObject();
 		return -1;
 	}
-	int index = getClosestObject(objects);
-	if (index != -1)
+	int id = getClosestObject(sceneObjects);
+	if (id != -1)
 	{
-		m_obtainedObject = objects.at(index);
+		m_obtainedObject = sceneObjects.find(id)->second.get()->getObject();
 		m_obtainedObject->setColor(m_obtainedColor.x(), m_obtainedColor.y(), m_obtainedColor.z());
 	}
-	return index;
+	return id;
 }
 
 void Cursor3D::releaseObject()
@@ -148,33 +164,33 @@ float Cursor3D::calculateDistance3D(const QVector4D &vec1, const QVector4D &vec2
 		vec1.z(), vec2.z());
 }
 
-int Cursor3D::getClosestObject(const QList<std::shared_ptr<DrawableObject>> &objects) const
-{
-	float minDistance = std::numeric_limits<float>::max();
-	float distance;
-	int index = -1;
-	for (int i = 0; i < objects.count(); ++i)
-	{
-		if (objects.at(i)->getId() == this->getId())
-		{
-			continue;
-		}
-		distance = calculateDistance3D(this->getPosition(), objects.at(i)->getPosition());
-		if (distance < TARGETING_DISTANCE && distance < minDistance)
-		{
-			minDistance = distance;
-			index = i;
-		}
-	}
-	return index;
-}
+//int Cursor3D::getClosestObject(const QList<std::shared_ptr<DrawableObject>> &objects) const
+//{
+//	float minDistance = std::numeric_limits<float>::max();
+//	float distance;
+//	int index = -1;
+//	for (int i = 0; i < objects.count(); ++i)
+//	{
+//		if (objects.at(i)->getId() == this->getId())
+//		{
+//			continue;
+//		}
+//		distance = calculateDistance3D(this->getPosition(), objects.at(i)->getPosition());
+//		if (distance < TARGETING_DISTANCE && distance < minDistance)
+//		{
+//			minDistance = distance;
+//			index = i;
+//		}
+//	}
+//	return index;
+//}
 
-int Cursor3D::getClosestObject(std::unordered_map<int, std::unique_ptr<UiConnector>> sceneObjects) const
+int Cursor3D::getClosestObject(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects) const
 {
 	float minDistance = std::numeric_limits<float>::max();
 	float distance;
-	int index = -1;
-	for (auto const& object : sceneObjects)
+	int id = -1;
+	for (auto const &object : sceneObjects)
 	{
 		if (object.second.get()->getObject()->getId() == this->getId())
 		{
@@ -184,8 +200,8 @@ int Cursor3D::getClosestObject(std::unordered_map<int, std::unique_ptr<UiConnect
 		if (distance < TARGETING_DISTANCE && distance < minDistance)
 		{
 			minDistance = distance;
-			index = object.second.get()->getObject()->getId();
+			id = object.second.get()->getObject()->getId();
 		}
 	}
-	return index;
+	return id;
 }
