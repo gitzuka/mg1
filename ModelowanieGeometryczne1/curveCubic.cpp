@@ -7,10 +7,8 @@ CurveCubic::CurveCubic(float width, float height, const QVector4D &p1, const QVe
 
 void CurveCubic::generateCurve(std::vector<QVector4D>& vec)
 {
-	int length = floor(genLength());
+	int length = floor(getLength());
 	float step = 1.0 / length;
-
-	vec.reserve(2 * length);
 	for (int i = 0; i <= length; ++i)
 	{
 		vec.push_back(deCasteljau(step * i));
@@ -25,7 +23,7 @@ QVector4D CurveCubic::deCasteljau(float t)
 		pow(t, 3) * m_p4);
 }
 
-float CurveCubic::genLength() const
+float CurveCubic::getLength() const
 {
 	float x = m_width * (m_p4.x() - m_p1.x());
 	float y = m_height * (m_p4.y() - m_p1.y());

@@ -2,14 +2,19 @@
 #include "utils.h"
 int DrawableObject::current_id = 0;
 
-DrawableObject::DrawableObject(ObjectType type, const QString &name)
-	: m_type(type), m_color(), m_name(name), m_id(current_id++)
+DrawableObject::DrawableObject(ObjectType type, const QString &name, bool enabled)
+	: m_type(type), m_enabled(enabled), m_color(), m_name(name), m_id(current_id++)
 {
 }
 
 void DrawableObject::setColor(float x, float y, float z)
 {
 	m_color = float3(x, y, z);
+}
+
+void DrawableObject::setColor(float3 color)
+{
+	m_color = color;
 }
 
 void DrawableObject::drawLine(const QVector4D &p1, const QVector4D &p2, float3 color) const

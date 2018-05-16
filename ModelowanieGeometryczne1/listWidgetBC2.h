@@ -1,39 +1,36 @@
 #pragma once
-#ifndef LISTWIDGETPARAMETERS_H
-#define LISTWIDGETPARAMETERS_H
+#ifndef LISTWIDGETBC2_H
+#define LISTWIDGETBC2_H
 #include <QListWidget>
 #include <memory>
 
-
 class Point3D;
-class ListWidgetParameters : public QListWidget
+class ListWidgetBC2 : public QListWidget
 {
 	Q_OBJECT
 
 public:
-	explicit ListWidgetParameters(QWidget *parent = 0);
-	~ListWidgetParameters();
+	explicit ListWidgetBC2(QWidget *parent = 0);
+	~ListWidgetBC2();
 
 private:
 	QList<QPair<QListWidgetItem*, int>> m_points;
-	int m_curveId; 
+	int m_curveId;
 
 	void mousePressEvent(QMouseEvent *event);
 	void createObjectMenu(const QPoint &pos, QListWidgetItem *item);
 	void removeItem(QListWidgetItem *item);
-	//void deleteItems();
 
 signals:
 	void rightClick(const QPoint &pos);
 	void removedItem(int pointId, int curveId);
 
 public slots:
-	//void comboBox_BezierCurveC0DisplayPoints(int);
 	void displayPoints(const QList<std::shared_ptr<Point3D>> &points);
-	void pointAddedToBC0(int id);
-	void pointRemovedFromBC0(int id);
+	void pointAddedToBC2(int id, const QString &name);
 	void updatePointName(int id, const QString &name);
 	void updateCurveId(int id);
+	void highlightItem(int objectId);
 };
 
-#endif // LISTWIDGETPARAMETERS_H
+#endif // LISTWIDGETBC2_H

@@ -10,7 +10,7 @@ public:
 
 protected:
 	virtual QVector4D deCasteljau(float t) = 0;
-	virtual float genLength() const = 0;
+	virtual float getLength() const = 0;
 };
 
 //public:

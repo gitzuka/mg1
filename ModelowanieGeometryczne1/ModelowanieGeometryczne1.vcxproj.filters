@@ -60,6 +60,21 @@
     <Filter Include="Source Files\UI\Ui Connectors">
       <UniqueIdentifier>{78af1642-7d22-41ee-970f-36705cf020e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\UI\ListWidgets">
+      <UniqueIdentifier>{b5dc3297-5e24-4511-961f-3700f6959e66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\ComboBoxes">
+      <UniqueIdentifier>{ed6b7611-94f2-4c86-9f7c-734edf90b955}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI\ComboBoxes">
+      <UniqueIdentifier>{8b324893-bfb3-4750-a928-cc23103e45bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI\ListWidgets">
+      <UniqueIdentifier>{fd161c36-2ffb-49a9-be3a-6e9f370c70d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{3f1ede82-d230-4740-be08-5903cb92411c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -75,9 +90,6 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="float3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scene.cpp">
@@ -158,18 +170,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_comboBoxTorus.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_listWidgetObjects.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_listWidgetObjects.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_listWidgetParameters.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_listWidgetParameters.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_myGLWidget.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -177,18 +177,6 @@
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="myGLWidget.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="listWidgetParameters.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="listWidgetObjects.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="comboBoxTorus.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="comboBoxBezierCurveC0.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="uiBezierCurveC0.cpp">
@@ -202,6 +190,60 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_uiCursor3d.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_listWidgetMain.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_listWidgetMain.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_listWidgetBC0.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_listWidgetBC0.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_listWidgetBC2.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_listWidgetBC2.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="listWidgetBC0.cpp">
+      <Filter>Source Files\UI\ListWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="listWidgetBC2.cpp">
+      <Filter>Source Files\UI\ListWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="listWidgetMain.cpp">
+      <Filter>Source Files\UI\ListWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="comboBoxBezierCurveC0.cpp">
+      <Filter>Source Files\UI\ComboBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="comboBoxTorus.cpp">
+      <Filter>Source Files\UI\ComboBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="uiBezierCurveC2.cpp">
+      <Filter>Source Files\UI\Ui Connectors</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_uiBezierCurveC2.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_uiBezierCurveC2.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="bezierCurveC2.cpp">
+      <Filter>Source Files\Objects\Curves</Filter>
+    </ClCompile>
+    <ClCompile Include="float3.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="3dmath.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="colors.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -232,22 +274,28 @@
     <CustomBuild Include="uiBezierCurveC0.h">
       <Filter>Header Files\UI\UI connectors</Filter>
     </CustomBuild>
-    <CustomBuild Include="comboBoxBezierCurveC0.h">
-      <Filter>Header Files\UI</Filter>
-    </CustomBuild>
-    <CustomBuild Include="comboBoxTorus.h">
-      <Filter>Header Files\UI</Filter>
-    </CustomBuild>
-    <CustomBuild Include="listWidgetObjects.h">
-      <Filter>Header Files\UI</Filter>
-    </CustomBuild>
-    <CustomBuild Include="listWidgetParameters.h">
-      <Filter>Header Files\UI</Filter>
-    </CustomBuild>
     <CustomBuild Include="myGLWidget.h">
       <Filter>Header Files\UI</Filter>
     </CustomBuild>
     <CustomBuild Include="uiCursor3d.h">
+      <Filter>Header Files\UI\UI connectors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="comboBoxBezierCurveC0.h">
+      <Filter>Header Files\UI\ComboBoxes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="comboBoxTorus.h">
+      <Filter>Header Files\UI\ComboBoxes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="listWidgetBC0.h">
+      <Filter>Header Files\UI\ListWidgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="listWidgetBC2.h">
+      <Filter>Header Files\UI\ListWidgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="listWidgetMain.h">
+      <Filter>Header Files\UI\ListWidgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="uiBezierCurveC2.h">
       <Filter>Header Files\UI\UI connectors</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -259,9 +307,6 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="float3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cursor3d.h">
@@ -292,6 +337,18 @@
       <Filter>Header Files\Objects\Curves</Filter>
     </ClInclude>
     <ClInclude Include="utilsUi.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="colors.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="bezierCurveC2.h">
+      <Filter>Header Files\Objects\Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="3dmath.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="float3.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>

@@ -19,7 +19,7 @@ public:
 	void setBigRadius(float);
 	void setMinorSegments(int);
 	void setMajorSegments(int);
-	//void connectToUI(ComboBoxTorus *comboBox, ListWidgetObjects *listWidget) const;
+	//void connectToUI(ComboBoxTorus *comboBox, ListWidgetMain *listWidget) const;
 
 private:
 	float m_smallRadius;

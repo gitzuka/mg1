@@ -9,13 +9,13 @@ UiTorus::UiTorus(std::shared_ptr<Torus> torus) : m_torus(torus)
 
 void UiTorus::connectToUi(const Ui_ModelowanieGeometryczne1Class *ui) const
 {
-	QObject::connect(ui->listWidget_ObjectsList, &ListWidgetObjects::changeItemTextEvent, this, &UiTorus::changeName);
+	QObject::connect(ui->listWidget_ObjectsList, &ListWidgetMain::changeItemTextEvent, this, &UiTorus::changeName);
 	QObject::connect(this, &UiTorus::nameChanged, ui->comboBox_Torus, &ComboBoxTorus::changeItemText);
 	QObject::connect(ui->comboBox_Torus, &ComboBoxTorus::smallrChanged, this, &UiTorus::smallRChanged);
 	QObject::connect(ui->comboBox_Torus, &ComboBoxTorus::bigRChanged, this, &UiTorus::bigRChanged);
 	QObject::connect(ui->comboBox_Torus, &ComboBoxTorus::minorSegmentsChanged, this, &UiTorus::minorSegmentsChanged);
 	QObject::connect(ui->comboBox_Torus, &ComboBoxTorus::majorSegmentsChanged, this, &UiTorus::majorSegmentsChanged);
-	//QObject::connect(listWidget, &ListWidgetObjects::changeItemTextEvent, this, &UiTorus::changeName);
+	//QObject::connect(listWidget, &ListWidgetMain::changeItemTextEvent, this, &UiTorus::changeName);
 	//QObject::connect(this, &UiTorus::nameChanged, comboBox, &ComboBoxTorus::changeItemText);
 	///*QObject::connect(comboBox, &ComboBoxTorus::changeSmallr, this, &UiTorus::smallRChanged);
 	//QObject::connect(comboBox, &ComboBoxTorus::changeBigR, this, &UiTorus::bigRChanged);

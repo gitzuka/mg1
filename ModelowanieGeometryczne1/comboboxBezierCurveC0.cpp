@@ -1,8 +1,7 @@
 #include "comboboxBezierCurveC0.h"
 
-ComboBoxBezierCurveC0::ComboBoxBezierCurveC0(QWidget* parent)
+ComboBoxBezierCurveC0::ComboBoxBezierCurveC0(QWidget* parent) : m_prevCurveId(-1)
 {
-	//connect(this, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, SLOT(selectCurve(int)));
 }
 
 ComboBoxBezierCurveC0::~ComboBoxBezierCurveC0()
@@ -36,7 +35,8 @@ void ComboBoxBezierCurveC0::selectCurve(int itemId)
 {
 	if (itemId >= 0)
 	{
-		emit itemSelected(m_bezierCurveC0Ids.at(itemId));
+		emit itemSelected(m_bezierCurveC0Ids.at(itemId), m_prevCurveId);
+		m_prevCurveId = m_bezierCurveC0Ids.at(itemId);
 	}
 }
 

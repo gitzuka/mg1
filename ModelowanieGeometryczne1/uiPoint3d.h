@@ -14,7 +14,7 @@ public:
 
 	void connectToUi(const Ui_ModelowanieGeometryczne1Class *ui) const override;
 	std::shared_ptr<DrawableObject> getObject() override;
-	//void connect(ListWidgetParameters *listWidget, ListWidgetObjects *listWidgetObj) const;
+	//void connect(ListWidgetBC0 *listWidget, ListWidgetMain *listWidgetObj) const;
 
 public slots:
 	void changeName(const QString &name, int id) override;

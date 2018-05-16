@@ -10,29 +10,27 @@ class UiBezierCurveC0 : public UiConnector
 {
 	Q_OBJECT
 public:
-	//explicit UiBezierCurveC0(BezierCurveC0 &BC0);
 	explicit UiBezierCurveC0(std::shared_ptr<BezierCurveC0> BC0);
 	~UiBezierCurveC0();
-	//void connectToUi(ComboBoxBezierCurveC0 *comboBox, ListWidgetObjects *listWidget, Scene *scene, ListWidgetParameters *listWidgetParams) const;
 	void connectToUi(const Ui_ModelowanieGeometryczne1Class *ui) const override;
 	std::shared_ptr<DrawableObject> getObject() override;
 	void connectToScene(const Scene *scene) const;
 	void deleteCurve();
+	QCheckBox* getCBPolyline() const;
 
 private:
-	//QList<int> m_pointsIds;
 	std::shared_ptr<BezierCurveC0> m_BC0;
 	QCheckBox *m_checkBoxPolyline;
 
 signals:
-	void pointAdded(int id);
-	//void pointRemoved(int id);
+	void pointAdded(int id, const QString &name);
 	void nameChanged(int id, const QString &name);
 	void requestedPoints(const QList<std::shared_ptr<Point3D>> &points);
 	void curveDeleted(int curveId);
 
 public slots:
-	void addPoint(int pointId, int curveId);
+	void addPoint(const std::shared_ptr<DrawableObject> &point, int curveId);
+	void assignPoints(const std::vector<std::shared_ptr<DrawableObject>> &points, int curveId);
 	void removePoint(int pointId, int curveId);
 	void changeName(const QString &name, int id) override;
 	void updateCurve() const;

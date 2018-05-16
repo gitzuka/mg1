@@ -9,7 +9,7 @@ class UiTorus : public UiConnector
 	Q_OBJECT
 public:
 	explicit UiTorus(std::shared_ptr<Torus> torus);
-	//void connectToUi(ComboBoxTorus *comboBox, ListWidgetObjects *listWidget) const;
+	//void connectToUi(ComboBoxTorus *comboBox, ListWidgetMain *listWidget) const;
 	void connectToUi(const Ui_ModelowanieGeometryczne1Class *ui) const override;
 	std::shared_ptr<DrawableObject> getObject() override;
 

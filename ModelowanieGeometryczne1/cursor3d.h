@@ -13,28 +13,32 @@ public:
 
 	std::shared_ptr<DrawableObject> m_obtainedObject;
 	QVector3D m_worldCoords;
+	enum class Mode { Idle, Translate, Add, Delete };
 
 	void draw(std::vector<QVector4D> &vec) const override;
 	void draw(std::vector<QVector4D> &vec, float3 color) const override;
 	void setModelMatrix(const QMatrix4x4 &matrix) override;
 	QVector4D getPosition() const override;
 	
-	//int acquireObject(const QList<std::shared_ptr<DrawableObject>> &objects);
 	int acquireObject(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects);
+	int markObject(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects);
 	void releaseObject();
 	void updatePosition(float posX, float posY, float posZ, const Camera &camera);
-	//int getClosestObject(const QList<std::shared_ptr<DrawableObject>> &objects) const;
+	void updatePosition(float x, float y, int width, int height, const Camera &camera);
+	void clearMarkedObjects();
+	void clearAllObjects();
 	int getClosestObject(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects) const;
+	Mode getMode() const;
+	
 
 private:
-	float3 m_obtainedColor;
+	float m_posX;
+	float m_posY;
+	float m_posZ;
 	std::vector<std::shared_ptr<DrawableObject>> m_obtainedObjects;
+	std::vector<std::shared_ptr<DrawableObject>> m_markedObjects;
+	Mode m_mode;
 
 	void createVertices() override;
 	void generateIndices() override;
-	float calculateDistance2D(float x1, float x2, float y1, float y2) const;
-	float calculateDistance2D(const std::shared_ptr<DrawableObject> &object1, const std::shared_ptr<DrawableObject> &object2) const;
-	float calculateDistance3D(float x1, float x2, float y1, float y2, float z1, float z2) const;
-	float calculateDistance3D(const std::shared_ptr<DrawableObject> &object1, const std::shared_ptr<DrawableObject> &object2) const;
-	float calculateDistance3D(const QVector4D &vec1, const QVector4D &vec2) const;
 };

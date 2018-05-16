@@ -117,7 +117,7 @@ QVector4D Torus::getPosition() const
 	return QVector4D(m_modelMatrix.row(0).w(), m_modelMatrix.row(1).w(), m_modelMatrix.row(2).w(), 1);
 }
 
-//void Torus::connectToUI(ComboBoxTorus *comboBox, ListWidgetObjects *listWidget) const
+//void Torus::connectToUI(ComboBoxTorus *comboBox, ListWidgetMain *listWidget) const
 //{
 //	m_uiTorus.connectToUi(comboBox, listWidget);
 //}

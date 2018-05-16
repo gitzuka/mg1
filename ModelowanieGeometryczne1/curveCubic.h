@@ -6,7 +6,6 @@ class CurveCubic : public Curve
 public:
 	CurveCubic(float width, float height, const QVector4D &p1, const QVector4D &p2, const QVector4D &p3, const QVector4D &p4);
 
-	//std::vector<QVector4D> generateCurve() override;
 	void generateCurve(std::vector<QVector4D> &vec) override;
 
 private:
@@ -14,5 +13,5 @@ private:
 	float m_width, m_height;
 
 	QVector4D deCasteljau(float t) override;
-	float genLength() const override;
+	float getLength() const override;
 };

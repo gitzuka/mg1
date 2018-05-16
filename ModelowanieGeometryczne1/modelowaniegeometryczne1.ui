@@ -107,7 +107,7 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="ListWidgetObjects" name="listWidget_ObjectsList">
+             <widget class="ListWidgetMain" name="listWidget_ObjectsList">
               <property name="selectionMode">
                <enum>QAbstractItemView::ExtendedSelection</enum>
               </property>
@@ -186,7 +186,7 @@
               <item>
                <widget class="QToolBox" name="toolBox">
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>2</number>
                 </property>
                 <property name="tabSpacing">
                  <number>0</number>
@@ -196,8 +196,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>293</width>
-                   <height>505</height>
+                   <width>98</width>
+                   <height>176</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -335,8 +335,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>293</width>
-                   <height>505</height>
+                   <width>98</width>
+                   <height>118</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -367,11 +367,51 @@
                      <widget class="ComboBoxBezierCurveC0" name="comboBox_BezierCurveC0"/>
                     </item>
                     <item>
-                     <widget class="ListWidgetParameters" name="listWidget_BC0Parameters">
+                     <widget class="ListWidgetBC0" name="listWidget_BC0Parameters">
                       <property name="selectionMode">
                        <enum>QAbstractItemView::SingleSelection</enum>
                       </property>
                      </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="page_BezierCurveC2">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>293</width>
+                   <height>481</height>
+                  </rect>
+                 </property>
+                 <attribute name="label">
+                  <string>Bezier Curve C2</string>
+                 </attribute>
+                 <layout class="QVBoxLayout" name="verticalLayout_12">
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <layout class="QVBoxLayout" name="verticalLayout_BC2" stretch="0,0">
+                    <property name="spacing">
+                     <number>5</number>
+                    </property>
+                    <item>
+                     <widget class="ComboBoxBezierCurveC0" name="comboBox_BC2"/>
+                    </item>
+                    <item>
+                     <widget class="ListWidgetBC2" name="listWidget_BC2"/>
                     </item>
                    </layout>
                   </item>
@@ -561,14 +601,14 @@
    <header location="global">myGLWidget.h</header>
   </customwidget>
   <customwidget>
-   <class>ListWidgetObjects</class>
+   <class>ListWidgetMain</class>
    <extends>QListWidget</extends>
-   <header location="global">listWidgetObjects.h</header>
+   <header location="global">listWidgetMain.h</header>
   </customwidget>
   <customwidget>
-   <class>ListWidgetParameters</class>
+   <class>ListWidgetBC0</class>
    <extends>QListWidget</extends>
-   <header location="global">listWidgetParameters.h</header>
+   <header location="global">listWidgetBC0.h</header>
   </customwidget>
   <customwidget>
    <class>ComboBoxBezierCurveC0</class>
@@ -579,6 +619,11 @@
    <class>ComboBoxTorus</class>
    <extends>QComboBox</extends>
    <header location="global">comboBoxTorus.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ListWidgetBC2</class>
+   <extends>QListWidget</extends>
+   <header location="global">listWidgetBC2.h</header>
   </customwidget>
  </customwidgets>
  <resources>

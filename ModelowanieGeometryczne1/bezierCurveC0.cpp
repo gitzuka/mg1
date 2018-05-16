@@ -1,17 +1,15 @@
 #include "bezierCurveC0.h"
 #include <QtGui>
-#include "camera.h"
 #include "curveQuadratic.h"
+#include "utils.h"
 
 BezierCurveC0::BezierCurveC0(ObjectType type, QString name) :
 	DrawableObject(type, name), m_showPolyline(false)
-	//, m_uiBCC0(*this)
 {
 }
 
 BezierCurveC0::~BezierCurveC0()
 {
-	//m_uiBCC0.deleteCurve();
 }
 
 void BezierCurveC0::draw(std::vector<QVector4D>& vec) const
@@ -45,9 +43,9 @@ void BezierCurveC0::setModelMatrix(const QMatrix4x4 &matrix)
 		//QVector3D a = vec * matrix;
 		//QVector3D vec2 = m_controlPoints.at(i)->getModelMatrix().column(3).toVector3D();
 		//m_controlPoints.at(i)->setModelMatrix(m_controlPoints.at(i)->getModelMatrix() * matrix);
-		m_controlPoints.at(i)->setCenter(matrix);
-		//m_controlPoints.at(i)->setModelMatrix(m_modelMatrix);
-		//m_controlPoints.at(i)->setCenter(m_controlPoints.at(i)->getCenter());
+		//m_controlPoints.at(i)->setPosition(matrix);
+		m_controlPoints.at(i)->setModelMatrix(matrix);
+		//m_controlPoints.at(i)->setPosition(m_controlPoints.at(i)->getCenter());
 	}
 	m_modelMatrix = matrix;
 }
@@ -68,17 +66,19 @@ void BezierCurveC0::createVertices()
 	int cubic = floor((points - 1) / 3);
 	for (int i = 0; i < cubic; ++i)
 	{
-		m_curveCubic = std::make_unique<CurveCubic>(CurveCubic(m_width, m_height, m_controlPoints.at(3 * i)->getPosition(),
+		std::unique_ptr<CurveCubic> curveCubic = std::make_unique<CurveCubic>(CurveCubic(m_width, m_height, m_controlPoints.at(3 * i)->getPosition(),
 			m_controlPoints.at(3 * i + 1)->getPosition(), m_controlPoints.at(3 * i + 2)->getPosition(), m_controlPoints.at(3 * i + 3)->getPosition()));
-		m_curveCubic->generateCurve(m_vertices);
+		curveCubic->generateCurve(m_vertices);
 	}
 	switch (points % 3)
 	{
 	case 0:
-		m_curveQuadratic = std::make_unique<CurveQuadratic>(CurveQuadratic(m_width, m_height, m_controlPoints.at(3 * cubic)->getPosition(),
+	{
+		std::unique_ptr<CurveQuadratic> curveQuadratic = std::make_unique<CurveQuadratic>(CurveQuadratic(m_width, m_height, m_controlPoints.at(3 * cubic)->getPosition(),
 			m_controlPoints.at(3 * cubic + 1)->getPosition(), m_controlPoints.at(3 * cubic + 2)->getPosition()));
-		m_curveQuadratic->generateCurve(m_vertices);
+		curveQuadratic->generateCurve(m_vertices);
 		break;
+	}
 	case 1: //only cubic curves
 		break;
 	case 2:
@@ -86,8 +86,6 @@ void BezierCurveC0::createVertices()
 		m_vertices.push_back(m_controlPoints.at(3 * cubic + 1)->getPosition());
 		break;
 	}
-	m_curveCubic = nullptr;
-	m_curveQuadratic = nullptr;
 	if (m_showPolyline)
 	{
 		for (int i = 0; i < m_controlPoints.count(); ++i)
@@ -103,7 +101,6 @@ void BezierCurveC0::generateIndices()
 	m_indices.reserve(m_vertices.size() + 1);
 	int verticesSize = m_vertices.size();
 	m_showPolyline ? verticesSize -= m_controlPoints.size() : verticesSize;
-	//for (int i = 0; i < m_vertices.size(); ++i)
 	for (int i = 0; i < verticesSize; ++i)
 	{
 		m_indices.push_back(i);
@@ -119,19 +116,39 @@ void BezierCurveC0::generateIndices()
 }
 
 //TODO: ui
-void BezierCurveC0::addControlPoint(const std::shared_ptr<DrawableObject> &point)
+bool BezierCurveC0::addControlPoint(const std::shared_ptr<DrawableObject> &point)
 {
+	if (point->m_type != ObjectType::point3D)
+		return false;
+	for (int i = 0; i < m_controlPoints.count(); ++i)
+	{
+		if (m_controlPoints.at(i)->getId() == point->getId())
+			return false;
+	}
 	m_controlPoints.push_back(std::static_pointer_cast<Point3D>(point));
-	//m_uiBCC0.getPointsIds(this->getId());
 	createVertices();
 	generateIndices();
+	return true;
 }
 
-void BezierCurveC0::addControlPoint(int pointId)
+bool BezierCurveC0::assignControlPoints(const std::vector<std::shared_ptr<DrawableObject>>& points)
 {
+	m_controlPoints.clear();
+	m_controlPoints.reserve(points.size());
+	for (int i = 0; i < points.size(); ++i)
+	{
+		if (points.at(i)->m_type != ObjectType::point3D)
+		{
+			m_controlPoints.clear();
+			return false;
+		}
+		m_controlPoints.push_back(std::static_pointer_cast<Point3D>(points.at(i)));
+	}
+	createVertices();
+	generateIndices();
+	return true;
 }
 
-//TODO: ui
 void BezierCurveC0::removeControlPoint(const std::shared_ptr<DrawableObject> &point)
 {
 	for (int i = 0; i < m_controlPoints.count(); ++i)
@@ -139,7 +156,6 @@ void BezierCurveC0::removeControlPoint(const std::shared_ptr<DrawableObject> &po
 		if (point->getId() == m_controlPoints.at(i)->getId())
 		{
 			m_controlPoints.removeAt(i);
-			//m_uiBCC0.getPointsIds(this->getId());
 		}
 	}
 	createVertices();
@@ -173,8 +189,3 @@ const QList<std::shared_ptr<Point3D>>& BezierCurveC0::getControlPoints() const
 {
 	return m_controlPoints;
 }
-
-//void BezierCurveC0::connectToUI(ComboBoxBezierCurveC0 *comboBox, ListWidgetObjects *listWidget, Scene *scene, ListWidgetParameters *listWidgetParams) const
-//{
-//	m_uiBCC0.connectToUi(comboBox, listWidget, scene, listWidgetParams);
-//}
