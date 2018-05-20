@@ -28,6 +28,8 @@ private:
 
 signals:
 	void cursor3dItemAcquired(int);
+	void escKeyPressed();
+	void mouseClicked();
 
 private slots:
 	void pushButton_AddObjectClicked();
@@ -42,7 +44,10 @@ private slots:
 	void updateMyGLWidget();
 	void showBC0CheckBoxes(int currId, int prevId);
 	void showBC2CheckBoxes(int currId, int prevId);
-
+	void radioBtnIdleToggled(bool checked);
+	void radioBtnTranslateToggled(bool checked);
+	void radioBtnAddToggled(bool checked);
+	void radioBtnDeleteToggled(bool checked);
 	void doubleSpinbox_eValueChanged(double e);
 	void stereo_button_toggled(bool checked);
 };

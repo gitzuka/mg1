@@ -91,6 +91,11 @@ public:
     QRadioButton *radioButton_stereo;
     QLabel *label_stereoscopy_slider;
     QDoubleSpinBox *doubleSpinBox_e;
+    QLabel *label_5;
+    QRadioButton *radioButton_Idle;
+    QRadioButton *radioButton_Translate;
+    QRadioButton *radioButton_Add;
+    QRadioButton *radioButton_Delete;
     QSpacerItem *verticalSpacer_2;
     QVBoxLayout *verticalLayout_9;
     QCheckBox *checkBox_pointer;
@@ -99,6 +104,7 @@ public:
     QMenuBar *menuBar;
     QStatusBar *statusBar;
     QToolBar *mainToolBar;
+    QButtonGroup *buttonGroup;
 
     void setupUi(QMainWindow *ModelowanieGeometryczne1Class)
     {
@@ -353,6 +359,38 @@ public:
 
         verticalLayout_5->addWidget(doubleSpinBox_e);
 
+        label_5 = new QLabel(tab_Other);
+        label_5->setObjectName(QStringLiteral("label_5"));
+
+        verticalLayout_5->addWidget(label_5);
+
+        radioButton_Idle = new QRadioButton(tab_Other);
+        buttonGroup = new QButtonGroup(ModelowanieGeometryczne1Class);
+        buttonGroup->setObjectName(QStringLiteral("buttonGroup"));
+        buttonGroup->addButton(radioButton_Idle);
+        radioButton_Idle->setObjectName(QStringLiteral("radioButton_Idle"));
+
+        verticalLayout_5->addWidget(radioButton_Idle);
+
+        radioButton_Translate = new QRadioButton(tab_Other);
+        buttonGroup->addButton(radioButton_Translate);
+        radioButton_Translate->setObjectName(QStringLiteral("radioButton_Translate"));
+        radioButton_Translate->setChecked(true);
+
+        verticalLayout_5->addWidget(radioButton_Translate);
+
+        radioButton_Add = new QRadioButton(tab_Other);
+        buttonGroup->addButton(radioButton_Add);
+        radioButton_Add->setObjectName(QStringLiteral("radioButton_Add"));
+
+        verticalLayout_5->addWidget(radioButton_Add);
+
+        radioButton_Delete = new QRadioButton(tab_Other);
+        buttonGroup->addButton(radioButton_Delete);
+        radioButton_Delete->setObjectName(QStringLiteral("radioButton_Delete"));
+
+        verticalLayout_5->addWidget(radioButton_Delete);
+
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_5->addItem(verticalSpacer_2);
@@ -441,6 +479,11 @@ public:
         myTabWidget->setTabText(myTabWidget->indexOf(tab_Parameters), QApplication::translate("ModelowanieGeometryczne1Class", "Parameters", Q_NULLPTR));
         radioButton_stereo->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Stereoscopy on/off", Q_NULLPTR));
         label_stereoscopy_slider->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Stereoscopy e parameter:", Q_NULLPTR));
+        label_5->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Cursor mode:", Q_NULLPTR));
+        radioButton_Idle->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Idle", Q_NULLPTR));
+        radioButton_Translate->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Translate", Q_NULLPTR));
+        radioButton_Add->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Add", Q_NULLPTR));
+        radioButton_Delete->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Delete", Q_NULLPTR));
         myTabWidget->setTabText(myTabWidget->indexOf(tab_Other), QApplication::translate("ModelowanieGeometryczne1Class", "Other features", Q_NULLPTR));
         checkBox_pointer->setText(QApplication::translate("ModelowanieGeometryczne1Class", "3d pointer", Q_NULLPTR));
         label_screenCoords->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Screen coords:", Q_NULLPTR));

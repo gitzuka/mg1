@@ -46,8 +46,16 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_ObjectsList, SLOT(highlightItem(int)));
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BC0Parameters, SLOT(highlightItem(int)));
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BC2, SLOT(highlightItem(int)));
+	connect(this, SIGNAL(mouseClicked()), &m_scene, SLOT(performCursorAction()));
+	connect(this, SIGNAL(escKeyPressed()), &m_scene, SLOT(resetCursor()));
 
 	connect(ui.radioButton_stereo, SIGNAL(toggled(bool)), this, SLOT(stereo_button_toggled(bool)));
+	connect(ui.radioButton_Idle, SIGNAL(toggled(bool)), this, SLOT(radioBtnIdleToggled(bool)));
+	connect(ui.radioButton_Translate, SIGNAL(toggled(bool)), this, SLOT(radioBtnTranslateToggled(bool)));
+	connect(ui.radioButton_Add, SIGNAL(toggled(bool)), this, SLOT(radioBtnAddToggled(bool)));
+	connect(ui.radioButton_Delete, SIGNAL(toggled(bool)), this, SLOT(radioBtnDeleteToggled(bool)));
+
+
 	connect(ui.checkBox_pointer, SIGNAL(stateChanged(int)), ui.myGLWidget, SLOT(checkBox_pointerStateChanged(int)));
 	connect(ui.pushButton_AddObject, SIGNAL(clicked()), this, SLOT(pushButton_AddObjectClicked()));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.listWidget_ObjectsList, SLOT(removeItem()));
@@ -78,6 +86,9 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(&m_scene, SIGNAL(addedPoint3D(const QString&, int, const UiPoint3D*)), ui.listWidget_ObjectsList, SLOT(addPoint3D(const QString&, int)));
 	connect(&m_scene, SIGNAL(addedPoint3D(const QString&, int, const UiPoint3D*)), this, SLOT(connectPoint3D(const QString&, int, const UiPoint3D*)));
 	connect(&m_scene, SIGNAL(editModeBC0(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
+	connect(&m_scene, SIGNAL(editModeBC2(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
+	connect(&m_scene, SIGNAL(objectDeactivated(int)), ui.listWidget_ObjectsList, SLOT(removeHighlightActive()));
+	connect(&m_scene, SIGNAL(objectActivated(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
 }
 
 void ModelowanieGeometryczne1::label_3dCoordsChangeText(float x, float y, float z)
@@ -135,7 +146,27 @@ void ModelowanieGeometryczne1::myGLWidgetKeyPressed(QKeyEvent *event)
 	{
 	case Qt::Key_Escape:
 	{
-		//dz = TRANSLATION_STEP;
+		emit escKeyPressed();
+		break;
+	}
+	case Qt::Key_1:
+	{
+		ui.radioButton_Idle->setChecked(true);
+		break;
+	}
+	case Qt::Key_2:
+	{
+		ui.radioButton_Translate->setChecked(true);
+		break;
+	}
+	case Qt::Key_3:
+	{
+		ui.radioButton_Add->setChecked(true);
+		break;
+	}
+	case Qt::Key_4:
+	{
+		ui.radioButton_Delete->setChecked(true);
 		break;
 	}
 	}
@@ -171,16 +202,15 @@ void ModelowanieGeometryczne1::myGLWidgetMousePressed(QMouseEvent *event)
 	m_scene.m_camera.m_mousePos = event->pos();
 	if (event->button() == Qt::LeftButton && m_scene.m_isCursor3d)
 	{
-		/*if (QGuiApplication::keyboardModifiers() & Qt::AltModifier)
-		{
-
-		}*/
-		int id = m_scene.updateCursor();
+		emit mouseClicked();
+		//emit mousePressed();
+		/*int id = m_scene.updateCursor();
 		if (id != -1)
 		{
 			emit cursor3dItemAcquired(id);
-		}
+		}*/
 	}
+	ui.myGLWidget->updateGL();
 }
 
 void ModelowanieGeometryczne1::updateMyGLWidget()
@@ -222,6 +252,30 @@ void ModelowanieGeometryczne1::showBC2CheckBoxes(int currId, int prevId)
 		ui.verticalLayout_BC2->addWidget(uibc2->getCBPolyline());
 		ui.verticalLayout_BC2->addWidget(uibc2->getCBDeBoor());
 	}
+}
+
+void ModelowanieGeometryczne1::radioBtnIdleToggled(bool checked)
+{
+	if (checked)
+		m_scene.m_cursor->changeMode(Cursor3D::Mode::Idle);
+}
+
+void ModelowanieGeometryczne1::radioBtnTranslateToggled(bool checked)
+{
+	if (checked)
+		m_scene.m_cursor->changeMode(Cursor3D::Mode::Translate);
+}
+
+void ModelowanieGeometryczne1::radioBtnAddToggled(bool checked)
+{
+	if (checked)
+		m_scene.m_cursor->changeMode(Cursor3D::Mode::Add);
+}
+
+void ModelowanieGeometryczne1::radioBtnDeleteToggled(bool checked)
+{
+	if (checked)
+		m_scene.m_cursor->changeMode(Cursor3D::Mode::Delete);
 }
 
 void ModelowanieGeometryczne1::doubleSpinbox_eValueChanged(double e)

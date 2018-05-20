@@ -103,11 +103,6 @@ void ListWidgetMain::highlightItem(int objectId)
 
 void ListWidgetMain::highlightActiveItem(int objectId)
 {
-	if (m_activeItem != nullptr)
-	{
-		m_activeItem->setBackground(Qt::white);
-		m_activeItem = nullptr;
-	}
 	for (int i = 0; i < m_objectsList.count(); ++i)
 	{
 		if (m_objectsList.at(i).second == objectId)
@@ -119,6 +114,15 @@ void ListWidgetMain::highlightActiveItem(int objectId)
 	}
 }
 
+void ListWidgetMain::removeHighlightActive()
+{
+	if (m_activeItem != nullptr)
+	{
+		m_activeItem->setBackground(Qt::white);
+		m_activeItem = nullptr;
+	}
+}
+
 void ListWidgetMain::itemClick(QListWidgetItem *item)
 {
 	if (!(QGuiApplication::keyboardModifiers() & Qt::ControlModifier))
@@ -127,7 +131,7 @@ void ListWidgetMain::itemClick(QListWidgetItem *item)
 	}
 	int id = m_objectsList.at(this->currentRow()).second;
 	updatePointsList(id);
-
+	emit itemSelected(m_selectedObjectsIds);
 }
 
 void ListWidgetMain::itemTextChanged(QListWidgetItem* item)

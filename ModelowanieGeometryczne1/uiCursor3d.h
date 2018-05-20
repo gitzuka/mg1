@@ -2,6 +2,7 @@
 #include "uiConnector.h"
 class Cursor3D;
 
+///this is a "dummy class", all slots/signals for cursor3d should be handled in scene
 class UiCursor3D : public UiConnector
 {
 	Q_OBJECT

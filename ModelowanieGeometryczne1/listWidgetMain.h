@@ -28,6 +28,7 @@ signals:
 	void rightClick(const QPoint &pos, const QList<int> &selectedObjectIds);
 	void changeItemTextEvent(const QString &text, int objectId);
 	void removeItemEvent(int objectId);
+	void itemSelected(QList<int> objectIds);
 
 public slots:
 	void addBezierCurveC0(const QString &text, int objectId);
@@ -37,6 +38,7 @@ public slots:
 	void removeItem();
 	void highlightItem(int objectId);
 	void highlightActiveItem(int objectId);
+	void removeHighlightActive();
 
 private slots:
 	void itemTextChanged(QListWidgetItem *item);

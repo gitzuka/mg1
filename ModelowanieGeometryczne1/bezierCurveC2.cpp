@@ -163,7 +163,8 @@ void BezierCurveC2::generateControlPoints()
 	}
 	m_controlPoints.reserve((deBoorCount - 4) * 2 + deBoorCount);
 	m_controlPoints.push_back(std::make_shared<Point3D>(Point3D(ObjectType::point3D, "Point3D", skewPoints.at(0), m_bSplineBasis)));
-	for (int i = 0; i < (m_deBoorPoints.count() / 4 + m_deBoorPoints.count() % 4); ++i)
+	//for (int i = 0; i < (m_deBoorPoints.count() / 4 + m_deBoorPoints.count() % 4); ++i)
+	for (int i = 0; i < ((deBoorCount - 4) * 2 + deBoorCount - 1) / 3; ++i)
 	{
 		m_controlPoints.push_back(std::make_shared<Point3D>(Point3D(ObjectType::point3D, "Point3D", betweenDeBoorPoints.at(2 * i + 2), m_bSplineBasis)));
 		m_controlPoints.push_back(std::make_shared<Point3D>(Point3D(ObjectType::point3D, "Point3D", betweenDeBoorPoints.at(2 * i + 3), m_bSplineBasis)));

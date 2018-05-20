@@ -24,13 +24,11 @@ public:
 	void draw() const;
 	void toggleCursor3D(bool isActive);
 	void updateCursorPosition(float x, float y, int width, int heigth);
-	int updateCursor();
 	int createDrawableObject(const QString &name);
 	UiConnector* getUiConntector(int id) const;
 
 private:
 	std::unordered_map<int, std::unique_ptr<UiConnector>> m_uiConnectors;
-	std::shared_ptr<DrawableObject> m_activeObject;
 
 	void addUiConnector(std::unique_ptr<UiConnector> uiConnector);
 	void createCurveC0fromPoints(const QList<int> &objectIds);
@@ -48,6 +46,10 @@ public slots:
 	void updateControlPoints(std::vector<std::shared_ptr<Point3D>> controlPoints, const std::vector<int> &prevIds);
 	void removeUiConnectors(const std::vector<int> &ids);
 
+private slots:
+	void performCursorAction();
+	void resetCursor();
+
 signals:
 	void addedTorus(const QString &name, int id, const UiTorus *uiTorus);
 	void addedBezierCurveC0(const QString &name, int id, const UiBezierCurveC0 *uiBezierC0);
@@ -56,4 +58,6 @@ signals:
 	void update() const;
 	void editModeBC0(int id);
 	void editModeBC2(int id);
+	void objectActivated(int id);
+	void objectDeactivated(int id);
 };

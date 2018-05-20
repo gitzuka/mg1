@@ -37,10 +37,10 @@ signals:
 public slots:
 	void assignPoints(const std::vector<std::shared_ptr<DrawableObject>> &points, int curveId);
 	void addPoint(const std::shared_ptr<DrawableObject> &point, int curveId);
+	void removePoint(int pointId, int curveId);
 
 private slots:
 	void changePolylineState(int state);
-	void removePoint(int pointId, int curveId);
 	void changeName(const QString &name, int id) override;
 	void updateCurve() const;
 	void updateScreenSize(float width, float height);

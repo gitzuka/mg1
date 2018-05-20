@@ -4,6 +4,8 @@
 #include "colors.h"
 #include "3dmath.h"
 #include "point3d.h"
+#include "uiBezierCurveC0.h"
+#include "uiBezierCurveC2.h"
 
 Cursor3D::Cursor3D(ObjectType type) : DrawableObject(type, "Cursor3D"),
 m_worldCoords(QVector3D(0, 0, 0)), m_posX(0), m_posY(0), m_posZ(0), m_mode(Mode::Translate)
@@ -69,6 +71,71 @@ void Cursor3D::generateIndices()
 	m_indices.push_back(0);
 	m_indices.push_back(3);
 	m_indices.push_back(-1);
+}
+
+void Cursor3D::addPoint(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects)
+{
+	if (m_activeObject != nullptr)
+	{
+		switch (m_activeObject->m_type)
+		{
+		case ObjectType::bezierCurveC0:
+		{
+			int id = getClosestPoint(sceneObjects);
+			static_cast<UiBezierCurveC0*>(sceneObjects.find(m_activeObject->getId())->second.get())->addPoint(sceneObjects.find(id)->second.get()->getObject(), m_activeObject->getId());
+			break;
+		}
+		case ObjectType::bezierCurveC2:
+		{
+			int id = getClosestPoint(sceneObjects);
+			static_cast<UiBezierCurveC2*>(sceneObjects.find(m_activeObject->getId())->second.get())->addPoint(sceneObjects.find(id)->second.get()->getObject(), m_activeObject->getId());
+			break;
+		}
+		}
+	}
+}
+
+void Cursor3D::deletePoint(std::unordered_map<int, std::unique_ptr<UiConnector>>& sceneObjects)
+{
+	if (m_activeObject != nullptr)
+	{
+		switch (m_activeObject->m_type)
+		{
+		case ObjectType::bezierCurveC0:
+		{
+			int id = getClosestPoint(sceneObjects);
+			static_cast<UiBezierCurveC0*>(sceneObjects.find(m_activeObject->getId())->second.get())->removePoint(id, m_activeObject->getId());
+			break;
+		}
+		case ObjectType::bezierCurveC2:
+		{
+			int id = getClosestPoint(sceneObjects);
+			static_cast<UiBezierCurveC2*>(sceneObjects.find(m_activeObject->getId())->second.get())->removePoint(id, m_activeObject->getId());
+			break;
+		}
+		}
+	}
+}
+
+int Cursor3D::getClosestPoint(std::unordered_map<int, std::unique_ptr<UiConnector>>& sceneObjects) const
+{
+	float minDistance = std::numeric_limits<float>::max();
+	float distance;
+	int id = -1;
+	for (auto const &object : sceneObjects)
+	{
+		if (!object.second.get()->getObject()->m_enabled || object.second.get()->getObject()->m_type != ObjectType::point3D)
+		{
+			continue;
+		}
+		distance = math3d::calculateDistance3D(this->getPosition(), object.second.get()->getObject()->getPosition());
+		if (distance < TARGETING_DISTANCE && distance < minDistance)
+		{
+			minDistance = distance;
+			id = object.second.get()->getObject()->getId();
+		}
+	}
+	return id;
 }
 
 int Cursor3D::acquireObject(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects)
@@ -188,6 +255,8 @@ void Cursor3D::clearAllObjects()
 		(*it)->setColor(Colors::DEFAULT_OBJECT_COLOR);
 	}
 	m_obtainedObjects.clear();
+	m_obtainedObject->setColor(Colors::DEFAULT_OBJECT_COLOR);
+	m_obtainedObject = nullptr;
 }
 
 int Cursor3D::getClosestObject(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects) const
@@ -197,12 +266,8 @@ int Cursor3D::getClosestObject(std::unordered_map<int, std::unique_ptr<UiConnect
 	int id = -1;
 	for (auto const &object : sceneObjects)
 	{
-		if (!object.second.get()->getObject()->m_enabled)
-		{
-			continue;
-		}
-		if (object.second.get()->getObject()->getId() == this->getId() || object.second.get()->getObject()->m_type == ObjectType::bezierCurveC0
-			|| object.second.get()->getObject()->m_type == ObjectType::bezierCurveC2)
+		if (!object.second.get()->getObject()->m_enabled || object.second.get()->getObject()->m_type == ObjectType::bezierCurveC0
+			|| object.second.get()->getObject()->m_type == ObjectType::bezierCurveC2 || object.second.get()->getObject()->getId() == this->getId())
 		{
 			continue;
 		}
@@ -219,4 +284,51 @@ int Cursor3D::getClosestObject(std::unordered_map<int, std::unique_ptr<UiConnect
 Cursor3D::Mode Cursor3D::getMode() const
 {
 	return m_mode;
+}
+
+void Cursor3D::changeMode(Mode mode)
+{
+	m_mode = mode;
+}
+
+void Cursor3D::performAction(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects)
+{
+	switch (m_mode)
+	{
+	case Mode::Idle:
+	{
+		markObject(sceneObjects);
+		break;
+	}
+	case Mode::Translate:
+	{
+		acquireObject(sceneObjects);
+		break;
+	}
+	case Mode::Add:
+	{
+		addPoint(sceneObjects);
+		break;
+	}
+	case Mode::Delete:
+	{
+		deletePoint(sceneObjects);
+		break;
+	}
+	}
+}
+
+void Cursor3D::setActiveObject(std::shared_ptr<DrawableObject> sceneObject)
+{
+	m_activeObject = sceneObject;
+}
+
+void Cursor3D::removeActiveOjbect()
+{
+	m_activeObject = nullptr;
+}
+
+const std::shared_ptr<DrawableObject>& Cursor3D::getActiveObject() const
+{
+	return m_activeObject;
 }
