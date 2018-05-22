@@ -2,8 +2,7 @@
 #include <vector>
 #include "drawableObject.h"
 #include <QVector4D>
-#include "uiTorus.h"
-#include "comboboxTorus.h"
+//#include "uiTorus.h"
 
 class Torus : public DrawableObject
 {
@@ -20,14 +19,14 @@ public:
 	void setBigRadius(float);
 	void setMinorSegments(int);
 	void setMajorSegments(int);
-	void connectToUI(ComboBoxTorus *comboBox, ListWidgetObjects *listWidget) const;
+	//void connectToUI(ComboBoxTorus *comboBox, ListWidgetMain *listWidget) const;
 
 private:
 	float m_smallRadius;
 	float m_bigRadius;
 	int m_minorSegments;
 	int m_majorSegments;
-	UiTorus m_uiTorus;
+	//UiTorus m_uiTorus;
 
 	void createVertices() override;
 	void generateIndices() override;

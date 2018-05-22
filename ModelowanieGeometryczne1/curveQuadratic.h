@@ -16,6 +16,6 @@ private:
 	float m_width, m_height;
 
 	QVector4D deCasteljau(float t) override;
-	float genLength() const override;
+	float getLength() const override;
 };
 

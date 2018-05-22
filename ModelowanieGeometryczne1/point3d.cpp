@@ -1,16 +1,28 @@
 #include "point3d.h"
+#include "ui_modelowaniegeometryczne1.h"
+#include "bezierCurveC2.h"
 
-Point3D::Point3D(ObjectType type, QString name, const QMatrix4x4 &projMatrix) :
-	DrawableObject(type, name), m_projMatrix(projMatrix), m_uiPoint3D(*this)
+Point3D::Point3D(ObjectType type, QString name, bool enabled) :
+	DrawableObject(type, name, enabled)
 {
 	Point3D::createVertices();
 	Point3D::generateIndices();
+	//m_color = float3(1, 0, 0);
+
+}
+
+Point3D::Point3D(ObjectType type, QString name, QVector4D position, bool enabled) :
+	DrawableObject(type, name, enabled)
+{
+	m_modelMatrix.setColumn(3, position);
+	Point3D::createVertices();
+	Point3D::generateIndices();
+	m_color = float3(1, 0, 0);
 }
 
 void Point3D::draw(std::vector<QVector4D>& vec) const
 {
 	draw(vec, m_color);
-	
 }
 
 void Point3D::draw(std::vector<QVector4D>& vec, float3 color) const
@@ -23,37 +35,72 @@ void Point3D::draw(std::vector<QVector4D>& vec, float3 color) const
 		{
 			continue;
 		}
-		//drawLine(m_projMatrix.inverted() * vec.at(*it), m_projMatrix.inverted() * vec.at(*(it + 1)), color);
 		drawLine(vec.at(*it), vec.at(*(it + 1)), color);
 	}
 }
 
+//template<class T, class U>
+//std::weak_ptr<T>
+//static_pointer_cast(std::weak_ptr<U> const& r)
+//{
+//	return std::static_pointer_cast<T>(std::shared_ptr<U>(r));
+//}
+
 void Point3D::setModelMatrix(const QMatrix4x4 &matrix)
 {
-	//m_modelMatrix = matrix;
-	m_center = matrix.column(3).toVector3D();
+	m_modelMatrix = matrix;
+	/*for (std::unordered_map<int, std::weak_ptr<DrawableObject>>::iterator it = m_ancestors.begin(); it != m_ancestors.end(); ++it)
+	{
+		if (it->second._Get()->m_type == DrawableObject::ObjectType::bezierCurveC2)
+		{
+			static_pointer_cast<BezierCurveC2>(it->second)._Get()->pointMoved(it->second._Get()->getId());
+		}
+	}*/
+
+	/*QVector4D prev = m_center;
+	m_center = QVector4D(matrix.column(3).toVector3D(), 1);
+	for (std::vector<QVector4D>::iterator it = m_vertices.begin(); it != m_vertices.end(); ++it)
+	{
+		*it = *it + m_center - prev;
+	}
+	for (std::unordered_map<int, std::weak_ptr<DrawableObject>>::iterator it = m_ancestors.begin(); it != m_ancestors.end(); ++it)
+	{
+		if (it->second._Get()->m_type == DrawableObject::ObjectType::bezierCurveC2)
+		{
+			static_pointer_cast<BezierCurveC2>(it->second)._Get()->pointMoved(it->second._Get()->getId());
+		}
+	}*/
 }
 
-QMatrix4x4 Point3D::getModelMatrix()
+const QMatrix4x4& Point3D::getModelMatrix() const
 {
-	QMatrix4x4 mat = m_modelMatrix;
-	mat.setColumn(3, m_modelMatrix.column(3) + m_center);
-	return mat;
+	return m_modelMatrix;
 }
 
 QVector4D Point3D::getPosition() const
 {
-	return QVector4D(m_center);
+	return m_modelMatrix.column(3);
 }
 
-void Point3D::setCenter(const QVector3D &point)
+void Point3D::setPosition(const QVector4D& point)
 {
-	m_center = point;
+	m_modelMatrix.setColumn(3, point);
 }
 
-QVector3D Point3D::getCenter() const
+void Point3D::setAncestor(std::weak_ptr<DrawableObject> ancestor)
 {
-	return m_center;
+	m_ancestors.emplace(ancestor._Get()->getId(), ancestor);
+}
+
+void Point3D::notifyAncestorsPositionChanged()
+{
+	for (std::unordered_map<int, std::weak_ptr<DrawableObject>>::iterator it = m_ancestors.begin(); it !=m_ancestors.end(); ++it)
+	{
+		if (it->second._Get()->m_type == DrawableObject::ObjectType::bezierCurveC2)
+		{
+			std::static_pointer_cast<BezierCurveC2>(it->second.lock())->pointMoved(this->getId());
+		}
+	}
 }
 
 void Point3D::createVertices()

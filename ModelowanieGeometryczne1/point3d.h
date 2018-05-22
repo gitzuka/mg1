@@ -1,29 +1,34 @@
 #pragma once
 #include "drawableObject.h"
-#include "uiPoint3d.h"
+#include <unordered_map>
+#include <memory>
 
 class Point3D : public DrawableObject
 {
 public:
-	Point3D(ObjectType type, QString name, const QMatrix4x4 &projMatrix);
+	Point3D(ObjectType type, QString name, bool enabled = true);
+	Point3D(ObjectType type, QString name, QVector4D position, bool enabled = true);
 
 	void draw(std::vector<QVector4D> &vec) const override;
 	void draw(std::vector<QVector4D> &vec, float3 color) const override;
 	void setModelMatrix(const QMatrix4x4 &matrix) override;
-	QMatrix4x4 getModelMatrix() override;
+	const QMatrix4x4& getModelMatrix() const override;
 	QVector4D getPosition() const override;
 
-	void setCenter(const QVector3D &point);
-	QVector3D getCenter() const;
-	//void drawStereo(std::vector<QVector4D> &vec) const override;
-	//void drawStereo2(std::vector<QVector4D> &vecL, std::vector<QVector4D> &vecR) const override;
+	//void setPosition(const QVector3D &point);
+	//void setPosition(const QMatrix4x4 &matrix);
+	void setPosition(const QVector4D &point);
+	void setAncestor(std::weak_ptr<DrawableObject> ancestor);
+	void notifyAncestorsPositionChanged();
+	//const QVector4D& getCenter() const;
+	//const QList<int>& getAncestors() const;
 	
 	//QVector4D getCenter() const;
 
 private:
-	QVector3D m_center;
-	const QMatrix4x4 &m_projMatrix;
-	UiPoint3D m_uiPoint3D;
+	//QVector4D m_center;
+	//QList<int> m_ancestors;
+	std::unordered_map<int, std::weak_ptr<DrawableObject>> m_ancestors;
 
 	void createVertices() override;
 	void generateIndices() override;

@@ -1,14 +1,18 @@
 #include "modelowaniegeometryczne1.h"
 #include "torus.h"
-#include "point3d.h"
 #include "bezierCurveC0.h"
+#include "uiTorus.h"
+#include "uiPoint3d.h"
+#include "uiBezierCurveC0.h"
+#include "uiBezierCurveC2.h"
+#include <QString>
+#include <QObject>
 
 ModelowanieGeometryczne1::ModelowanieGeometryczne1(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
 	m_scene.m_cursor = std::make_shared<Cursor3D>(Cursor3D::ObjectType::cursor3D);
-
 	connectSignals();
 	model = new QStringListModel(this);
 	model->setStringList(ui_drawableObjects);
@@ -37,27 +41,54 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.myGLWidget, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(myGLWidgetKeyPressed(QKeyEvent *)));
 	connect(ui.myGLWidget, SIGNAL(mouseMoved(QMouseEvent *)), this, SLOT(myGLWidgetMouseMoved(QMouseEvent *)));
 	connect(ui.myGLWidget, SIGNAL(mousePressed(QMouseEvent *)), this, SLOT(myGLWidgetMousePressed(QMouseEvent *)));
-
-	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_ObjectsList, SLOT(highlightItem(int)));
 	connect(ui.myGLWidget, SIGNAL(mouseMoved(QMouseEvent*)), this, SLOT(label_screenCoordsChangeText(QMouseEvent*)));
 
+	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_ObjectsList, SLOT(highlightItem(int)));
+	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BC0Parameters, SLOT(highlightItem(int)));
+	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BC2, SLOT(highlightItem(int)));
+	connect(this, SIGNAL(mouseClicked(bool)), &m_scene, SLOT(performCursorAction(bool)));
+	connect(this, SIGNAL(escKeyPressed()), &m_scene, SLOT(resetCursor()));
+
 	connect(ui.radioButton_stereo, SIGNAL(toggled(bool)), this, SLOT(stereo_button_toggled(bool)));
+	connect(ui.radioButton_Idle, SIGNAL(toggled(bool)), this, SLOT(radioBtnIdleToggled(bool)));
+	connect(ui.radioButton_Translate, SIGNAL(toggled(bool)), this, SLOT(radioBtnTranslateToggled(bool)));
+	connect(ui.radioButton_Add, SIGNAL(toggled(bool)), this, SLOT(radioBtnAddToggled(bool)));
+	connect(ui.radioButton_Delete, SIGNAL(toggled(bool)), this, SLOT(radioBtnDeleteToggled(bool)));
+
+
 	connect(ui.checkBox_pointer, SIGNAL(stateChanged(int)), ui.myGLWidget, SLOT(checkBox_pointerStateChanged(int)));
 	connect(ui.pushButton_AddObject, SIGNAL(clicked()), this, SLOT(pushButton_AddObjectClicked()));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.listWidget_ObjectsList, SLOT(removeItem()));
-	connect(ui.comboBox_BezierCurveC0, SIGNAL(currentIndexChanged(int)), ui.listWidget_Parameters, SLOT(comboBox_BezierCurveC0DisplayPoints(int)));
+	connect(ui.comboBox_BezierCurveC0, SIGNAL(itemRemoved()), ui.listWidget_BC0Parameters, SLOT(clear()));
+	connect(ui.comboBox_BC2, SIGNAL(itemRemoved()), ui.listWidget_BC2, SLOT(clear()));
+	connect(ui.comboBox_BezierCurveC0, SIGNAL(itemSelected(int, int)), ui.listWidget_BC0Parameters, SLOT(updateCurveId(int)));
+	connect(ui.comboBox_BezierCurveC0, SIGNAL(itemSelected(int, int)), this, SLOT(showBC0CheckBoxes(int, int)));
+	connect(ui.comboBox_BC2, SIGNAL(itemSelected(int, int)), ui.listWidget_BC2, SLOT(updateCurveId(int)));
+	connect(ui.comboBox_BC2, SIGNAL(itemSelected(int, int)), this, SLOT(showBC2CheckBoxes(int, int)));
+	connect(ui.comboBox_BezierCurveC0, SIGNAL(currentIndexChanged(int)), ui.comboBox_BezierCurveC0, SLOT(selectCurve(int)));
+	connect(ui.comboBox_BC2, SIGNAL(currentIndexChanged(int)), ui.comboBox_BC2, SLOT(selectCurve(int)));
 
-	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BezierCurveC0, SLOT(deleteItem(int)));
+	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), &m_scene, SLOT(deleteObject(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_Torus, SLOT(deleteItem(int)));
+	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BezierCurveC0, SLOT(deleteItem(int)));
+	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BC2, SLOT(deleteItem(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(rightClick(const QPoint&, const QList<int>&)), &m_scene, SLOT(createObjectMenu(const QPoint&, const QList<int>&)));
 
-	connect(&m_scene, SIGNAL(addedBezierCurveC0(QString, int, const std::shared_ptr<BezierCurveC0>&)), ui.listWidget_ObjectsList, SLOT(addBezierCurveC0(QString, int)));
-	connect(&m_scene, SIGNAL(addedBezierCurveC0(QString, int, const std::shared_ptr<BezierCurveC0>&)), this, SLOT(comboBox_BezierCurveC0_AddItem(QString, int, const std::shared_ptr<BezierCurveC0>&)));
+	connect(ui.listWidget_BC0Parameters, SIGNAL(removedItem(int, int)), ui.myGLWidget, SLOT(updateGL()));
+	connect(ui.listWidget_BC2, SIGNAL(removedItem(int, int)), ui.myGLWidget, SLOT(updateGL()));
 
-	connect(&m_scene, SIGNAL(addedTorus(QString, int, const std::shared_ptr<Torus>&)), ui.listWidget_ObjectsList, SLOT(addTorus(QString, int)));
-	connect(&m_scene, SIGNAL(addedTorus(QString, int, const std::shared_ptr<Torus>&)), this, SLOT(comboBox_Torus_AddItem(QString, int, const std::shared_ptr<Torus>&)));
-
-	connect(&m_scene, SIGNAL(addedPoint3D(QString, int, const std::shared_ptr<DrawableObject>&)), ui.listWidget_ObjectsList, SLOT(addPoint3D(QString, int)));
+	connect(&m_scene, SIGNAL(addedBezierCurveC0(const QString&, int, const UiBezierCurveC0*)), ui.listWidget_ObjectsList, SLOT(addBezierCurveC0(const QString&, int)));
+	connect(&m_scene, SIGNAL(addedBezierCurveC0(const QString&, int, const UiBezierCurveC0*)), this, SLOT(comboBox_BezierCurveC0_AddItem(const QString&, int, const UiBezierCurveC0*)));
+	connect(&m_scene, SIGNAL(addedBezierCurveC2(const QString&, int, const UiBezierCurveC2*)), ui.listWidget_ObjectsList, SLOT(addBezierCurveC2(const QString&, int)));
+	connect(&m_scene, SIGNAL(addedBezierCurveC2(const QString&, int, const UiBezierCurveC2*)), this, SLOT(comboBox_BezierCurveC2_AddItem(const QString&, int, const UiBezierCurveC2*)));
+	connect(&m_scene, SIGNAL(addedTorus(const QString&, int, const UiTorus*)), ui.listWidget_ObjectsList, SLOT(addTorus(const QString&, int)));
+	connect(&m_scene, SIGNAL(addedTorus(const QString&, int, const UiTorus*)), this, SLOT(comboBox_Torus_AddItem(const QString&, int, const UiTorus*)));
+	connect(&m_scene, SIGNAL(addedPoint3D(const QString&, int, const UiPoint3D*)), ui.listWidget_ObjectsList, SLOT(addPoint3D(const QString&, int)));
+	connect(&m_scene, SIGNAL(addedPoint3D(const QString&, int, const UiPoint3D*)), this, SLOT(connectPoint3D(const QString&, int, const UiPoint3D*)));
+	connect(&m_scene, SIGNAL(editModeBC0(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
+	connect(&m_scene, SIGNAL(editModeBC2(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
+	connect(&m_scene, SIGNAL(objectDeactivated(int)), ui.listWidget_ObjectsList, SLOT(removeHighlightActive()));
+	connect(&m_scene, SIGNAL(objectActivated(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
 }
 
 void ModelowanieGeometryczne1::label_3dCoordsChangeText(float x, float y, float z)
@@ -83,41 +114,82 @@ void ModelowanieGeometryczne1::label_screenCoordsChangeText(QMouseEvent* event)
 	ui.label_screenCoords->setText(text);
 }
 
-void ModelowanieGeometryczne1::comboBox_Torus_AddItem(QString name, int id, const std::shared_ptr<Torus> &object)
+void ModelowanieGeometryczne1::comboBox_Torus_AddItem(const QString &name, int id, const UiTorus *uiTorus)
 {
-	object->connectToUI(ui.comboBox_Torus, ui.listWidget_ObjectsList);
+	uiTorus->connectToUi(&ui);
 	ui.comboBox_Torus->addItem(id, name);
 }
 
-void ModelowanieGeometryczne1::comboBox_BezierCurveC0_AddItem(const QString &name, int id, const std::shared_ptr<BezierCurveC0> &object)
+void ModelowanieGeometryczne1::comboBox_BezierCurveC0_AddItem(const QString &name, int id, const UiBezierCurveC0 *uiBezierC0)
 {
-	object->connectToUI(ui.comboBox_BezierCurveC0, ui.listWidget_ObjectsList, &m_scene);
+	uiBezierC0->connectToUi(&ui);
+	uiBezierC0->connectToScene(&m_scene);
 	ui.comboBox_BezierCurveC0->addItem(id, name);
+}
 
+void ModelowanieGeometryczne1::comboBox_BezierCurveC2_AddItem(const QString &name, int id, const UiBezierCurveC2 *uiBezierC2)
+{
+	uiBezierC2->connectToUi(&ui);
+	uiBezierC2->connectToScene(&m_scene);
+	ui.comboBox_BC2->addItem(id, name);
+}
+
+void ModelowanieGeometryczne1::connectPoint3D(const QString& name, int id, const UiPoint3D* uiPoint3d)
+{
+	uiPoint3d->connectToUi(&ui);
 }
 
 void ModelowanieGeometryczne1::myGLWidgetKeyPressed(QKeyEvent *event)
 {
 	m_scene.m_camera.keyPressed(event->key());
+	switch (event->key())
+	{
+	case Qt::Key_Escape:
+	{
+		emit escKeyPressed();
+		break;
+	}
+	case Qt::Key_1:
+	{
+		ui.radioButton_Idle->setChecked(true);
+		break;
+	}
+	case Qt::Key_2:
+	{
+		ui.radioButton_Translate->setChecked(true);
+		break;
+	}
+	case Qt::Key_3:
+	{
+		ui.radioButton_Add->setChecked(true);
+		break;
+	}
+	case Qt::Key_4:
+	{
+		ui.radioButton_Delete->setChecked(true);
+		break;
+	}
+	}
 }
 
-void ModelowanieGeometryczne1::myGLWidgetMouseMoved(QMouseEvent * event)
+void ModelowanieGeometryczne1::myGLWidgetMouseMoved(QMouseEvent *event)
 {
 	float dx = event->x() - m_scene.m_camera.m_mousePos.x();
 	float dy = event->y() - m_scene.m_camera.m_mousePos.y();
-	if (event->buttons() & Qt::LeftButton)
+	/*if (event->buttons() & Qt::LeftButton)
 	{
 	}
-	else if (event->buttons() & Qt::RightButton)
+	else*/ if (event->buttons() & Qt::MiddleButton)
 	{
 		m_scene.m_camera.mouseMoved(dx, dy);
 	}
-	else if (QGuiApplication::keyboardModifiers() & Qt::ControlModifier)
-	{
-		m_scene.m_cursorPosZ = dy;
-	}
 	if (m_scene.m_isCursor3d)
 	{
+		//TODO: cursor z translation
+		/*if (QGuiApplication::keyboardModifiers() & Qt::ControlModifier)
+		{
+			m_scene.m_cursorPosZ = dy;
+		}*/
 		m_scene.updateCursorPosition(event->x(), event->y(), ui.myGLWidget->getWidth(), ui.myGLWidget->getHeight());
 	}
 	m_scene.m_camera.m_mousePos = event->pos();
@@ -130,17 +202,87 @@ void ModelowanieGeometryczne1::myGLWidgetMousePressed(QMouseEvent *event)
 	m_scene.m_camera.m_mousePos = event->pos();
 	if (event->button() == Qt::LeftButton && m_scene.m_isCursor3d)
 	{
-		int index = m_scene.updateCursor();
-		if (index != -1)
+		if (QGuiApplication::keyboardModifiers() & Qt::ControlModifier)
 		{
-			emit cursor3dItemAcquired(m_scene.getObject(index)->getId());
+			emit mouseClicked(true);
 		}
+		else
+		{
+			emit mouseClicked();
+		}
+		//emit mousePressed();
+		/*int id = m_scene.updateCursor();
+		if (id != -1)
+		{
+			emit cursor3dItemAcquired(id);
+		}*/
 	}
+	ui.myGLWidget->updateGL();
 }
 
 void ModelowanieGeometryczne1::updateMyGLWidget()
 {
 	ui.myGLWidget->updateGL();
+}
+
+void ModelowanieGeometryczne1::showBC0CheckBoxes(int currId, int prevId)
+{
+	const UiBezierCurveC0 *uibc0 = static_cast<const UiBezierCurveC0*>(m_scene.getUiConntector(prevId));
+	if (uibc0 != nullptr)
+	{
+		ui.verticalLayout_BC2->removeWidget(uibc0->getCBPolyline());
+		uibc0->getCBPolyline()->hide();
+	}
+	uibc0 = static_cast<const UiBezierCurveC0*>(m_scene.getUiConntector(currId));
+	if (uibc0 != nullptr)
+	{
+		uibc0->getCBPolyline()->show();
+		ui.verticalLayout_BC2->addWidget(uibc0->getCBPolyline());
+	}
+}
+
+void ModelowanieGeometryczne1::showBC2CheckBoxes(int currId, int prevId)
+{
+	UiBezierCurveC2 *uibc2 = static_cast<UiBezierCurveC2*>(m_scene.getUiConntector(prevId));
+	if (uibc2 != nullptr)
+	{
+		uibc2->getCBPolyline()->hide();
+		uibc2->getCBDeBoor()->hide();
+		ui.verticalLayout_BC2->removeWidget(uibc2->getCBPolyline());
+		ui.verticalLayout_BC2->removeWidget(uibc2->getCBDeBoor());
+	}
+	uibc2 = static_cast<UiBezierCurveC2*>(m_scene.getUiConntector(currId));
+	if (uibc2 != nullptr)
+	{
+		uibc2->getCBPolyline()->show();
+		uibc2->getCBDeBoor()->show();
+		ui.verticalLayout_BC2->addWidget(uibc2->getCBPolyline());
+		ui.verticalLayout_BC2->addWidget(uibc2->getCBDeBoor());
+	}
+}
+
+void ModelowanieGeometryczne1::radioBtnIdleToggled(bool checked)
+{
+	if (checked)
+		m_scene.m_cursor->changeMode(Cursor3D::Mode::Idle);
+}
+
+void ModelowanieGeometryczne1::radioBtnTranslateToggled(bool checked)
+{
+	if (checked)
+		m_scene.m_cursor->changeMode(Cursor3D::Mode::Translate);
+}
+
+void ModelowanieGeometryczne1::radioBtnAddToggled(bool checked)
+{
+	if (checked)
+		m_scene.m_cursor->changeMode(Cursor3D::Mode::Add);
+}
+
+void ModelowanieGeometryczne1::radioBtnDeleteToggled(bool checked)
+{
+	if (checked)
+		m_scene.m_cursor->changeMode(Cursor3D::Mode::Delete);
 }
 
 void ModelowanieGeometryczne1::doubleSpinbox_eValueChanged(double e)

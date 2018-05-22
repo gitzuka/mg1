@@ -1,29 +1,20 @@
 #include "drawableObject.h"
+#include "utils.h"
 int DrawableObject::current_id = 0;
 
-DrawableObject::DrawableObject(ObjectType type, QString name)
-	: m_type(type), m_color(), m_name(name), m_id(current_id++)
+DrawableObject::DrawableObject(ObjectType type, const QString &name, bool enabled)
+	: m_type(type), m_enabled(enabled), m_color(), m_name(name), m_id(current_id++)
 {
 }
-
-//void DrawableObject::setCenter(const QVector4D &point)
-//{
-//	m_center = point;
-//}
-//
-//QVector4D DrawableObject::getCenter() const
-//{
-//	return QVector4D(m_modelMatrix.row(0).w(), m_modelMatrix.row(1).w(), m_modelMatrix.row(2).w(), 1);
-//}
-
-//QVector4D DrawableObject::getPosition() const
-//{
-//	return QVector4D(m_modelMatrix.row(0).w(), m_modelMatrix.row(1).w(), m_modelMatrix.row(2).w(), 1);
-//}
 
 void DrawableObject::setColor(float x, float y, float z)
 {
 	m_color = float3(x, y, z);
+}
+
+void DrawableObject::setColor(float3 color)
+{
+	m_color = color;
 }
 
 void DrawableObject::drawLine(const QVector4D &p1, const QVector4D &p2, float3 color) const
@@ -36,6 +27,11 @@ void DrawableObject::drawLine(const QVector4D &p1, const QVector4D &p2, float3 c
 	glEnd();
 }
 
+void DrawableObject::translate(const QVector4D& vec)
+{
+	m_modelMatrix.translate(vec.toVector3D());
+}
+
 int DrawableObject::getId() const
 {
 	return m_id;
@@ -46,17 +42,17 @@ const std::vector<QVector4D>& DrawableObject::getVertices() const
 	return m_vertices;
 }
 
-const QString DrawableObject::getName() const
+const QString& DrawableObject::getName() const
 {
 	return m_name;
 }
 
-void DrawableObject::setName(QString name)
+void DrawableObject::setName(const QString &name)
 {
 	m_name = name;
 }
 
-QMatrix4x4 DrawableObject::getModelMatrix()
+const QMatrix4x4& DrawableObject::getModelMatrix() const
 {
 	return m_modelMatrix;
 }

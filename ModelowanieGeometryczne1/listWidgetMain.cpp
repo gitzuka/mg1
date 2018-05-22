@@ -1,21 +1,21 @@
-#include "listwidgetobjects.h"
+#include "listWidgetMain.h"
 #include <QtGui>
-#include <QMenu>
 #include "drawableObject.h"
 
-ListWidgetObjects::ListWidgetObjects(QWidget* parent)
-	: QListWidget(parent)
+ListWidgetMain::ListWidgetMain(QWidget* parent)
+	: QListWidget(parent), m_activeItem(nullptr)
 {
 	connect(this, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(itemTextChanged(QListWidgetItem*)));
 	connect(this, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClick(QListWidgetItem*)));
 }
 
 
-ListWidgetObjects::~ListWidgetObjects()
+ListWidgetMain::~ListWidgetMain()
 {
+	this->clear();
 }
 
-void ListWidgetObjects::mousePressEvent(QMouseEvent *event)
+void ListWidgetMain::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton)
 	{
@@ -32,7 +32,7 @@ void ListWidgetObjects::mousePressEvent(QMouseEvent *event)
 	}
 }
 
-int ListWidgetObjects::findItemId(QListWidgetItem *item) const
+int ListWidgetMain::findItemId(QListWidgetItem *item) const
 {
 	int id = -1;
 	for (int i = 0; i < m_objectsList.count(); ++i)
@@ -46,7 +46,7 @@ int ListWidgetObjects::findItemId(QListWidgetItem *item) const
 	return id;
 }
 
-void ListWidgetObjects::updatePointsList(int id)
+void ListWidgetMain::updatePointsList(int id)
 {
 	for (int i = 0; i < m_selectedObjectsIds.count(); ++i)
 	{
@@ -59,7 +59,7 @@ void ListWidgetObjects::updatePointsList(int id)
 	m_selectedObjectsIds.append(id);
 }
 
-void ListWidgetObjects::addTorus(const QString &text, int objectId)
+void ListWidgetMain::addTorus(const QString &text, int objectId)
 {
 	addItem(text);
 	m_objectsList.append(qMakePair(this->item(this->count() - 1), objectId));
@@ -67,14 +67,16 @@ void ListWidgetObjects::addTorus(const QString &text, int objectId)
 	m_torusIds.append(objectId);
 }
 
-void ListWidgetObjects::addPoint3D(const QString& text, int objectId)
+void ListWidgetMain::addPoint3D(const QString& text, int objectId)
 {
 	addItem(text);
 	m_objectsList.append(qMakePair(this->item(this->count() - 1), objectId));
 	this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+	//this->item(this->count() - 1)->setBackground(Qt::red);
+
 }
 
-void ListWidgetObjects::removeItem()
+void ListWidgetMain::removeItem()
 {
 	if (this->currentRow() < 0)
 	{
@@ -82,10 +84,12 @@ void ListWidgetObjects::removeItem()
 	}
 	emit removeItemEvent(m_objectsList.at(currentRow()).second);
 	m_objectsList.removeAt(currentRow());
-	this->removeItemWidget(takeItem(currentRow()));
+	QListWidgetItem *item = takeItem(currentRow());
+	this->removeItemWidget(item);
+	delete item;
 }
 
-void ListWidgetObjects::highlightItem(int objectId)
+void ListWidgetMain::highlightItem(int objectId)
 {
 	for (int i = 0; i < m_objectsList.count(); ++i)
 	{
@@ -97,7 +101,29 @@ void ListWidgetObjects::highlightItem(int objectId)
 	}
 }
 
-void ListWidgetObjects::itemClick(QListWidgetItem *item)
+void ListWidgetMain::highlightActiveItem(int objectId)
+{
+	for (int i = 0; i < m_objectsList.count(); ++i)
+	{
+		if (m_objectsList.at(i).second == objectId)
+		{
+			m_objectsList.at(i).first->setBackground(Qt::green);
+			m_activeItem = m_objectsList.at(i).first;
+			return;
+		}
+	}
+}
+
+void ListWidgetMain::removeHighlightActive()
+{
+	if (m_activeItem != nullptr)
+	{
+		m_activeItem->setBackground(Qt::white);
+		m_activeItem = nullptr;
+	}
+}
+
+void ListWidgetMain::itemClick(QListWidgetItem *item)
 {
 	if (!(QGuiApplication::keyboardModifiers() & Qt::ControlModifier))
 	{
@@ -105,30 +131,26 @@ void ListWidgetObjects::itemClick(QListWidgetItem *item)
 	}
 	int id = m_objectsList.at(this->currentRow()).second;
 	updatePointsList(id);
-
-	//ui.myGLWidget->drawableItemClicked(m_objectsList.at(ui.listWidget_ObjectsList->currentRow()).second);
-	//ui.myGLWidget->drawableItemClicked(id);
-
-
-	//void MyGLWidget::drawableItemClicked(int id)
-	//{
-	//	if (m_scene.m_isCursor3d)
-	//	{
-	//		m_scene.updateCursor();
-	//	}
-	//	updateGL();
-	//}
+	emit itemSelected(m_selectedObjectsIds);
 }
 
-void ListWidgetObjects::itemTextChanged(QListWidgetItem* item)
+void ListWidgetMain::itemTextChanged(QListWidgetItem* item)
 {
 	emit changeItemTextEvent(item->text(), findItemId(item));
 }
 
-void ListWidgetObjects::addBezierCurveC0(const QString &text, int objectId)
+void ListWidgetMain::addBezierCurveC0(const QString &text, int objectId)
 {
 	addItem(text);
 	m_objectsList.append(qMakePair(this->item(this->count() - 1), objectId));
 	this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 	m_bezierCurveC0Ids.append(objectId);
+}
+
+void ListWidgetMain::addBezierCurveC2(const QString& text, int objectId)
+{
+	addItem(text);
+	m_objectsList.append(qMakePair(this->item(this->count() - 1), objectId));
+	this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+	m_bezierCurveC2Ids.append(objectId);
 }

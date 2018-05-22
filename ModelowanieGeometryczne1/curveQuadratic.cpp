@@ -7,7 +7,7 @@ CurveQuadratic::CurveQuadratic(float width, float height, const QVector4D &p1, c
 
 void CurveQuadratic::generateCurve(std::vector<QVector4D> &vec)
 {
-	int length = floor(genLength());
+	int length = floor(getLength());
 	float step = 1.0f / length;
 
 	for (int i = 0; i <= length; ++i)
@@ -23,7 +23,7 @@ QVector4D CurveQuadratic::deCasteljau(float t)
 		m_p3 * pow(t, 2));
 }
 
-float CurveQuadratic::genLength() const
+float CurveQuadratic::getLength() const
 {
 	float x = m_width * (m_p3.x() - m_p1.x());
 	float y = m_height * (m_p3.y() - m_p1.y());
