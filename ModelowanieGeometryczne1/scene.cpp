@@ -183,9 +183,19 @@ void Scene::removeUiConnectors(const std::vector<int> &ids)
 	}
 }
 
-void Scene::performCursorAction()
+//TODO: implement 
+void Scene::selectCursorObjects(QList<int> ids)
 {
-	m_cursor->performAction(m_uiConnectors);
+	if (m_isCursor3d)
+	{
+		m_cursor->clearAllObjects();
+
+	}
+}
+
+void Scene::performCursorAction(bool multiple)
+{
+	m_cursor->performAction(m_uiConnectors, multiple);
 }
 
 void Scene::resetCursor()

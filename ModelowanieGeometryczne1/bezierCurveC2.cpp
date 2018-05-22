@@ -221,7 +221,8 @@ bool BezierCurveC2::assignDeBoorPoints(const std::vector<std::shared_ptr<Drawabl
 
 void BezierCurveC2::removeDeBoorPoint(const std::shared_ptr<DrawableObject> &point)
 {
-	for (int i = 0; i < m_deBoorPoints.count(); ++i)
+	removeDeBoorPoint(point->getId());
+	/*for (int i = 0; i < m_deBoorPoints.count(); ++i)
 	{
 		if (point->getId() == m_deBoorPoints.at(i)->getId())
 		{
@@ -230,7 +231,7 @@ void BezierCurveC2::removeDeBoorPoint(const std::shared_ptr<DrawableObject> &poi
 	}
 	generateControlPoints();
 	createVertices();
-	generateIndices();
+	generateIndices();*/
 }
 
 void BezierCurveC2::removeDeBoorPoint(int pointId)

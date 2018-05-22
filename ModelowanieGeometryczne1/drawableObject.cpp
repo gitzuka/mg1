@@ -27,6 +27,11 @@ void DrawableObject::drawLine(const QVector4D &p1, const QVector4D &p2, float3 c
 	glEnd();
 }
 
+void DrawableObject::translate(const QVector4D& vec)
+{
+	m_modelMatrix.translate(vec.toVector3D());
+}
+
 int DrawableObject::getId() const
 {
 	return m_id;

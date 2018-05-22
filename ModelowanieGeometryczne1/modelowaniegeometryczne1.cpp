@@ -46,7 +46,7 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_ObjectsList, SLOT(highlightItem(int)));
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BC0Parameters, SLOT(highlightItem(int)));
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BC2, SLOT(highlightItem(int)));
-	connect(this, SIGNAL(mouseClicked()), &m_scene, SLOT(performCursorAction()));
+	connect(this, SIGNAL(mouseClicked(bool)), &m_scene, SLOT(performCursorAction(bool)));
 	connect(this, SIGNAL(escKeyPressed()), &m_scene, SLOT(resetCursor()));
 
 	connect(ui.radioButton_stereo, SIGNAL(toggled(bool)), this, SLOT(stereo_button_toggled(bool)));
@@ -179,7 +179,7 @@ void ModelowanieGeometryczne1::myGLWidgetMouseMoved(QMouseEvent *event)
 	/*if (event->buttons() & Qt::LeftButton)
 	{
 	}
-	else*/ if (event->buttons() & Qt::RightButton)
+	else*/ if (event->buttons() & Qt::MiddleButton)
 	{
 		m_scene.m_camera.mouseMoved(dx, dy);
 	}
@@ -202,7 +202,14 @@ void ModelowanieGeometryczne1::myGLWidgetMousePressed(QMouseEvent *event)
 	m_scene.m_camera.m_mousePos = event->pos();
 	if (event->button() == Qt::LeftButton && m_scene.m_isCursor3d)
 	{
-		emit mouseClicked();
+		if (QGuiApplication::keyboardModifiers() & Qt::ControlModifier)
+		{
+			emit mouseClicked(true);
+		}
+		else
+		{
+			emit mouseClicked();
+		}
 		//emit mousePressed();
 		/*int id = m_scene.updateCursor();
 		if (id != -1)

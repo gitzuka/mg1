@@ -41,14 +41,15 @@ private:
 	QPair<int, DrawableObject::ObjectType> createUiConnector(const QString &name);
 
 public slots:
-	void createObjectMenu(const QPoint &pos, const QList<int> &ids);
-	void deleteObject(int id);
 	void updateControlPoints(std::vector<std::shared_ptr<Point3D>> controlPoints, const std::vector<int> &prevIds);
 	void removeUiConnectors(const std::vector<int> &ids);
 
 private slots:
-	void performCursorAction();
+	void performCursorAction(bool multiple = false);
 	void resetCursor();
+	void createObjectMenu(const QPoint &pos, const QList<int> &ids);
+	void deleteObject(int id);
+	void selectCursorObjects(QList<int> ids);
 
 signals:
 	void addedTorus(const QString &name, int id, const UiTorus *uiTorus);

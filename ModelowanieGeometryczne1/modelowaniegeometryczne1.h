@@ -29,7 +29,7 @@ private:
 signals:
 	void cursor3dItemAcquired(int);
 	void escKeyPressed();
-	void mouseClicked();
+	void mouseClicked(bool multiple = false);
 
 private slots:
 	void pushButton_AddObjectClicked();

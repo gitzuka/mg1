@@ -75,20 +75,20 @@ void Cursor3D::generateIndices()
 
 void Cursor3D::addPoint(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects)
 {
-	if (m_activeObject != nullptr)
+	if (m_activeObjects.size() == 1 && m_activeObjects.at(0) != nullptr)
 	{
-		switch (m_activeObject->m_type)
+		switch (m_activeObjects.at(0)->m_type)
 		{
 		case ObjectType::bezierCurveC0:
 		{
-			int id = getClosestPoint(sceneObjects);
-			static_cast<UiBezierCurveC0*>(sceneObjects.find(m_activeObject->getId())->second.get())->addPoint(sceneObjects.find(id)->second.get()->getObject(), m_activeObject->getId());
+			int id = getClosestPointId(sceneObjects);
+			static_cast<UiBezierCurveC0*>(sceneObjects.find(m_activeObjects.at(0)->getId())->second.get())->addPoint(sceneObjects.find(id)->second.get()->getObject(), m_activeObjects.at(0)->getId());
 			break;
 		}
 		case ObjectType::bezierCurveC2:
 		{
-			int id = getClosestPoint(sceneObjects);
-			static_cast<UiBezierCurveC2*>(sceneObjects.find(m_activeObject->getId())->second.get())->addPoint(sceneObjects.find(id)->second.get()->getObject(), m_activeObject->getId());
+			int id = getClosestPointId(sceneObjects);
+			static_cast<UiBezierCurveC2*>(sceneObjects.find(m_activeObjects.at(0)->getId())->second.get())->addPoint(sceneObjects.find(id)->second.get()->getObject(), m_activeObjects.at(0)->getId());
 			break;
 		}
 		}
@@ -97,27 +97,41 @@ void Cursor3D::addPoint(std::unordered_map<int, std::unique_ptr<UiConnector>> &s
 
 void Cursor3D::deletePoint(std::unordered_map<int, std::unique_ptr<UiConnector>>& sceneObjects)
 {
-	if (m_activeObject != nullptr)
+	if (m_activeObjects.size() == 1 && m_activeObjects.at(0) != nullptr)
 	{
-		switch (m_activeObject->m_type)
+		switch (m_activeObjects.at(0)->m_type)
 		{
 		case ObjectType::bezierCurveC0:
 		{
-			int id = getClosestPoint(sceneObjects);
-			static_cast<UiBezierCurveC0*>(sceneObjects.find(m_activeObject->getId())->second.get())->removePoint(id, m_activeObject->getId());
+			int id = getClosestPointId(sceneObjects);
+			static_cast<UiBezierCurveC0*>(sceneObjects.find(m_activeObjects.at(0)->getId())->second.get())->removePoint(id, m_activeObjects.at(0)->getId());
 			break;
 		}
 		case ObjectType::bezierCurveC2:
 		{
-			int id = getClosestPoint(sceneObjects);
-			static_cast<UiBezierCurveC2*>(sceneObjects.find(m_activeObject->getId())->second.get())->removePoint(id, m_activeObject->getId());
+			int id = getClosestPointId(sceneObjects);
+			static_cast<UiBezierCurveC2*>(sceneObjects.find(m_activeObjects.at(0)->getId())->second.get())->removePoint(id, m_activeObjects.at(0)->getId());
 			break;
 		}
 		}
 	}
 }
 
-int Cursor3D::getClosestPoint(std::unordered_map<int, std::unique_ptr<UiConnector>>& sceneObjects) const
+bool Cursor3D::addToActive(std::shared_ptr<DrawableObject> sceneObject)
+{
+	int id = sceneObject->getId();
+	if (m_activeObjects.count(id) > 0)
+	{
+		m_activeObjects.find(id)->second.get()->setColor(Colors::DEFAULT_OBJECT_COLOR);
+		m_activeObjects.erase(id);
+		return false;
+	}
+	m_activeObjects.emplace(id, sceneObject);
+	m_activeObjects.find(id)->second.get()->setColor(Colors::ACTIVE_OBJECT_COLOR);
+	return true;
+}
+
+int Cursor3D::getClosestPointId(std::unordered_map<int, std::unique_ptr<UiConnector>>& sceneObjects) const
 {
 	float minDistance = std::numeric_limits<float>::max();
 	float distance;
@@ -138,128 +152,158 @@ int Cursor3D::getClosestPoint(std::unordered_map<int, std::unique_ptr<UiConnecto
 	return id;
 }
 
-int Cursor3D::acquireObject(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects)
+//int Cursor3D::acquireObject(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects)
+//{
+//	if (m_obtainedObject != nullptr)
+//	{
+//		releaseObject();
+//		return -1;
+//	}
+//	int id = getClosestObjectId(sceneObjects);
+//	if (id != -1)
+//	{
+//		m_obtainedObject = sceneObjects.find(id)->second.get()->getObject();
+//		m_obtainedObject->setColor(Colors::OBTAINED_OBJECT_COLOR);
+//	}
+//	return id;
+//}
+
+void Cursor3D::markObject(std::unordered_map<int, std::unique_ptr<UiConnector>>& sceneObjects, bool multiple)
 {
-	if (m_obtainedObject != nullptr)
+	if (!multiple && m_activeObjects.size() >= 1)
 	{
-		releaseObject();
-		return -1;
+		clearAllObjects();
+		return;
+
 	}
-	int id = getClosestObject(sceneObjects);
+	int id = getClosestObjectId(sceneObjects);
 	if (id != -1)
 	{
-		m_obtainedObject = sceneObjects.find(id)->second.get()->getObject();
-		m_obtainedObject->setColor(Colors::OBTAINED_OBJECT_COLOR);
+		addToActive(sceneObjects.find(id)->second.get()->getObject());
 	}
-	return id;
 }
 
-int Cursor3D::markObject(std::unordered_map<int, std::unique_ptr<UiConnector>>& sceneObjects)
-{
-	int id = getClosestObject(sceneObjects);
-	if (id != -1)
-	{
-		m_markedObjects.push_back(sceneObjects.find(id)->second.get()->getObject());
-		sceneObjects.find(id)->second.get()->getObject()->setColor(Colors::ACTIVE_OBJECT_COLOR);
-	}
-	return id;
-}
-
-void Cursor3D::releaseObject()
-{
-	m_obtainedObject->setColor(Colors::DEFAULT_OBJECT_COLOR);
-	m_obtainedObject = nullptr;
-}
-
-void Cursor3D::updatePosition(float posX, float posY, float posZ, const Camera &camera)
-{
-	m_worldCoords = QVector3D(posX - camera.m_viewMatrix.row(0).w(),
-		posY - camera.m_viewMatrix.row(1).w(),
-		posZ - camera.m_viewMatrix.row(2).w() - 1);
-	setModelMatrix((Camera::createRotationX(camera.m_pitch) * Camera::createRotationY(camera.m_yaw)).inverted()
-		* Camera::createTranslation(m_worldCoords));
-
-	if (m_obtainedObject != nullptr)
-	{
-		m_obtainedObject->setModelMatrix(getModelMatrix());
-	}
-	//float posX = x / (width * 0.5f) - 1.0f;
-	//float posY = -y / (heigth * 0.5f) + 1.0f;
-	//float posZ = 0;
-
-	//m_worldCoords = QVector3D(posX - camera.m_viewMatrix.row(0).w(),
-	//	posY - camera.m_viewMatrix.row(1).w(),
-	//	posZ - camera.m_viewMatrix.row(2).w() - 1);
-	//m_modelMatrix = (Camera::createRotationX(camera.m_pitch) * Camera::createRotationY(camera.m_yaw)).inverted()
-	//	* Camera::createTranslation(m_worldCoords);
-	//if (m_obtainedObject != nullptr)
-	//{
-	//	//m_obtainedObject->getModelMatrix() = m_modelMatrix;
-	//	m_obtainedObject->setModelMatrix(m_modelMatrix);
-	//}
-}
+//void Cursor3D::updatePosition(float posX, float posY, float posZ, const Camera &camera)
+//{
+//	m_worldCoords = QVector3D(posX - camera.m_viewMatrix.row(0).w(),
+//		posY - camera.m_viewMatrix.row(1).w(),
+//		posZ - camera.m_viewMatrix.row(2).w() - 1);
+//	setModelMatrix((Camera::createRotationX(camera.m_pitch) * Camera::createRotationY(camera.m_yaw)).inverted()
+//		* Camera::createTranslation(m_worldCoords));
+//
+//	if (m_obtainedObject != nullptr)
+//	{
+//		m_obtainedObject->setModelMatrix(getModelMatrix());
+//	}
+//	//float posX = x / (width * 0.5f) - 1.0f;
+//	//float posY = -y / (heigth * 0.5f) + 1.0f;
+//	//float posZ = 0;
+//
+//	//m_worldCoords = QVector3D(posX - camera.m_viewMatrix.row(0).w(),
+//	//	posY - camera.m_viewMatrix.row(1).w(),
+//	//	posZ - camera.m_viewMatrix.row(2).w() - 1);
+//	//m_modelMatrix = (Camera::createRotationX(camera.m_pitch) * Camera::createRotationY(camera.m_yaw)).inverted()
+//	//	* Camera::createTranslation(m_worldCoords);
+//	//if (m_obtainedObject != nullptr)
+//	//{
+//	//	//m_obtainedObject->getModelMatrix() = m_modelMatrix;
+//	//	m_obtainedObject->setModelMatrix(m_modelMatrix);
+//	//}
+//}
 
 void Cursor3D::updatePosition(float x, float y, int width, int height, const Camera &camera)
 {
 	m_posX = x / (width * 0.5f) - 1.0f;
 	m_posY = -y / (height * 0.5f) + 1.0f;
+	QVector3D prevPos = m_worldCoords;
 	m_worldCoords = QVector3D(m_posX - camera.m_viewMatrix.row(0).w(),
 		m_posY - camera.m_viewMatrix.row(1).w(),
 		m_posZ - camera.m_viewMatrix.row(2).w() - 1);
 	setModelMatrix((Camera::createRotationX(camera.m_pitch) * Camera::createRotationY(camera.m_yaw)).inverted()
 		* Camera::createTranslation(m_worldCoords));
-
-	switch (m_mode)
+	if (m_mode == Mode::Translate)
 	{
-	case Mode::Idle:
-	{
-		break;
-	}
-	case Mode::Translate:
-	{
-		if (m_obtainedObject != nullptr)
+		prevPos = m_worldCoords - prevPos;
+		for (auto activeObject : m_activeObjects)
 		{
-			m_obtainedObject->setModelMatrix(getModelMatrix());
-			if (m_obtainedObject->m_type == DrawableObject::ObjectType::point3D)
+			activeObject.second->translate(prevPos);
+			if (activeObject.second->m_type == DrawableObject::ObjectType::point3D)
 			{
-				std::static_pointer_cast<Point3D>(m_obtainedObject)->notifyAncestorsPositionChanged();
+				std::static_pointer_cast<Point3D>(activeObject.second)->notifyAncestorsPositionChanged();
 			}
 		}
-		break;
 	}
-	case Mode::Add:
-	{
-		break;
-	}
-	case Mode::Delete:
-	{
-		break;
-	}
-	}
-}
 
-void Cursor3D::clearMarkedObjects()
-{
-	for (std::vector<std::shared_ptr<DrawableObject>>::iterator it = m_markedObjects.begin(); it != m_markedObjects.end(); ++it)
-	{
-		(*it)->setColor(Colors::DEFAULT_OBJECT_COLOR);
-	}
-	m_markedObjects.clear();
+	//switch (m_mode)
+	//{
+	//case Mode::Idle:
+	//{
+	//	break;
+	//}
+	//case Mode::Translate:
+	//{
+	//	/*if (m_obtainedObject != nullptr)
+	//	{
+	//		m_obtainedObject->setModelMatrix(getModelMatrix());
+	//		if (m_obtainedObject->m_type == DrawableObject::ObjectType::point3D)
+	//		{
+	//			std::static_pointer_cast<Point3D>(m_obtainedObject)->notifyAncestorsPositionChanged();
+	//		}
+	//	}*/
+	//	prevPos = m_worldCoords - prevPos;
+	//	for (auto activeObject : m_activeObjects)
+	//	{
+	//		activeObject.second->translate(prevPos);
+	//		if (activeObject.second->m_type == DrawableObject::ObjectType::point3D)
+	//		{
+	//			std::static_pointer_cast<Point3D>(activeObject.second)->notifyAncestorsPositionChanged();
+	//		}
+	//	}
+	//	break;
+	//}
+	//case Mode::Add:
+	//{
+	//	break;
+	//}
+	//case Mode::Delete:
+	//{
+	//	break;
+	//}
+	//}
 }
 
 void Cursor3D::clearAllObjects()
 {
-	clearMarkedObjects();
-	for (std::vector<std::shared_ptr<DrawableObject>>::iterator it = m_obtainedObjects.begin(); it != m_obtainedObjects.end(); ++it)
+	for (std::unordered_map<int, std::shared_ptr<DrawableObject>>::iterator it = m_activeObjects.begin(); it != m_activeObjects.end(); ++it)
 	{
-		(*it)->setColor(Colors::DEFAULT_OBJECT_COLOR);
+		(*it).second.get()->setColor(Colors::DEFAULT_OBJECT_COLOR);
 	}
-	m_obtainedObjects.clear();
-	m_obtainedObject->setColor(Colors::DEFAULT_OBJECT_COLOR);
-	m_obtainedObject = nullptr;
+	m_activeObjects.clear();
 }
 
-int Cursor3D::getClosestObject(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects) const
+int Cursor3D::getClosestObjectId(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects) const
+{
+	float minDistance = std::numeric_limits<float>::max();
+	float distance;
+	int id = -1;
+	for (auto const &object : sceneObjects)
+	{
+		if (!object.second.get()->getObject()->m_enabled || object.second.get()->getObject()->m_type == ObjectType::bezierCurveC0
+			|| object.second.get()->getObject()->m_type == ObjectType::bezierCurveC2 || object.second.get()->getObject()->getId() == this->getId())
+		{
+			continue;
+		}
+		distance = math3d::calculateDistance3D(this->getPosition(), object.second.get()->getObject()->getPosition());
+		if (distance < TARGETING_DISTANCE && distance < minDistance)
+		{
+			minDistance = distance;
+			id = object.second.get()->getObject()->getId();
+		}
+	}
+	return id;
+}
+
+int Cursor3D::getNewClosestObjectId(std::unordered_map<int, std::unique_ptr<UiConnector>>& sceneObjects) const
 {
 	float minDistance = std::numeric_limits<float>::max();
 	float distance;
@@ -291,18 +335,18 @@ void Cursor3D::changeMode(Mode mode)
 	m_mode = mode;
 }
 
-void Cursor3D::performAction(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects)
+void Cursor3D::performAction(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects, bool multiple)
 {
 	switch (m_mode)
 	{
 	case Mode::Idle:
 	{
-		markObject(sceneObjects);
+		markObject(sceneObjects, multiple);
 		break;
 	}
 	case Mode::Translate:
 	{
-		acquireObject(sceneObjects);
+		markObject(sceneObjects, false);
 		break;
 	}
 	case Mode::Add:
@@ -320,15 +364,16 @@ void Cursor3D::performAction(std::unordered_map<int, std::unique_ptr<UiConnector
 
 void Cursor3D::setActiveObject(std::shared_ptr<DrawableObject> sceneObject)
 {
-	m_activeObject = sceneObject;
+	clearAllObjects();
+	m_activeObjects.emplace(sceneObject->getId(), sceneObject);
+	m_activeObjects.at(0)->setColor(Colors::ACTIVE_OBJECT_COLOR);
 }
 
-void Cursor3D::removeActiveOjbect()
+std::shared_ptr<DrawableObject> Cursor3D::getActiveObject() const
 {
-	m_activeObject = nullptr;
-}
-
-const std::shared_ptr<DrawableObject>& Cursor3D::getActiveObject() const
-{
-	return m_activeObject;
+	if (m_activeObjects.size() != 1)
+	{
+		return nullptr;
+	}
+	return m_activeObjects.at(0);
 }
