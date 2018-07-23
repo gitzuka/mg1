@@ -47,11 +47,6 @@ void Cursor3D::setModelMatrix(const QMatrix4x4 &matrix)
 	m_modelMatrix = matrix;
 }
 
-QVector4D Cursor3D::getPosition() const
-{
-	return QVector4D(m_modelMatrix.row(0).w(), m_modelMatrix.row(1).w(), m_modelMatrix.row(2).w(), 1);
-}
-
 void Cursor3D::createVertices()
 {
 	m_vertices.push_back(QVector4D(0, 0.0, 0.0, 1));
@@ -367,6 +362,12 @@ void Cursor3D::setActiveObject(std::shared_ptr<DrawableObject> sceneObject)
 	clearAllObjects();
 	m_activeObjects.emplace(sceneObject->getId(), sceneObject);
 	m_activeObjects.at(0)->setColor(Colors::ACTIVE_OBJECT_COLOR);
+}
+
+void Cursor3D::addActiveObject(std::shared_ptr<DrawableObject> sceneObject)
+{
+	sceneObject->setColor(Colors::ACTIVE_OBJECT_COLOR);
+	m_activeObjects.emplace(sceneObject->getId(), sceneObject);
 }
 
 std::shared_ptr<DrawableObject> Cursor3D::getActiveObject() const

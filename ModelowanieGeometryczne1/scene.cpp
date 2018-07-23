@@ -8,6 +8,8 @@
 #include "colors.h"
 #include "bezierCurveC2.h"
 #include "uiBezierCurveC2.h"
+#include "uiBezierC2Interpolated.h"
+#include "bezierC2Interpolated.h"
 
 Scene::Scene() : m_stereoscopy(false), m_isCursor3d(false)
 {
@@ -27,7 +29,7 @@ void Scene::createCurveC0fromPoints(const QList<int> &ids)
 	std::vector<std::shared_ptr<DrawableObject>> points;
 	for (int i = 0; i < ids.count(); ++i)
 	{
-		points.push_back(m_uiConnectors.find(ids.at(i))->second.get()->getObject());
+		points.push_back(getSceneObject(ids.at(i)));
 	}
 	static_cast<UiBezierCurveC0*>(getUiConntector(bezierCurveC0->getId()))->assignPoints(points, bezierCurveC0->getId());
 
@@ -43,9 +45,24 @@ void Scene::createCurveC2fromPoints(const QList<int> &ids)
 	points.reserve(ids.count());
 	for (int i = 0; i < ids.count(); ++i)
 	{
-		points.push_back(m_uiConnectors.find(ids.at(i))->second.get()->getObject());
+		points.push_back(getSceneObject(ids.at(i)));
 	}
 	static_cast<UiBezierCurveC2*>(getUiConntector(bezierCurveC2->getId()))->assignPoints(points, bezierCurveC2->getId());
+}
+
+void Scene::createCurveC2IntfromPoints(const QList<int>& ids)
+{
+	std::shared_ptr<BezierC2Interpolated> bezierCurveC2Int = std::make_shared<BezierC2Interpolated>(BezierC2Interpolated::ObjectType::bezierC2Interpolated, "BezierC2Interpolated");
+	std::unique_ptr<UiBezierC2Interpolated> uiConnector = std::make_unique<UiBezierC2Interpolated>(bezierCurveC2Int);
+	addUiConnector(std::move(uiConnector));
+	emit addedBezierC2Interpolated("BezierC2Interpolated", bezierCurveC2Int->getId(), static_cast<const UiBezierC2Interpolated*>(getUiConntector(bezierCurveC2Int->getId())));
+	std::vector<std::shared_ptr<DrawableObject>> points;
+	points.reserve(ids.count());
+	for (int i = 0; i < ids.count(); ++i)
+	{
+		points.push_back(getSceneObject(ids.at(i)));
+	}
+	static_cast<UiBezierC2Interpolated*>(getUiConntector(bezierCurveC2Int->getId()))->assignPoints(points, bezierCurveC2Int->getId());
 }
 
 void Scene::createBC0menu(const QPoint& pos, int id)
@@ -72,12 +89,23 @@ void Scene::createBC2menu(const QPoint& pos, int id)
 	myMenu.exec(pos);
 }
 
+void Scene::createBC2IntMenu(const QPoint& pos, int id)
+{
+	QMenu myMenu;
+	QAction *edit = myMenu.addAction("Edit mode");
+	connect(edit, &QAction::triggered, this, [this, &id]()
+	{
+		setActiveObject(id);
+		emit editModeBC2Int(id);
+	});
+	myMenu.exec(pos);
+}
+
 void Scene::createPoint3Dmenu(const QPoint& pos, const QList<int>& ids)
 {
 	for (int i = 0; i < ids.count(); ++i)
 	{
-		if (m_uiConnectors.find(ids.at(i))->second.get()->getObject() == nullptr
-			|| m_uiConnectors.find(ids.at(i))->second.get()->getObject()->m_type != DrawableObject::ObjectType::point3D)
+		if (getSceneObject(ids.at(i)) == nullptr || getSceneObject(ids.at(i))->m_type != DrawableObject::ObjectType::point3D)
 		{
 			return;
 		}
@@ -93,6 +121,11 @@ void Scene::createPoint3Dmenu(const QPoint& pos, const QList<int>& ids)
 	{
 		createCurveC2fromPoints(ids);
 	});
+	QAction *createBC2Int = myMenu.addAction("Create Bezier Curve C2 Interpolated");
+	connect(createBC2Int, &QAction::triggered, this, [this, &ids]()
+	{
+		createCurveC2IntfromPoints(ids);
+	});
 	myMenu.exec(pos);
 }
 
@@ -105,17 +138,20 @@ void Scene::setActiveObject(int id)
 	}
 	m_cursor->setActiveObject(getUiConntector(id)->getObject());
 	emit objectActivated(m_cursor->getActiveObject()->getId());
-	/*m_activeObject = m_uiConnectors.find(id)->second.get()->getObject();
-	m_activeObject->setColor(Colors::ACTIVE_OBJECT_COLOR);*/
 }
 
-void Scene::removeActiveObject(int id)
+std::shared_ptr<DrawableObject> Scene::getSceneObject(int id)
 {
-	/*if (m_activeObject != nullptr)
+	std::shared_ptr<DrawableObject> sceneObj;
+	try
 	{
-		m_activeObject->setColor(Colors::DEFAULT_OBJECT_COLOR);
-		m_activeObject = nullptr;
-	}*/
+		sceneObj = m_uiConnectors.find(id)->second.get()->getObject();
+	}
+	catch (std::out_of_range e)
+	{
+		sceneObj = nullptr;
+	}
+	return sceneObj;
 }
 
 QPair<int, DrawableObject::ObjectType> Scene::createUiConnector(const QString& name)
@@ -137,6 +173,10 @@ QPair<int, DrawableObject::ObjectType> Scene::createUiConnector(const QString& n
 	{
 		uiConnector = std::make_unique<UiBezierCurveC2>(std::make_shared<BezierCurveC2>(BezierCurveC2::ObjectType::bezierCurveC2, name));
 	}
+	else if (name == "BezierC2Interpolated")
+	{
+		uiConnector = std::make_unique<UiBezierC2Interpolated>(std::make_shared<BezierC2Interpolated>(BezierC2Interpolated::ObjectType::bezierC2Interpolated, name));
+	}
 	int id = uiConnector->getObject()->getId();
 	DrawableObject::ObjectType type = uiConnector->getObject()->m_type;
 	addUiConnector(std::move(uiConnector));
@@ -149,10 +189,12 @@ void Scene::createObjectMenu(const QPoint &pos, const QList<int> &ids)
 		return;
 	if (ids.count() == 1)
 	{
-		if (m_uiConnectors.find(ids.at(0))->second.get()->getObject()->m_type == DrawableObject::ObjectType::bezierCurveC0)
+		if (getSceneObject(ids.at(0))->m_type == DrawableObject::ObjectType::bezierCurveC0)
 			createBC0menu(pos, ids.at(0));
-		if (m_uiConnectors.find(ids.at(0))->second.get()->getObject()->m_type == DrawableObject::ObjectType::bezierCurveC2)
+		if (getSceneObject(ids.at(0))->m_type == DrawableObject::ObjectType::bezierCurveC2)
 			createBC2menu(pos, ids.at(0));
+		if (getSceneObject(ids.at(0))->m_type == DrawableObject::ObjectType::bezierC2Interpolated)
+			createBC2IntMenu(pos, ids.at(0));
 		return;
 	}
 	createPoint3Dmenu(pos, ids);
@@ -183,13 +225,15 @@ void Scene::removeUiConnectors(const std::vector<int> &ids)
 	}
 }
 
-//TODO: implement 
-void Scene::selectCursorObjects(QList<int> ids)
+void Scene::selectCursorObjects(QList<int> &ids)
 {
-	if (m_isCursor3d)
+	if (m_isCursor3d && m_cursor->getMode() == Cursor3D::Mode::Idle)
 	{
 		m_cursor->clearAllObjects();
-
+		for (int i = 0; i < ids.count(); ++i)
+		{
+			m_cursor->addActiveObject(getSceneObject(ids.at(i)));
+		}
 	}
 }
 
@@ -254,21 +298,16 @@ void Scene::toggleCursor3D(bool isActive)
 	if (isActive)
 	{
 		addUiConnector(std::make_unique<UiCursor3D>(m_cursor));
-		//addUiConnector(std::move(m_uiCursor));
 	}
 	else
 	{
 		m_uiConnectors.erase(m_cursor->getId());
-		//m_uiCursor =  std::move(m_uiConnectors.find(m_cursor->getId())->second.get());
 	}
 	m_isCursor3d = isActive;
 }
 
 void Scene::updateCursorPosition(float x, float y, int width, int heigth)
 {
-	/*m_cursorPosX = x / (width * 0.5f) - 1.0f;
-	m_cursorPosY = -y / (heigth * 0.5f) + 1.0f;
-	m_cursor->updatePosition(m_cursorPosX, m_cursorPosY, m_cursorPosZ, m_camera);*/
 	m_cursor->updatePosition(x, y, width, heigth, m_camera);
 }
 
@@ -297,6 +336,11 @@ int Scene::createDrawableObject(const QString &name)
 		emit addedBezierCurveC2(name, idType.first, static_cast<const UiBezierCurveC2*>(getUiConntector(idType.first)));
 		break;
 	}
+	case DrawableObject::ObjectType::bezierC2Interpolated:
+	{
+		emit addedBezierC2Interpolated(name, idType.first, static_cast<const UiBezierC2Interpolated*>(getUiConntector(idType.first)));
+		break;
+	}
 	case DrawableObject::ObjectType::cursor3D:
 	{
 		break;
@@ -317,27 +361,3 @@ UiConnector* Scene::getUiConntector(int id) const
 	}
 	return m_uiConnectors.find(id)->second.get();
 }
-
-//std::shared_ptr<Cursor3D>& Scene::getCursor()
-//{
-//	return m_uiCursor->getCursor();
-//}
-
-//int Scene::updateCursor()
-//{
-//	if (m_activeObject != nullptr)
-//	{
-//		int id = m_cursor->getClosestObject(m_uiConnectors);
-//		//m_cursor->m_obtainedObject = m_uiConnectors.find(id)->second.get()->getObject();
-//		if (m_activeObject->m_type == DrawableObject::ObjectType::bezierCurveC0)
-//		{
-//			static_cast<UiBezierCurveC0*>(m_uiConnectors.find(m_activeObject->getId())->second.get())->addPoint(m_uiConnectors.find(id)->second.get()->getObject(), m_activeObject->getId());
-//		}
-//		else if (m_activeObject->m_type == DrawableObject::ObjectType::bezierCurveC2)
-//		{
-//			static_cast<UiBezierCurveC2*>(m_uiConnectors.find(m_activeObject->getId())->second.get())->addPoint(m_uiConnectors.find(id)->second.get()->getObject(), m_activeObject->getId());
-//		}
-//		return -1;
-//	}
-//	return m_cursor->acquireObject(m_uiConnectors);
-//}

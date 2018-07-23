@@ -1,6 +1,7 @@
 #include "bezierCurveC2.h"
 #include "utils.h"
 #include "3dmath.h"
+#include "curveCubic.h"
 
 BezierCurveC2::BezierCurveC2(ObjectType type, QString name)
 	: DrawableObject(type, name), m_showPolyline(false), m_bSplineBasis(false)
@@ -37,11 +38,6 @@ void BezierCurveC2::draw(std::vector<QVector4D>& vec, float3 color) const
 void BezierCurveC2::setModelMatrix(const QMatrix4x4& matrix)
 {
 	m_modelMatrix = matrix;
-}
-
-QVector4D BezierCurveC2::getPosition() const
-{
-	return QVector4D(m_modelMatrix.row(0).w(), m_modelMatrix.row(1).w(), m_modelMatrix.row(2).w(), 1);
 }
 
 QList<int> BezierCurveC2::getDeBoorPointIds() const
@@ -102,23 +98,6 @@ void BezierCurveC2::createVertices()
 			m_vertices.push_back(m_deBoorPoints.at(i)->getPosition());
 		}
 	}
-	/*if (m_showPolyline)
-	{
-		if (m_bSplineBasis)
-		{
-			for (int i = 0; i < m_deBoorPoints.count(); ++i)
-			{
-				m_vertices.push_back(m_deBoorPoints.at(i)->getPosition());
-			}
-		}
-		else
-		{
-			for (int i = 0; i < m_controlPoints.size(); ++i)
-			{
-				m_vertices.push_back(m_controlPoints.at(i)->getPosition());
-			}
-		}
-	}*/
 }
 
 void BezierCurveC2::generateIndices()
@@ -163,7 +142,6 @@ void BezierCurveC2::generateControlPoints()
 	}
 	m_controlPoints.reserve((deBoorCount - 4) * 2 + deBoorCount);
 	m_controlPoints.push_back(std::make_shared<Point3D>(Point3D(ObjectType::point3D, "Point3D", skewPoints.at(0), m_bSplineBasis)));
-	//for (int i = 0; i < (m_deBoorPoints.count() / 4 + m_deBoorPoints.count() % 4); ++i)
 	for (int i = 0; i < ((deBoorCount - 4) * 2 + deBoorCount - 1) / 3; ++i)
 	{
 		m_controlPoints.push_back(std::make_shared<Point3D>(Point3D(ObjectType::point3D, "Point3D", betweenDeBoorPoints.at(2 * i + 2), m_bSplineBasis)));
@@ -222,16 +200,6 @@ bool BezierCurveC2::assignDeBoorPoints(const std::vector<std::shared_ptr<Drawabl
 void BezierCurveC2::removeDeBoorPoint(const std::shared_ptr<DrawableObject> &point)
 {
 	removeDeBoorPoint(point->getId());
-	/*for (int i = 0; i < m_deBoorPoints.count(); ++i)
-	{
-		if (point->getId() == m_deBoorPoints.at(i)->getId())
-		{
-			m_deBoorPoints.removeAt(i);
-		}
-	}
-	generateControlPoints();
-	createVertices();
-	generateIndices();*/
 }
 
 void BezierCurveC2::removeDeBoorPoint(int pointId)
@@ -254,17 +222,17 @@ void BezierCurveC2::translateDeBoors(const std::shared_ptr<DrawableObject> &poin
 	{
 	case 0:
 	{
-		m_deBoorPoints.at(deBoorIndex)->setPosition(3.f / 2.f * point->getPosition() - 1.f / 4.f * m_deBoorPoints.at(deBoorIndex - 1)->getPosition() - 1.f / 4.f * m_deBoorPoints.at(deBoorIndex + 1)->getPosition());
+		m_deBoorPoints.at(deBoorIndex)->setPosition(1.5f * point->getPosition() - 0.25f * m_deBoorPoints.at(deBoorIndex - 1)->getPosition() - 0.25f * m_deBoorPoints.at(deBoorIndex + 1)->getPosition());
 		break;
 	}
 	case 1:
 	{
-		m_deBoorPoints.at(deBoorIndex)->setPosition(3.f / 2.f * point->getPosition() - 1.f / 2.f * m_deBoorPoints.at(deBoorIndex + 1)->getPosition());
+		m_deBoorPoints.at(deBoorIndex)->setPosition(1.5f * point->getPosition() - 0.5f * m_deBoorPoints.at(deBoorIndex + 1)->getPosition());
 		break;
 	}
 	case 2:
 	{
-		m_deBoorPoints.at(deBoorIndex)->setPosition(3.f / 2.f * point->getPosition() - 1.f / 2.f * m_deBoorPoints.at(deBoorIndex - 1)->getPosition());
+		m_deBoorPoints.at(deBoorIndex)->setPosition(1.5f * point->getPosition() - 0.5f * m_deBoorPoints.at(deBoorIndex - 1)->getPosition());
 		break;
 	}
 	}

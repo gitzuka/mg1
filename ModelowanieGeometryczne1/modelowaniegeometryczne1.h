@@ -20,7 +20,7 @@ private:
 	Scene m_scene;
 	Ui::ModelowanieGeometryczne1Class ui;
 	QStringListModel *model;
-	QStringList ui_drawableObjects = { "Torus", "Point3D", "BezierCurveC0", "BezierCurveC2" };
+	QStringList ui_drawableObjects = { "Torus", "Point3D", "BezierCurveC0", "BezierCurveC2", "BezierC2Interpolated" };
 	QList<int> m_selectedObjectsIds;
 
 	void connectSignals();
@@ -37,6 +37,7 @@ private slots:
 	void comboBox_Torus_AddItem(const QString &name, int id, const UiTorus *uiTorus);
 	void comboBox_BezierCurveC0_AddItem(const QString &name, int id, const UiBezierCurveC0 *uiBezierC0);
 	void comboBox_BezierCurveC2_AddItem(const QString &name, int id, const UiBezierCurveC2 *uiBezierC2);
+	void comboBox_BezierCurveC2Int_AddItem(const QString &name, int id, const UiBezierC2Interpolated *uiBezierC2Int);
 	void connectPoint3D(const QString &name, int id, const UiPoint3D *uiPoint3d);
 	void myGLWidgetKeyPressed(QKeyEvent *event);
 	void myGLWidgetMouseMoved(QMouseEvent *event);
@@ -44,6 +45,7 @@ private slots:
 	void updateMyGLWidget();
 	void showBC0CheckBoxes(int currId, int prevId);
 	void showBC2CheckBoxes(int currId, int prevId);
+	void showBC2IntCheckBoxes(int currId, int prevId);
 	void radioBtnIdleToggled(bool checked);
 	void radioBtnTranslateToggled(bool checked);
 	void radioBtnAddToggled(bool checked);

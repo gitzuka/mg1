@@ -18,9 +18,9 @@ void CurveQuadratic::generateCurve(std::vector<QVector4D> &vec)
 
 QVector4D CurveQuadratic::deCasteljau(float t)
 {
-	return QVector4D(m_p1 * pow(1 - t, 2) + 
+	return QVector4D(QVector3D(m_p1 * pow(1 - t, 2) + 
 		2 * m_p2 * t * (1 - t) +
-		m_p3 * pow(t, 2));
+		m_p3 * pow(t, 2)), 1.0f);
 }
 
 float CurveQuadratic::getLength() const

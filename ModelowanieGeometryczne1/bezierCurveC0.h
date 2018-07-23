@@ -1,6 +1,5 @@
 #pragma once
 #include "point3d.h"
-#include "curveCubic.h"
 #include "uiBezierCurveC0.h"
 #include <memory>
 
@@ -15,7 +14,6 @@ public:
 	void draw(std::vector<QVector4D> &vec) const override;
 	void draw(std::vector<QVector4D> &vec, float3 color) const override;
 	void setModelMatrix(const QMatrix4x4 &matrix) override;
-	QVector4D getPosition() const override;
 	
 	QList<int> getControlPointIds() const;
 	const QList<std::shared_ptr<Point3D>>& getControlPoints() const;

@@ -5,7 +5,6 @@
 
 Torus::Torus(ObjectType type, QString name) :
 	DrawableObject(type, name),
-	//m_smallRadius(0.10), m_bigRadius(0.40), m_minorSegments(30), m_majorSegments(30), m_uiTorus(*this)
 	m_smallRadius(0.10), m_bigRadius(0.40), m_minorSegments(30), m_majorSegments(30)
 {
 	Torus::createVertices();
@@ -15,7 +14,6 @@ Torus::Torus(ObjectType type, QString name) :
 Torus::Torus(float r, float R, int minorSegments, int majorSegments,
 	ObjectType type, QString name) :
 	DrawableObject(type, name),
-	//m_smallRadius(r), m_bigRadius(R), m_minorSegments(minorSegments), m_majorSegments(majorSegments), m_uiTorus(*this)
 	m_smallRadius(r), m_bigRadius(R), m_minorSegments(minorSegments), m_majorSegments(majorSegments)
 {
 }
@@ -111,13 +109,3 @@ void Torus::setModelMatrix(const QMatrix4x4 &matrix)
 {
 	m_modelMatrix = matrix;
 }
-
-QVector4D Torus::getPosition() const
-{
-	return QVector4D(m_modelMatrix.row(0).w(), m_modelMatrix.row(1).w(), m_modelMatrix.row(2).w(), 1);
-}
-
-//void Torus::connectToUI(ComboBoxTorus *comboBox, ListWidgetMain *listWidget) const
-//{
-//	m_uiTorus.connectToUi(comboBox, listWidget);
-//}

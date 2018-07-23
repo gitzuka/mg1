@@ -24,7 +24,6 @@ void UiBezierCurveC0::connectToUi(const Ui_ModelowanieGeometryczne1Class* ui) co
 
 	QObject::connect(m_checkBoxPolyline, &QCheckBox::stateChanged, this, &UiBezierCurveC0::changePolylineState);
 	QObject::connect(m_checkBoxPolyline, &QCheckBox::stateChanged, ui->myGLWidget, &MyGLWidget::updateGL);
-	/*ui->verticalLayout_BC0->addWidget(m_checkBoxPolyline);*/
 }
 
 std::shared_ptr<DrawableObject> UiBezierCurveC0::getObject()

@@ -77,11 +77,6 @@ const QMatrix4x4& Point3D::getModelMatrix() const
 	return m_modelMatrix;
 }
 
-QVector4D Point3D::getPosition() const
-{
-	return m_modelMatrix.column(3);
-}
-
 void Point3D::setPosition(const QVector4D& point)
 {
 	m_modelMatrix.setColumn(3, point);

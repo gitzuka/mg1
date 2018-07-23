@@ -9,6 +9,7 @@ class UiBezierCurveC2;
 class UiPoint3D;
 class UiTorus;
 class UiCursor3D;
+class UiBezierC2Interpolated;
 
 class Scene : public QObject
 {
@@ -33,11 +34,14 @@ private:
 	void addUiConnector(std::unique_ptr<UiConnector> uiConnector);
 	void createCurveC0fromPoints(const QList<int> &objectIds);
 	void createCurveC2fromPoints(const QList<int> &objectIds);
+	void createCurveC2IntfromPoints(const QList<int> &objectIds);
 	void createBC0menu(const QPoint &pos, int id);
 	void createBC2menu(const QPoint &pos, int id);
+	void createBC2IntMenu(const QPoint &pos, int id);
 	void createPoint3Dmenu(const QPoint &pos, const QList<int> &ids);
 	void setActiveObject(int id);
-	void removeActiveObject(int id);
+	//returns nullptr if object not found
+	std::shared_ptr<DrawableObject> getSceneObject(int id);
 	QPair<int, DrawableObject::ObjectType> createUiConnector(const QString &name);
 
 public slots:
@@ -49,16 +53,18 @@ private slots:
 	void resetCursor();
 	void createObjectMenu(const QPoint &pos, const QList<int> &ids);
 	void deleteObject(int id);
-	void selectCursorObjects(QList<int> ids);
+	void selectCursorObjects(QList<int> &ids);
 
 signals:
 	void addedTorus(const QString &name, int id, const UiTorus *uiTorus);
 	void addedBezierCurveC0(const QString &name, int id, const UiBezierCurveC0 *uiBezierC0);
 	void addedBezierCurveC2(const QString &name, int id, const UiBezierCurveC2 *uiBezierC2);
+	void addedBezierC2Interpolated(const QString &name, int id, const UiBezierC2Interpolated *uiBezierC2);
 	void addedPoint3D(const QString &name, int id, const UiPoint3D *object);
 	void update() const;
 	void editModeBC0(int id);
 	void editModeBC2(int id);
+	void editModeBC2Int(int id);
 	void objectActivated(int id);
 	void objectDeactivated(int id);
 };

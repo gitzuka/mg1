@@ -21,7 +21,6 @@ public:
 	void draw(std::vector<QVector4D> &vec) const override;
 	void draw(std::vector<QVector4D> &vec, float3 color) const override;
 	void setModelMatrix(const QMatrix4x4 &matrix) override;
-	QVector4D getPosition() const override;
 	
 	//void updatePosition(float posX, float posY, float posZ, const Camera &camera);
 	void updatePosition(float x, float y, int width, int height, const Camera &camera);
@@ -31,6 +30,7 @@ public:
 	//mouse was pressed, take action based on cursor mode
 	void performAction(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects, bool multiple = false);
 	void setActiveObject(std::shared_ptr<DrawableObject> sceneObject);
+	void addActiveObject(std::shared_ptr<DrawableObject> sceneObject);
 	//returns object if there is only one active, otherwise nullptr
 	std::shared_ptr<DrawableObject> getActiveObject() const;
 

@@ -11,6 +11,7 @@ void UiPoint3D::connectToUi(const Ui_ModelowanieGeometryczne1Class *ui) const
 	QObject::connect(ui->listWidget_ObjectsList , &ListWidgetMain::changeItemTextEvent, this, &UiPoint3D::changeName);
 	QObject::connect(this, &UiPoint3D::nameChanged, ui->listWidget_BC0Parameters, &ListWidgetBC0::updatePointName);
 	QObject::connect(this, &UiPoint3D::nameChanged, ui->listWidget_BC2, &ListWidgetBC2::updatePointName);
+	QObject::connect(this, &UiPoint3D::nameChanged, ui->listWidget_BC2Int, &ListWidgetBC0::updatePointName);
 }
 
 std::shared_ptr<DrawableObject> UiPoint3D::getObject()

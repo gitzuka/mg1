@@ -139,6 +139,7 @@ void ListWidgetMain::itemTextChanged(QListWidgetItem* item)
 	emit changeItemTextEvent(item->text(), findItemId(item));
 }
 
+//TODO: m_bezierC0,C2....
 void ListWidgetMain::addBezierCurveC0(const QString &text, int objectId)
 {
 	addItem(text);
@@ -153,4 +154,12 @@ void ListWidgetMain::addBezierCurveC2(const QString& text, int objectId)
 	m_objectsList.append(qMakePair(this->item(this->count() - 1), objectId));
 	this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 	m_bezierCurveC2Ids.append(objectId);
+}
+
+void ListWidgetMain::addBezierC2Interpolated(const QString& text, int objectId)
+{
+	addItem(text);
+	m_objectsList.append(qMakePair(this->item(this->count() - 1), objectId));
+	this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+	m_bezierCurveC2IntIds.append(objectId);
 }

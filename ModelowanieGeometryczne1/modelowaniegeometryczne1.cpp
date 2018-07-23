@@ -5,6 +5,7 @@
 #include "uiPoint3d.h"
 #include "uiBezierCurveC0.h"
 #include "uiBezierCurveC2.h"
+#include "uiBezierC2Interpolated.h"
 #include <QString>
 #include <QObject>
 
@@ -46,6 +47,7 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_ObjectsList, SLOT(highlightItem(int)));
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BC0Parameters, SLOT(highlightItem(int)));
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BC2, SLOT(highlightItem(int)));
+	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BC2Int, SLOT(highlightItem(int)));
 	connect(this, SIGNAL(mouseClicked(bool)), &m_scene, SLOT(performCursorAction(bool)));
 	connect(this, SIGNAL(escKeyPressed()), &m_scene, SLOT(resetCursor()));
 
@@ -61,32 +63,42 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.listWidget_ObjectsList, SLOT(removeItem()));
 	connect(ui.comboBox_BezierCurveC0, SIGNAL(itemRemoved()), ui.listWidget_BC0Parameters, SLOT(clear()));
 	connect(ui.comboBox_BC2, SIGNAL(itemRemoved()), ui.listWidget_BC2, SLOT(clear()));
+	connect(ui.comboBox_BC2Int, SIGNAL(itemRemoved()), ui.listWidget_BC2Int, SLOT(clear()));
 	connect(ui.comboBox_BezierCurveC0, SIGNAL(itemSelected(int, int)), ui.listWidget_BC0Parameters, SLOT(updateCurveId(int)));
 	connect(ui.comboBox_BezierCurveC0, SIGNAL(itemSelected(int, int)), this, SLOT(showBC0CheckBoxes(int, int)));
 	connect(ui.comboBox_BC2, SIGNAL(itemSelected(int, int)), ui.listWidget_BC2, SLOT(updateCurveId(int)));
 	connect(ui.comboBox_BC2, SIGNAL(itemSelected(int, int)), this, SLOT(showBC2CheckBoxes(int, int)));
+	connect(ui.comboBox_BC2Int, SIGNAL(itemSelected(int, int)), this, SLOT(showBC2IntCheckBoxes(int, int)));
+	connect(ui.comboBox_BC2Int, SIGNAL(itemSelected(int, int)), ui.listWidget_BC2Int, SLOT(updateCurveId(int)));
 	connect(ui.comboBox_BezierCurveC0, SIGNAL(currentIndexChanged(int)), ui.comboBox_BezierCurveC0, SLOT(selectCurve(int)));
 	connect(ui.comboBox_BC2, SIGNAL(currentIndexChanged(int)), ui.comboBox_BC2, SLOT(selectCurve(int)));
+	connect(ui.comboBox_BC2Int, SIGNAL(currentIndexChanged(int)), ui.comboBox_BC2Int, SLOT(selectCurve(int)));
 
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), &m_scene, SLOT(deleteObject(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_Torus, SLOT(deleteItem(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BezierCurveC0, SLOT(deleteItem(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BC2, SLOT(deleteItem(int)));
+	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BC2Int, SLOT(deleteItem(int)));
+	connect(ui.listWidget_ObjectsList, SIGNAL(itemSelected(QList<int>&)), &m_scene, SLOT(selectCursorObjects(QList<int>&)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(rightClick(const QPoint&, const QList<int>&)), &m_scene, SLOT(createObjectMenu(const QPoint&, const QList<int>&)));
 
 	connect(ui.listWidget_BC0Parameters, SIGNAL(removedItem(int, int)), ui.myGLWidget, SLOT(updateGL()));
 	connect(ui.listWidget_BC2, SIGNAL(removedItem(int, int)), ui.myGLWidget, SLOT(updateGL()));
+	connect(ui.listWidget_BC2Int, SIGNAL(removedItem(int, int)), ui.myGLWidget, SLOT(updateGL()));
 
 	connect(&m_scene, SIGNAL(addedBezierCurveC0(const QString&, int, const UiBezierCurveC0*)), ui.listWidget_ObjectsList, SLOT(addBezierCurveC0(const QString&, int)));
 	connect(&m_scene, SIGNAL(addedBezierCurveC0(const QString&, int, const UiBezierCurveC0*)), this, SLOT(comboBox_BezierCurveC0_AddItem(const QString&, int, const UiBezierCurveC0*)));
 	connect(&m_scene, SIGNAL(addedBezierCurveC2(const QString&, int, const UiBezierCurveC2*)), ui.listWidget_ObjectsList, SLOT(addBezierCurveC2(const QString&, int)));
 	connect(&m_scene, SIGNAL(addedBezierCurveC2(const QString&, int, const UiBezierCurveC2*)), this, SLOT(comboBox_BezierCurveC2_AddItem(const QString&, int, const UiBezierCurveC2*)));
+	connect(&m_scene, SIGNAL(addedBezierC2Interpolated(const QString&, int, const UiBezierC2Interpolated*)), ui.listWidget_ObjectsList, SLOT(addBezierC2Interpolated(const QString&, int)));
+	connect(&m_scene, SIGNAL(addedBezierC2Interpolated(const QString&, int, const UiBezierC2Interpolated*)), this, SLOT(comboBox_BezierCurveC2Int_AddItem(const QString&, int, const UiBezierC2Interpolated*)));
 	connect(&m_scene, SIGNAL(addedTorus(const QString&, int, const UiTorus*)), ui.listWidget_ObjectsList, SLOT(addTorus(const QString&, int)));
 	connect(&m_scene, SIGNAL(addedTorus(const QString&, int, const UiTorus*)), this, SLOT(comboBox_Torus_AddItem(const QString&, int, const UiTorus*)));
 	connect(&m_scene, SIGNAL(addedPoint3D(const QString&, int, const UiPoint3D*)), ui.listWidget_ObjectsList, SLOT(addPoint3D(const QString&, int)));
 	connect(&m_scene, SIGNAL(addedPoint3D(const QString&, int, const UiPoint3D*)), this, SLOT(connectPoint3D(const QString&, int, const UiPoint3D*)));
 	connect(&m_scene, SIGNAL(editModeBC0(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
 	connect(&m_scene, SIGNAL(editModeBC2(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
+	connect(&m_scene, SIGNAL(editModeBC2Int(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
 	connect(&m_scene, SIGNAL(objectDeactivated(int)), ui.listWidget_ObjectsList, SLOT(removeHighlightActive()));
 	connect(&m_scene, SIGNAL(objectActivated(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
 }
@@ -132,6 +144,13 @@ void ModelowanieGeometryczne1::comboBox_BezierCurveC2_AddItem(const QString &nam
 	uiBezierC2->connectToUi(&ui);
 	uiBezierC2->connectToScene(&m_scene);
 	ui.comboBox_BC2->addItem(id, name);
+}
+
+void ModelowanieGeometryczne1::comboBox_BezierCurveC2Int_AddItem(const QString& name, int id, const UiBezierC2Interpolated* uiBezierC2Int)
+{
+	uiBezierC2Int->connectToUi(&ui);
+	uiBezierC2Int->connectToScene(&m_scene);
+	ui.comboBox_BC2Int->addItem(id, name);
 }
 
 void ModelowanieGeometryczne1::connectPoint3D(const QString& name, int id, const UiPoint3D* uiPoint3d)
@@ -258,6 +277,22 @@ void ModelowanieGeometryczne1::showBC2CheckBoxes(int currId, int prevId)
 		uibc2->getCBDeBoor()->show();
 		ui.verticalLayout_BC2->addWidget(uibc2->getCBPolyline());
 		ui.verticalLayout_BC2->addWidget(uibc2->getCBDeBoor());
+	}
+}
+
+void ModelowanieGeometryczne1::showBC2IntCheckBoxes(int currId, int prevId)
+{
+	UiBezierC2Interpolated *uibc2Int = static_cast<UiBezierC2Interpolated*>(m_scene.getUiConntector(prevId));
+	if (uibc2Int != nullptr)
+	{
+		uibc2Int->getCBPolyline()->hide();
+		ui.verticalLayout_BC2Int->removeWidget(uibc2Int->getCBPolyline());
+	}
+	uibc2Int = static_cast<UiBezierC2Interpolated*>(m_scene.getUiConntector(currId));
+	if (uibc2Int != nullptr)
+	{
+		uibc2Int->getCBPolyline()->show();
+		ui.verticalLayout_BC2Int->addWidget(uibc2Int->getCBPolyline());
 	}
 }
 

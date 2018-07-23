@@ -84,7 +84,7 @@
         <item>
          <widget class="QTabWidget" name="myTabWidget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab_Objects">
            <attribute name="title">
@@ -186,7 +186,7 @@
               <item>
                <widget class="QToolBox" name="toolBox">
                 <property name="currentIndex">
-                 <number>2</number>
+                 <number>3</number>
                 </property>
                 <property name="tabSpacing">
                  <number>0</number>
@@ -197,7 +197,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>98</width>
-                   <height>176</height>
+                   <height>154</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -336,7 +336,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>98</width>
-                   <height>118</height>
+                   <height>100</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -382,8 +382,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>293</width>
-                   <height>481</height>
+                   <width>98</width>
+                   <height>100</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -412,6 +412,49 @@
                     </item>
                     <item>
                      <widget class="ListWidgetBC2" name="listWidget_BC2"/>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="page_BezierC2Int">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>293</width>
+                   <height>490</height>
+                  </rect>
+                 </property>
+                 <attribute name="label">
+                  <string>Bezier Curve C2 Interpolated</string>
+                 </attribute>
+                 <layout class="QVBoxLayout" name="verticalLayout_10">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <layout class="QVBoxLayout" name="verticalLayout_BC2Int" stretch="0,0">
+                    <property name="spacing">
+                     <number>5</number>
+                    </property>
+                    <item>
+                     <widget class="ComboBoxBezierCurveC0" name="comboBox_BC2Int"/>
+                    </item>
+                    <item>
+                     <widget class="ListWidgetBC0" name="listWidget_BC2Int"/>
                     </item>
                    </layout>
                   </item>
@@ -626,7 +669,7 @@
      <x>0</x>
      <y>0</y>
      <width>1107</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="defaultUp">

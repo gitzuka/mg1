@@ -2,6 +2,7 @@
 #include <QtGui>
 #include "curveQuadratic.h"
 #include "utils.h"
+#include "curveCubic.h"
 
 BezierCurveC0::BezierCurveC0(ObjectType type, QString name) :
 	DrawableObject(type, name), m_showPolyline(false)
@@ -35,6 +36,7 @@ void BezierCurveC0::draw(std::vector<QVector4D>& vec, float3 color) const
 	}
 }
 
+//TODO: check if works
 void BezierCurveC0::setModelMatrix(const QMatrix4x4 &matrix)
 {
 	QVector3D vec = matrix.column(3).toVector3D();
@@ -48,11 +50,6 @@ void BezierCurveC0::setModelMatrix(const QMatrix4x4 &matrix)
 		//m_controlPoints.at(i)->setPosition(m_controlPoints.at(i)->getCenter());
 	}
 	m_modelMatrix = matrix;
-}
-
-QVector4D BezierCurveC0::getPosition() const
-{
-	return QVector4D(m_modelMatrix.row(0).w(), m_modelMatrix.row(1).w(), m_modelMatrix.row(2).w(), 1);
 }
 
 void BezierCurveC0::createVertices()
@@ -82,15 +79,15 @@ void BezierCurveC0::createVertices()
 	case 1: //only cubic curves
 		break;
 	case 2:
-		m_vertices.push_back(m_controlPoints.at(3 * cubic)->getPosition());
-		m_vertices.push_back(m_controlPoints.at(3 * cubic + 1)->getPosition());
+		m_vertices.push_back(QVector4D(m_controlPoints.at(3 * cubic)->getPosition(), 1.0f));
+		m_vertices.push_back(QVector4D(m_controlPoints.at(3 * cubic + 1)->getPosition(), 1.0f));
 		break;
 	}
 	if (m_showPolyline)
 	{
 		for (int i = 0; i < m_controlPoints.count(); ++i)
 		{
-			m_vertices.push_back(m_controlPoints.at(i)->getPosition());
+			m_vertices.push_back(QVector4D(m_controlPoints.at(i)->getPosition(), 1.0f));
 		}
 	}
 }
@@ -151,15 +148,7 @@ bool BezierCurveC0::assignControlPoints(const std::vector<std::shared_ptr<Drawab
 
 void BezierCurveC0::removeControlPoint(const std::shared_ptr<DrawableObject> &point)
 {
-	for (int i = 0; i < m_controlPoints.count(); ++i)
-	{
-		if (point->getId() == m_controlPoints.at(i)->getId())
-		{
-			m_controlPoints.removeAt(i);
-		}
-	}
-	createVertices();
-	generateIndices();
+	removeControlPoint(point->getId());
 }
 
 void BezierCurveC0::removeControlPoint(int pointId)

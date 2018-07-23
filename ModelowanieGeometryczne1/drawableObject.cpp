@@ -52,6 +52,11 @@ void DrawableObject::setName(const QString &name)
 	m_name = name;
 }
 
+QVector3D DrawableObject::getPosition() const
+{
+	return QVector3D(m_modelMatrix.row(0).w(), m_modelMatrix.row(1).w(), m_modelMatrix.row(2).w());
+}
+
 const QMatrix4x4& DrawableObject::getModelMatrix() const
 {
 	return m_modelMatrix;

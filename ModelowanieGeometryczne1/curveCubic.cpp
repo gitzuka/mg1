@@ -17,10 +17,10 @@ void CurveCubic::generateCurve(std::vector<QVector4D>& vec)
 
 QVector4D CurveCubic::deCasteljau(float t)
 {
-	return QVector4D(pow(1 - t, 3) * m_p1 +
+	return QVector4D(QVector3D(pow(1 - t, 3) * m_p1 +
 		3 * pow(1 - t, 2) * t * m_p2 +
 		3 * (1 - t) * pow(t, 2) * m_p3 +
-		pow(t, 3) * m_p4);
+		pow(t, 3) * m_p4), 1.0f);
 }
 
 float CurveCubic::getLength() const

@@ -16,6 +16,7 @@ private:
 	QList<QPair<QListWidgetItem*, int>> m_objectsList;
 	QList<int> m_bezierCurveC0Ids;
 	QList<int> m_bezierCurveC2Ids;
+	QList<int> m_bezierCurveC2IntIds;
 	QList<int> m_torusIds;
 	QList<int> m_selectedObjectsIds;
 	QListWidgetItem *m_activeItem;
@@ -28,11 +29,12 @@ signals:
 	void rightClick(const QPoint &pos, const QList<int> &selectedObjectIds);
 	void changeItemTextEvent(const QString &text, int objectId);
 	void removeItemEvent(int objectId);
-	void itemSelected(QList<int> objectIds);
+	void itemSelected(QList<int> &objectIds);
 
 public slots:
 	void addBezierCurveC0(const QString &text, int objectId);
 	void addBezierCurveC2(const QString &text, int objectId);
+	void addBezierC2Interpolated(const QString &text, int objectId);
 	void addTorus(const QString &text, int objectId);
 	void addPoint3D(const QString &text, int objectId);
 	void removeItem();
