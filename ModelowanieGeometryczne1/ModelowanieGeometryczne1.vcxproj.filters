@@ -75,6 +75,12 @@
     <Filter Include="Source Files\Utils">
       <UniqueIdentifier>{3f1ede82-d230-4740-be08-5903cb92411c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Objects\Surfaces">
+      <UniqueIdentifier>{cf537e44-12e3-48df-a766-84143a73f61c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Surfaces">
+      <UniqueIdentifier>{76d1a463-44b9-44f2-8a6b-e4533e4d854c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -153,9 +159,6 @@
       <Filter>Source Files\UI\Ui Connectors</Filter>
     </ClCompile>
     <ClCompile Include="uiTorus.cpp">
-      <Filter>Source Files\UI\Ui Connectors</Filter>
-    </ClCompile>
-    <ClCompile Include="uiConnector.cpp">
       <Filter>Source Files\UI\Ui Connectors</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_comboBoxBezierCurveC0.cpp">
@@ -254,6 +257,60 @@
     <ClCompile Include="GeneratedFiles\Release\moc_uiBezierC2Interpolated.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="bezierPatch.cpp">
+      <Filter>Source Files\Objects\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="bezierSurfaceC0.cpp">
+      <Filter>Source Files\Objects\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="bezierSurface.cpp">
+      <Filter>Source Files\Objects\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="uiBezierSurface.cpp">
+      <Filter>Source Files\UI\Ui Connectors</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_uiBezierSurface.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_uiBezierSurface.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="UiBezierSurfaceC0.cpp">
+      <Filter>Source Files\UI\Ui Connectors</Filter>
+    </ClCompile>
+    <ClCompile Include="uiBezierSurfaceC2.cpp">
+      <Filter>Source Files\UI\Ui Connectors</Filter>
+    </ClCompile>
+    <ClCompile Include="bezierSurfaceC2.cpp">
+      <Filter>Source Files\Objects\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="comboBoxBezierSurface.cpp">
+      <Filter>Source Files\UI\ComboBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_comboBoxBezierSurface.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="listWidgetBezierSurface.cpp">
+      <Filter>Source Files\UI\ListWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_listWidgetBezierSurface.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_listWidgetBezierSurface.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_comboBoxBezierSurface.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_bezierSurfaceSettings.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_bezierSurfaceSettings.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="bezierSurfaceSettings.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="modelowaniegeometryczne1.ui">
@@ -310,6 +367,21 @@
     <CustomBuild Include="uiBezierC2Interpolated.h">
       <Filter>Header Files\UI\UI connectors</Filter>
     </CustomBuild>
+    <CustomBuild Include="uiBezierSurface.h">
+      <Filter>Header Files\UI\UI connectors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="comboBoxBezierSurface.h">
+      <Filter>Header Files\UI\ComboBoxes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="listWidgetBezierSurface.h">
+      <Filter>Header Files\UI\ListWidgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GeneratedFiles\bezierSurfaceSettings.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="bezierSurfaceSettings.h">
+      <Filter>Header Files\UI</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_modelowaniegeometryczne1.h">
@@ -365,6 +437,27 @@
     </ClInclude>
     <ClInclude Include="bezierC2Interpolated.h">
       <Filter>Header Files\Objects\Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="bezierPatch.h">
+      <Filter>Header Files\Objects\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="bezierSurface.h">
+      <Filter>Header Files\Objects\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="bezierSurfaceC0.h">
+      <Filter>Header Files\Objects\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="uiBezierSurfaceC0.h">
+      <Filter>Header Files\UI\UI connectors</Filter>
+    </ClInclude>
+    <ClInclude Include="uiBezierSurfaceC2.h">
+      <Filter>Header Files\UI\UI connectors</Filter>
+    </ClInclude>
+    <ClInclude Include="bezierSurfaceC2.h">
+      <Filter>Header Files\Objects\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_bezierSurfaceSettings.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

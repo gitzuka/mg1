@@ -13,12 +13,12 @@ BezierCurveC0::~BezierCurveC0()
 {
 }
 
-void BezierCurveC0::draw(std::vector<QVector4D>& vec) const
+void BezierCurveC0::draw(std::vector<QVector4D> &vec) const
 {
 	draw(vec, m_color);
 }
 
-void BezierCurveC0::draw(std::vector<QVector4D>& vec, float3 color) const
+void BezierCurveC0::draw(std::vector<QVector4D> &vec, float3 color) const
 {
 	if (m_vertices.size() < 2)
 	{

@@ -1,6 +1,7 @@
 #include "point3d.h"
 #include "ui_modelowaniegeometryczne1.h"
 #include "bezierCurveC2.h"
+#include "uiBezierSurfaceC2.h"
 
 Point3D::Point3D(ObjectType type, QString name, bool enabled) :
 	DrawableObject(type, name, enabled)
@@ -87,6 +88,7 @@ void Point3D::setAncestor(std::weak_ptr<DrawableObject> ancestor)
 	m_ancestors.emplace(ancestor._Get()->getId(), ancestor);
 }
 
+//TODO: bezier surface point moved
 void Point3D::notifyAncestorsPositionChanged()
 {
 	for (std::unordered_map<int, std::weak_ptr<DrawableObject>>::iterator it = m_ancestors.begin(); it !=m_ancestors.end(); ++it)
@@ -94,6 +96,14 @@ void Point3D::notifyAncestorsPositionChanged()
 		if (it->second._Get()->m_type == DrawableObject::ObjectType::bezierCurveC2)
 		{
 			std::static_pointer_cast<BezierCurveC2>(it->second.lock())->pointMoved(this->getId());
+		}
+		else if (it->second._Get()->m_type == DrawableObject::ObjectType::bezierSurfaceC0)
+		{
+			std::static_pointer_cast<BezierSurfaceC0>(it->second.lock())->pointMoved(this->getId());
+		}
+		else if (it->second._Get()->m_type == DrawableObject::ObjectType::bezierSurfaceC2)
+		{
+			std::static_pointer_cast<BezierSurfaceC2>(it->second.lock())->pointMoved(this->getId());
 		}
 	}
 }

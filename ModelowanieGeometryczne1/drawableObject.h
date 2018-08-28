@@ -7,15 +7,17 @@ class DrawableObject
 public:
 	virtual ~DrawableObject() {}
 
-	enum class ObjectType { torus, point3D, cursor3D, bezierCurveC0, bezierCurveC2, bezierC2Interpolated };
-	
+	enum class ObjectType
+	{
+		torus, point3D, cursor3D, bezierCurveC0, bezierCurveC2, bezierC2Interpolated, bezierSurfaceC0, bezierSurfaceC2
+	};
+
 	const ObjectType m_type;
 	bool m_enabled;
 
 	virtual void draw(std::vector<QVector4D> &vec) const = 0;
 	virtual void draw(std::vector<QVector4D> &vec, float3 color) const = 0;
 	virtual void setModelMatrix(const QMatrix4x4 &matrix) = 0;
-	//virtual QVector4D getPosition() const = 0;
 	virtual const QMatrix4x4& getModelMatrix() const;
 
 	void setColor(float r, float g, float b);

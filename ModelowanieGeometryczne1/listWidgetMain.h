@@ -2,8 +2,9 @@
 #ifndef LISTWIDGETOBJECTS_H
 #define LISTWIDGETOBJECTS_H
 #include <QListWidget>
+#include <memory>
 
-
+class Point3D;
 class ListWidgetMain : public QListWidget
 {
 	Q_OBJECT
@@ -14,11 +15,8 @@ public:
 
 private:
 	QList<QPair<QListWidgetItem*, int>> m_objectsList;
-	QList<int> m_bezierCurveC0Ids;
-	QList<int> m_bezierCurveC2Ids;
-	QList<int> m_bezierCurveC2IntIds;
-	QList<int> m_torusIds;
 	QList<int> m_selectedObjectsIds;
+	QList<int> m_undeleteable;
 	QListWidgetItem *m_activeItem;
 
 	void mousePressEvent(QMouseEvent *event) override;
@@ -37,10 +35,13 @@ public slots:
 	void addBezierC2Interpolated(const QString &text, int objectId);
 	void addTorus(const QString &text, int objectId);
 	void addPoint3D(const QString &text, int objectId);
+	void addObject(const QString &text, int objectId);
 	void removeItem();
 	void highlightItem(int objectId);
 	void highlightActiveItem(int objectId);
 	void removeHighlightActive();
+	void deleteSurfacePoints(const std::vector<int> &pointsIds);
+	void addPoints(const std::vector<std::shared_ptr<Point3D>> &points);
 
 private slots:
 	void itemTextChanged(QListWidgetItem *item);

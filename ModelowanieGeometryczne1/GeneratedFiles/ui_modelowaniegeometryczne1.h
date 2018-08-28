@@ -33,9 +33,11 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <comboBoxBezierCurveC0.h>
+#include <comboBoxBezierSurface.h>
 #include <comboBoxTorus.h>
 #include <listWidgetBC0.h>
 #include <listWidgetBC2.h>
+#include <listWidgetBezierSurface.h>
 #include <listWidgetMain.h>
 #include <myGLWidget.h>
 
@@ -90,6 +92,18 @@ public:
     QVBoxLayout *verticalLayout_BC2Int;
     ComboBoxBezierCurveC0 *comboBox_BC2Int;
     ListWidgetBC0 *listWidget_BC2Int;
+    QWidget *page_bezierSurfaceC0;
+    QVBoxLayout *verticalLayout_13;
+    QVBoxLayout *verticalLayout_BSC0;
+    ComboBoxBezierSurface *comboBox_BSC0;
+    ListWidgetBezierSurface *listWidget_BSC0;
+    QPushButton *pushButton_BSC0;
+    QWidget *page_bezierSurfaceC2;
+    QVBoxLayout *verticalLayout_14;
+    QVBoxLayout *verticalLayout_BSC2;
+    ComboBoxBezierSurface *comboBox_BSC2;
+    ListWidgetBezierSurface *listWidget_BSC2;
+    QPushButton *pushButton_BSC2;
     QWidget *tab_Other;
     QVBoxLayout *verticalLayout_6;
     QVBoxLayout *verticalLayout_5;
@@ -200,7 +214,7 @@ public:
         toolBox->setObjectName(QStringLiteral("toolBox"));
         page_Torus = new QWidget();
         page_Torus->setObjectName(QStringLiteral("page_Torus"));
-        page_Torus->setGeometry(QRect(0, 0, 98, 154));
+        page_Torus->setGeometry(QRect(0, 0, 293, 400));
         verticalLayout_8 = new QVBoxLayout(page_Torus);
         verticalLayout_8->setSpacing(0);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -278,7 +292,7 @@ public:
         toolBox->addItem(page_Torus, QStringLiteral("Torus"));
         page_BezierCurveC0 = new QWidget();
         page_BezierCurveC0->setObjectName(QStringLiteral("page_BezierCurveC0"));
-        page_BezierCurveC0->setGeometry(QRect(0, 0, 98, 100));
+        page_BezierCurveC0->setGeometry(QRect(0, 0, 98, 107));
         verticalLayout_11 = new QVBoxLayout(page_BezierCurveC0);
         verticalLayout_11->setSpacing(0);
         verticalLayout_11->setContentsMargins(11, 11, 11, 11);
@@ -304,7 +318,7 @@ public:
         toolBox->addItem(page_BezierCurveC0, QStringLiteral("Bezier Curve C0"));
         page_BezierCurveC2 = new QWidget();
         page_BezierCurveC2->setObjectName(QStringLiteral("page_BezierCurveC2"));
-        page_BezierCurveC2->setGeometry(QRect(0, 0, 98, 100));
+        page_BezierCurveC2->setGeometry(QRect(0, 0, 98, 107));
         verticalLayout_12 = new QVBoxLayout(page_BezierCurveC2);
         verticalLayout_12->setSpacing(6);
         verticalLayout_12->setContentsMargins(11, 11, 11, 11);
@@ -329,7 +343,7 @@ public:
         toolBox->addItem(page_BezierCurveC2, QStringLiteral("Bezier Curve C2"));
         page_BezierC2Int = new QWidget();
         page_BezierC2Int->setObjectName(QStringLiteral("page_BezierC2Int"));
-        page_BezierC2Int->setGeometry(QRect(0, 0, 293, 490));
+        page_BezierC2Int->setGeometry(QRect(0, 0, 98, 107));
         verticalLayout_10 = new QVBoxLayout(page_BezierC2Int);
         verticalLayout_10->setSpacing(0);
         verticalLayout_10->setContentsMargins(11, 11, 11, 11);
@@ -352,6 +366,66 @@ public:
         verticalLayout_10->addLayout(verticalLayout_BC2Int);
 
         toolBox->addItem(page_BezierC2Int, QStringLiteral("Bezier Curve C2 Interpolated"));
+        page_bezierSurfaceC0 = new QWidget();
+        page_bezierSurfaceC0->setObjectName(QStringLiteral("page_bezierSurfaceC0"));
+        page_bezierSurfaceC0->setGeometry(QRect(0, 0, 293, 400));
+        verticalLayout_13 = new QVBoxLayout(page_bezierSurfaceC0);
+        verticalLayout_13->setSpacing(6);
+        verticalLayout_13->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_13->setObjectName(QStringLiteral("verticalLayout_13"));
+        verticalLayout_13->setContentsMargins(0, 0, 0, 0);
+        verticalLayout_BSC0 = new QVBoxLayout();
+        verticalLayout_BSC0->setSpacing(5);
+        verticalLayout_BSC0->setObjectName(QStringLiteral("verticalLayout_BSC0"));
+        comboBox_BSC0 = new ComboBoxBezierSurface(page_bezierSurfaceC0);
+        comboBox_BSC0->setObjectName(QStringLiteral("comboBox_BSC0"));
+
+        verticalLayout_BSC0->addWidget(comboBox_BSC0);
+
+        listWidget_BSC0 = new ListWidgetBezierSurface(page_bezierSurfaceC0);
+        listWidget_BSC0->setObjectName(QStringLiteral("listWidget_BSC0"));
+
+        verticalLayout_BSC0->addWidget(listWidget_BSC0);
+
+        pushButton_BSC0 = new QPushButton(page_bezierSurfaceC0);
+        pushButton_BSC0->setObjectName(QStringLiteral("pushButton_BSC0"));
+
+        verticalLayout_BSC0->addWidget(pushButton_BSC0);
+
+
+        verticalLayout_13->addLayout(verticalLayout_BSC0);
+
+        toolBox->addItem(page_bezierSurfaceC0, QStringLiteral("Bezier Surface C0"));
+        page_bezierSurfaceC2 = new QWidget();
+        page_bezierSurfaceC2->setObjectName(QStringLiteral("page_bezierSurfaceC2"));
+        page_bezierSurfaceC2->setGeometry(QRect(0, 0, 98, 140));
+        verticalLayout_14 = new QVBoxLayout(page_bezierSurfaceC2);
+        verticalLayout_14->setSpacing(6);
+        verticalLayout_14->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_14->setObjectName(QStringLiteral("verticalLayout_14"));
+        verticalLayout_14->setContentsMargins(0, 0, 0, 0);
+        verticalLayout_BSC2 = new QVBoxLayout();
+        verticalLayout_BSC2->setSpacing(5);
+        verticalLayout_BSC2->setObjectName(QStringLiteral("verticalLayout_BSC2"));
+        comboBox_BSC2 = new ComboBoxBezierSurface(page_bezierSurfaceC2);
+        comboBox_BSC2->setObjectName(QStringLiteral("comboBox_BSC2"));
+
+        verticalLayout_BSC2->addWidget(comboBox_BSC2);
+
+        listWidget_BSC2 = new ListWidgetBezierSurface(page_bezierSurfaceC2);
+        listWidget_BSC2->setObjectName(QStringLiteral("listWidget_BSC2"));
+
+        verticalLayout_BSC2->addWidget(listWidget_BSC2);
+
+        pushButton_BSC2 = new QPushButton(page_bezierSurfaceC2);
+        pushButton_BSC2->setObjectName(QStringLiteral("pushButton_BSC2"));
+
+        verticalLayout_BSC2->addWidget(pushButton_BSC2);
+
+
+        verticalLayout_14->addLayout(verticalLayout_BSC2);
+
+        toolBox->addItem(page_bezierSurfaceC2, QStringLiteral("Bezier Surface C2"));
 
         verticalLayout_2->addWidget(toolBox);
 
@@ -473,7 +547,7 @@ public:
         ModelowanieGeometryczne1Class->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ModelowanieGeometryczne1Class);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1107, 21));
+        menuBar->setGeometry(QRect(0, 0, 1107, 26));
         menuBar->setDefaultUp(false);
         ModelowanieGeometryczne1Class->setMenuBar(menuBar);
         statusBar = new QStatusBar(ModelowanieGeometryczne1Class);
@@ -485,8 +559,8 @@ public:
 
         retranslateUi(ModelowanieGeometryczne1Class);
 
-        myTabWidget->setCurrentIndex(1);
-        toolBox->setCurrentIndex(3);
+        myTabWidget->setCurrentIndex(0);
+        toolBox->setCurrentIndex(4);
         toolBox->layout()->setSpacing(0);
 
 
@@ -507,6 +581,10 @@ public:
         toolBox->setItemText(toolBox->indexOf(page_BezierCurveC0), QApplication::translate("ModelowanieGeometryczne1Class", "Bezier Curve C0", Q_NULLPTR));
         toolBox->setItemText(toolBox->indexOf(page_BezierCurveC2), QApplication::translate("ModelowanieGeometryczne1Class", "Bezier Curve C2", Q_NULLPTR));
         toolBox->setItemText(toolBox->indexOf(page_BezierC2Int), QApplication::translate("ModelowanieGeometryczne1Class", "Bezier Curve C2 Interpolated", Q_NULLPTR));
+        pushButton_BSC0->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Edit surface", Q_NULLPTR));
+        toolBox->setItemText(toolBox->indexOf(page_bezierSurfaceC0), QApplication::translate("ModelowanieGeometryczne1Class", "Bezier Surface C0", Q_NULLPTR));
+        pushButton_BSC2->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Edit surface", Q_NULLPTR));
+        toolBox->setItemText(toolBox->indexOf(page_bezierSurfaceC2), QApplication::translate("ModelowanieGeometryczne1Class", "Bezier Surface C2", Q_NULLPTR));
         myTabWidget->setTabText(myTabWidget->indexOf(tab_Parameters), QApplication::translate("ModelowanieGeometryczne1Class", "Parameters", Q_NULLPTR));
         radioButton_stereo->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Stereoscopy on/off", Q_NULLPTR));
         label_stereoscopy_slider->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Stereoscopy e parameter:", Q_NULLPTR));

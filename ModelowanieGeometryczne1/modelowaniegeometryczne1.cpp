@@ -1,6 +1,5 @@
 #include "modelowaniegeometryczne1.h"
 #include "torus.h"
-#include "bezierCurveC0.h"
 #include "uiTorus.h"
 #include "uiPoint3d.h"
 #include "uiBezierCurveC0.h"
@@ -8,6 +7,9 @@
 #include "uiBezierC2Interpolated.h"
 #include <QString>
 #include <QObject>
+#include "uiBezierSurfaceC0.h"
+#include "uiBezierSurfaceC2.h"
+#include "bezierSurfaceSettings.h"
 
 ModelowanieGeometryczne1::ModelowanieGeometryczne1(QWidget *parent)
 	: QMainWindow(parent)
@@ -48,6 +50,8 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BC0Parameters, SLOT(highlightItem(int)));
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BC2, SLOT(highlightItem(int)));
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BC2Int, SLOT(highlightItem(int)));
+	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BSC0, SLOT(highlightItem(int)));
+	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BSC2, SLOT(highlightItem(int)));
 	connect(this, SIGNAL(mouseClicked(bool)), &m_scene, SLOT(performCursorAction(bool)));
 	connect(this, SIGNAL(escKeyPressed()), &m_scene, SLOT(resetCursor()));
 
@@ -57,10 +61,14 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.radioButton_Add, SIGNAL(toggled(bool)), this, SLOT(radioBtnAddToggled(bool)));
 	connect(ui.radioButton_Delete, SIGNAL(toggled(bool)), this, SLOT(radioBtnDeleteToggled(bool)));
 
+	connect(ui.pushButton_BSC0, SIGNAL(clicked()), this, SLOT(pushButton_BSC0Clicked()));
+	connect(ui.pushButton_BSC2, SIGNAL(clicked()), this, SLOT(pushButton_BSC2Clicked()));
 
+	//TODO: commented lines
 	connect(ui.checkBox_pointer, SIGNAL(stateChanged(int)), ui.myGLWidget, SLOT(checkBox_pointerStateChanged(int)));
 	connect(ui.pushButton_AddObject, SIGNAL(clicked()), this, SLOT(pushButton_AddObjectClicked()));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.listWidget_ObjectsList, SLOT(removeItem()));
+	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.myGLWidget, SLOT(updateGL()));
 	connect(ui.comboBox_BezierCurveC0, SIGNAL(itemRemoved()), ui.listWidget_BC0Parameters, SLOT(clear()));
 	connect(ui.comboBox_BC2, SIGNAL(itemRemoved()), ui.listWidget_BC2, SLOT(clear()));
 	connect(ui.comboBox_BC2Int, SIGNAL(itemRemoved()), ui.listWidget_BC2Int, SLOT(clear()));
@@ -70,15 +78,24 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.comboBox_BC2, SIGNAL(itemSelected(int, int)), this, SLOT(showBC2CheckBoxes(int, int)));
 	connect(ui.comboBox_BC2Int, SIGNAL(itemSelected(int, int)), this, SLOT(showBC2IntCheckBoxes(int, int)));
 	connect(ui.comboBox_BC2Int, SIGNAL(itemSelected(int, int)), ui.listWidget_BC2Int, SLOT(updateCurveId(int)));
+	//connect(ui.comboBox_BSC0, SIGNAL(itemSelected(int, int)), this, SLOT(showBC2IntCheckBoxes(int, int)));
+	connect(ui.comboBox_BSC0, SIGNAL(itemSelected(int, int)), ui.listWidget_BSC0, SLOT(updateSurfaceId(int)));
+	connect(ui.comboBox_BSC0, SIGNAL(allItemsRemoved()), ui.listWidget_BSC0, SLOT(clear()));
+	//connect(ui.comboBox_BSC2, SIGNAL(itemSelected(int, int)), this, SLOT(showBC2IntCheckBoxes(int, int)));
+	connect(ui.comboBox_BSC2, SIGNAL(itemSelected(int, int)), ui.listWidget_BSC2, SLOT(updateSurfaceId(int)));
 	connect(ui.comboBox_BezierCurveC0, SIGNAL(currentIndexChanged(int)), ui.comboBox_BezierCurveC0, SLOT(selectCurve(int)));
 	connect(ui.comboBox_BC2, SIGNAL(currentIndexChanged(int)), ui.comboBox_BC2, SLOT(selectCurve(int)));
 	connect(ui.comboBox_BC2Int, SIGNAL(currentIndexChanged(int)), ui.comboBox_BC2Int, SLOT(selectCurve(int)));
+	connect(ui.comboBox_BSC0, SIGNAL(currentIndexChanged(int)), ui.comboBox_BSC0, SLOT(selectSurface(int)));
+	connect(ui.comboBox_BSC2, SIGNAL(currentIndexChanged(int)), ui.comboBox_BSC2, SLOT(selectSurface(int)));
 
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), &m_scene, SLOT(deleteObject(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_Torus, SLOT(deleteItem(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BezierCurveC0, SLOT(deleteItem(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BC2, SLOT(deleteItem(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BC2Int, SLOT(deleteItem(int)));
+	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BSC0, SLOT(deleteItem(int)));
+	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BSC2, SLOT(deleteItem(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(itemSelected(QList<int>&)), &m_scene, SLOT(selectCursorObjects(QList<int>&)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(rightClick(const QPoint&, const QList<int>&)), &m_scene, SLOT(createObjectMenu(const QPoint&, const QList<int>&)));
 
@@ -92,10 +109,15 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(&m_scene, SIGNAL(addedBezierCurveC2(const QString&, int, const UiBezierCurveC2*)), this, SLOT(comboBox_BezierCurveC2_AddItem(const QString&, int, const UiBezierCurveC2*)));
 	connect(&m_scene, SIGNAL(addedBezierC2Interpolated(const QString&, int, const UiBezierC2Interpolated*)), ui.listWidget_ObjectsList, SLOT(addBezierC2Interpolated(const QString&, int)));
 	connect(&m_scene, SIGNAL(addedBezierC2Interpolated(const QString&, int, const UiBezierC2Interpolated*)), this, SLOT(comboBox_BezierCurveC2Int_AddItem(const QString&, int, const UiBezierC2Interpolated*)));
+	connect(&m_scene, SIGNAL(addedBezierSurfaceC0(const QString&, int, const UiBezierSurfaceC0*)), ui.listWidget_ObjectsList, SLOT(addObject(const QString&, int)));
+	connect(&m_scene, SIGNAL(addedBezierSurfaceC0(const QString&, int, const UiBezierSurfaceC0*)), this, SLOT(comboBox_BezierSurfaceC0_AddItem(const QString&, int, const UiBezierSurfaceC0*)));
+	connect(&m_scene, SIGNAL(addedBezierSurfaceC2(const QString&, int, const UiBezierSurfaceC2*)), ui.listWidget_ObjectsList, SLOT(addObject(const QString&, int)));
+	connect(&m_scene, SIGNAL(addedBezierSurfaceC2(const QString&, int, const UiBezierSurfaceC2*)), this, SLOT(comboBox_BezierSurfaceC2_AddItem(const QString&, int, const UiBezierSurfaceC2*)));
 	connect(&m_scene, SIGNAL(addedTorus(const QString&, int, const UiTorus*)), ui.listWidget_ObjectsList, SLOT(addTorus(const QString&, int)));
 	connect(&m_scene, SIGNAL(addedTorus(const QString&, int, const UiTorus*)), this, SLOT(comboBox_Torus_AddItem(const QString&, int, const UiTorus*)));
 	connect(&m_scene, SIGNAL(addedPoint3D(const QString&, int, const UiPoint3D*)), ui.listWidget_ObjectsList, SLOT(addPoint3D(const QString&, int)));
 	connect(&m_scene, SIGNAL(addedPoint3D(const QString&, int, const UiPoint3D*)), this, SLOT(connectPoint3D(const QString&, int, const UiPoint3D*)));
+	connect(&m_scene, SIGNAL(createdBSControlPoint(const QString&, int, const UiPoint3D*)), this, SLOT(connectPoint3D(const QString&, int, const UiPoint3D*)));
 	connect(&m_scene, SIGNAL(editModeBC0(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
 	connect(&m_scene, SIGNAL(editModeBC2(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
 	connect(&m_scene, SIGNAL(editModeBC2Int(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
@@ -112,10 +134,59 @@ void ModelowanieGeometryczne1::label_3dCoordsChangeText(float x, float y, float 
 	ui.label_3dCoords->setText(text);
 }
 
+BezierSurfaceData::SurfaceType ModelowanieGeometryczne1::surfaceTypePopup() const
+{
+	QMessageBox msgBox;
+	msgBox.setText("Choose type of Bezier Surface");
+	QPushButton *planeButton = msgBox.addButton(tr("Plane"), QMessageBox::AcceptRole);
+	QPushButton *cylinderButton = msgBox.addButton(tr("Cylinder"), QMessageBox::AcceptRole);
+	msgBox.exec();
+	if (msgBox.clickedButton() == cylinderButton)
+	{
+		return BezierSurfaceData::SurfaceType::cylinder;
+	}
+	if (msgBox.clickedButton() == planeButton)
+	{
+		return BezierSurfaceData::SurfaceType::plane;
+	}
+	return BezierSurfaceData::SurfaceType::plane;
+}
+
 void ModelowanieGeometryczne1::pushButton_AddObjectClicked()
 {
-	m_scene.createDrawableObject(ui.comboBox_DrawableObjects->currentText());
+	QString text = ui.comboBox_DrawableObjects->currentText();
+	if (text == "BezierSurfaceC0" || text == "BezierSurfaceC2")
+	{
+		BezierSurfaceSettings *formBS = new BezierSurfaceSettings(this);
+		formBS->initialize(surfaceTypePopup(), text);
+		connect(formBS, SIGNAL(closing(BezierSurfaceData, const QString&)), this, SLOT(getBSData(BezierSurfaceData, const QString&)));
+		formBS->setAttribute(Qt::WA_DeleteOnClose);
+		formBS->show();
+		ui.myGLWidget->updateGL();
+		return;
+	}
+	m_scene.createDrawableObject(text);
 	ui.myGLWidget->updateGL();
+}
+
+void ModelowanieGeometryczne1::pushButton_BSC0Clicked()
+{
+	UiBezierSurface *uiBezierSurface = static_cast<UiBezierSurface*>(m_scene.getUiConntector(ui.comboBox_BSC0->getSurfaceId()));
+	if (uiBezierSurface == nullptr)
+	{
+		return;
+	}
+	BezierSurfaceSettings *formBS = new BezierSurfaceSettings(this);
+	formBS->initialize(std::static_pointer_cast<BezierSurface>(uiBezierSurface->getObject())->getSurfaceData());
+	connect(formBS, SIGNAL(closing(BezierSurfaceData, const QString&)), uiBezierSurface, SLOT(updateSurfaceData(BezierSurfaceData)));
+	formBS->setAttribute(Qt::WA_DeleteOnClose);
+	formBS->show();
+	ui.myGLWidget->updateGL();
+}
+
+void ModelowanieGeometryczne1::pushButton_BSC2Clicked()
+{
+
 }
 
 void ModelowanieGeometryczne1::label_screenCoordsChangeText(QMouseEvent* event)
@@ -151,6 +222,20 @@ void ModelowanieGeometryczne1::comboBox_BezierCurveC2Int_AddItem(const QString& 
 	uiBezierC2Int->connectToUi(&ui);
 	uiBezierC2Int->connectToScene(&m_scene);
 	ui.comboBox_BC2Int->addItem(id, name);
+}
+
+void ModelowanieGeometryczne1::comboBox_BezierSurfaceC0_AddItem(const QString& name, int id, const UiBezierSurfaceC0* uiBezierSurfaceC0)
+{
+	uiBezierSurfaceC0->connectToUi(&ui);
+	uiBezierSurfaceC0->connectToScene(&m_scene);
+	ui.comboBox_BSC0->addItem(id, name);
+}
+
+void ModelowanieGeometryczne1::comboBox_BezierSurfaceC2_AddItem(const QString& name, int id, const UiBezierSurfaceC2* uiBezierSurfaceC2)
+{
+	uiBezierSurfaceC2->connectToUi(&ui);
+	uiBezierSurfaceC2->connectToScene(&m_scene);
+	ui.comboBox_BSC2->addItem(id, name);
 }
 
 void ModelowanieGeometryczne1::connectPoint3D(const QString& name, int id, const UiPoint3D* uiPoint3d)
@@ -330,4 +415,16 @@ void ModelowanieGeometryczne1::stereo_button_toggled(bool checked)
 {
 	m_scene.m_stereoscopy = checked;
 	ui.myGLWidget->updateGL();
+}
+
+void ModelowanieGeometryczne1::getBSData(BezierSurfaceData data, const QString &name)
+{
+	if (name == "BezierSurfaceC0")
+	{
+		m_scene.createBezierSurfaceC0(data);
+	}
+	else if (name == "BezierSurfaceC2")
+	{
+		m_scene.createBezierSurfaceC2(data);
+	}
 }

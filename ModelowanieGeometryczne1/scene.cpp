@@ -10,6 +10,8 @@
 #include "uiBezierCurveC2.h"
 #include "uiBezierC2Interpolated.h"
 #include "bezierC2Interpolated.h"
+#include "uiBezierSurfaceC0.h"
+#include "uiBezierSurfaceC2.h"
 
 Scene::Scene() : m_stereoscopy(false), m_isCursor3d(false)
 {
@@ -177,6 +179,14 @@ QPair<int, DrawableObject::ObjectType> Scene::createUiConnector(const QString& n
 	{
 		uiConnector = std::make_unique<UiBezierC2Interpolated>(std::make_shared<BezierC2Interpolated>(BezierC2Interpolated::ObjectType::bezierC2Interpolated, name));
 	}
+	/*else if (name == "BezierSurfaceC0")
+	{
+		uiConnector = std::make_unique<UiBezierSurfaceC0>(std::make_shared<BezierSurfaceC0>(BezierSurfaceC0::ObjectType::bezierSurfaceC0, name, surfaceType));
+	}
+	else if (name == "BezierSurfaceC2")
+	{
+		uiConnector = std::make_unique<UiBezierSurfaceC2>(std::make_shared<BezierSurfaceC2>(BezierSurfaceC2::ObjectType::bezierSurfaceC2, name, surfaceType));
+	}*/
 	int id = uiConnector->getObject()->getId();
 	DrawableObject::ObjectType type = uiConnector->getObject()->m_type;
 	addUiConnector(std::move(uiConnector));
@@ -341,6 +351,16 @@ int Scene::createDrawableObject(const QString &name)
 		emit addedBezierC2Interpolated(name, idType.first, static_cast<const UiBezierC2Interpolated*>(getUiConntector(idType.first)));
 		break;
 	}
+	/*case DrawableObject::ObjectType::bezierSurfaceC0:
+	{
+		emit addedBezierSurfaceC0(name, idType.first, static_cast<const UiBezierSurfaceC0*>(getUiConntector(idType.first)));
+		break;
+	}
+	case DrawableObject::ObjectType::bezierSurfaceC2:
+	{
+		emit addedBezierSurfaceC2(name, idType.first, static_cast<const UiBezierSurfaceC2*>(getUiConntector(idType.first)));
+		break;
+	}*/
 	case DrawableObject::ObjectType::cursor3D:
 	{
 		break;
@@ -360,4 +380,22 @@ UiConnector* Scene::getUiConntector(int id) const
 		return nullptr;
 	}
 	return m_uiConnectors.find(id)->second.get();
+}
+
+void Scene::createBezierSurfaceC2(const BezierSurfaceData &data)
+{
+}
+
+void Scene::createBezierSurfaceC0(const BezierSurfaceData &data)
+{
+	std::unique_ptr<UiBezierSurfaceC0> uiConnector = 
+		std::make_unique<UiBezierSurfaceC0>(std::make_shared<BezierSurfaceC0>(BezierSurfaceC0::ObjectType::bezierSurfaceC0, "BezierSurfaceC0", data));
+	emit addedBezierSurfaceC0("BezierSurfaceC0", uiConnector->getObject()->getId(), uiConnector.get());
+	for (const auto &point : uiConnector->getBezierSurface()->getPoints())
+	{
+		std::unique_ptr<UiPoint3D> uiPoint3D = std::make_unique<UiPoint3D>(point);
+		emit createdBSControlPoint("", -1, uiPoint3D.get());
+		addUiConnector(std::move(uiPoint3D));
+	}
+	addUiConnector(std::move(uiConnector));
 }

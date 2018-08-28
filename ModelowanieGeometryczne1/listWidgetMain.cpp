@@ -1,6 +1,6 @@
 #include "listWidgetMain.h"
 #include <QtGui>
-#include "drawableObject.h"
+#include "point3d.h"
 
 ListWidgetMain::ListWidgetMain(QWidget* parent)
 	: QListWidget(parent), m_activeItem(nullptr)
@@ -64,7 +64,6 @@ void ListWidgetMain::addTorus(const QString &text, int objectId)
 	addItem(text);
 	m_objectsList.append(qMakePair(this->item(this->count() - 1), objectId));
 	this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-	m_torusIds.append(objectId);
 }
 
 void ListWidgetMain::addPoint3D(const QString& text, int objectId)
@@ -72,8 +71,13 @@ void ListWidgetMain::addPoint3D(const QString& text, int objectId)
 	addItem(text);
 	m_objectsList.append(qMakePair(this->item(this->count() - 1), objectId));
 	this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-	//this->item(this->count() - 1)->setBackground(Qt::red);
+}
 
+void ListWidgetMain::addObject(const QString& text, int objectId)
+{
+	addItem(text);
+	m_objectsList.append(qMakePair(this->item(this->count() - 1), objectId));
+	this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 }
 
 void ListWidgetMain::removeItem()
@@ -81,6 +85,13 @@ void ListWidgetMain::removeItem()
 	if (this->currentRow() < 0)
 	{
 		return;
+	}
+	for (int i =0; i<m_undeleteable.count(); ++i)
+	{
+		if (m_objectsList.at(currentRow()).second == m_undeleteable.at(i))
+		{
+			return;
+		}
 	}
 	emit removeItemEvent(m_objectsList.at(currentRow()).second);
 	m_objectsList.removeAt(currentRow());
@@ -123,6 +134,37 @@ void ListWidgetMain::removeHighlightActive()
 	}
 }
 
+void ListWidgetMain::deleteSurfacePoints(const std::vector<int> &pointsIds)
+{
+	int index = 0, index2 = 0;
+	while (pointsIds.at(0) != m_undeleteable.at(index2))
+	{
+		++index2;
+	}while (pointsIds.at(0) != m_objectsList.at(index).second)
+	{
+		++index;
+	}
+	for (int i = 0; i < pointsIds.size(); ++i)
+	{
+		m_undeleteable.removeAt(index2);
+		m_objectsList.removeAt(index);
+		QListWidgetItem *item = takeItem(index);
+		this->removeItemWidget(item);
+		delete item;
+	}
+}
+
+void ListWidgetMain::addPoints(const std::vector<std::shared_ptr<Point3D>> &points)
+{
+	for (const auto &point : points)
+	{
+		m_undeleteable.append(point->getId());
+		addItem(point->getName());
+		m_objectsList.append(qMakePair(this->item(this->count() - 1), point->getId()));
+		this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+	}
+}
+
 void ListWidgetMain::itemClick(QListWidgetItem *item)
 {
 	if (!(QGuiApplication::keyboardModifiers() & Qt::ControlModifier))
@@ -139,13 +181,11 @@ void ListWidgetMain::itemTextChanged(QListWidgetItem* item)
 	emit changeItemTextEvent(item->text(), findItemId(item));
 }
 
-//TODO: m_bezierC0,C2....
 void ListWidgetMain::addBezierCurveC0(const QString &text, int objectId)
 {
 	addItem(text);
 	m_objectsList.append(qMakePair(this->item(this->count() - 1), objectId));
 	this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-	m_bezierCurveC0Ids.append(objectId);
 }
 
 void ListWidgetMain::addBezierCurveC2(const QString& text, int objectId)
@@ -153,7 +193,6 @@ void ListWidgetMain::addBezierCurveC2(const QString& text, int objectId)
 	addItem(text);
 	m_objectsList.append(qMakePair(this->item(this->count() - 1), objectId));
 	this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-	m_bezierCurveC2Ids.append(objectId);
 }
 
 void ListWidgetMain::addBezierC2Interpolated(const QString& text, int objectId)
@@ -161,5 +200,4 @@ void ListWidgetMain::addBezierC2Interpolated(const QString& text, int objectId)
 	addItem(text);
 	m_objectsList.append(qMakePair(this->item(this->count() - 1), objectId));
 	this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-	m_bezierCurveC2IntIds.append(objectId);
 }

@@ -4,12 +4,15 @@
 #include <memory>
 #include "bezierCurveC0.h"
 #include <unordered_map>
+#include "BezierSurfaceC0.h"
 
 class UiBezierCurveC2;
 class UiPoint3D;
 class UiTorus;
 class UiCursor3D;
 class UiBezierC2Interpolated;
+class UiBezierSurfaceC0;
+class UiBezierSurfaceC2;
 
 class Scene : public QObject
 {
@@ -27,6 +30,8 @@ public:
 	void updateCursorPosition(float x, float y, int width, int heigth);
 	int createDrawableObject(const QString &name);
 	UiConnector* getUiConntector(int id) const;
+	void createBezierSurfaceC0(const BezierSurfaceData &data);
+	void createBezierSurfaceC2(const BezierSurfaceData &data);
 
 private:
 	std::unordered_map<int, std::unique_ptr<UiConnector>> m_uiConnectors;
@@ -60,6 +65,8 @@ signals:
 	void addedBezierCurveC0(const QString &name, int id, const UiBezierCurveC0 *uiBezierC0);
 	void addedBezierCurveC2(const QString &name, int id, const UiBezierCurveC2 *uiBezierC2);
 	void addedBezierC2Interpolated(const QString &name, int id, const UiBezierC2Interpolated *uiBezierC2);
+	void addedBezierSurfaceC0(const QString &name, int id, const UiBezierSurfaceC0 *uiBezierSurfaceC0);
+	void addedBezierSurfaceC2(const QString &name, int id, const UiBezierSurfaceC2 *uiBezierSurfaceC2);
 	void addedPoint3D(const QString &name, int id, const UiPoint3D *object);
 	void update() const;
 	void editModeBC0(int id);
@@ -67,4 +74,5 @@ signals:
 	void editModeBC2Int(int id);
 	void objectActivated(int id);
 	void objectDeactivated(int id);
+	void createdBSControlPoint(const QString &name, int id, const UiPoint3D *object);
 };

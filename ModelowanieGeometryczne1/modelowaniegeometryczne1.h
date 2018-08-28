@@ -20,11 +20,16 @@ private:
 	Scene m_scene;
 	Ui::ModelowanieGeometryczne1Class ui;
 	QStringListModel *model;
-	QStringList ui_drawableObjects = { "Torus", "Point3D", "BezierCurveC0", "BezierCurveC2", "BezierC2Interpolated" };
+	QStringList ui_drawableObjects =
+	{ 
+		"Torus", "Point3D", "BezierCurveC0", "BezierCurveC2", "BezierC2Interpolated", "BezierSurfaceC0", "BezierSurfaceC2" 
+	};
 	QList<int> m_selectedObjectsIds;
 
 	void connectSignals();
 	void label_3dCoordsChangeText(float x, float y, float z);
+	BezierSurfaceData::SurfaceType surfaceTypePopup() const;
+	
 
 signals:
 	void cursor3dItemAcquired(int);
@@ -33,11 +38,15 @@ signals:
 
 private slots:
 	void pushButton_AddObjectClicked();
+	void pushButton_BSC0Clicked();
+	void pushButton_BSC2Clicked();
 	void label_screenCoordsChangeText(QMouseEvent *event);
 	void comboBox_Torus_AddItem(const QString &name, int id, const UiTorus *uiTorus);
 	void comboBox_BezierCurveC0_AddItem(const QString &name, int id, const UiBezierCurveC0 *uiBezierC0);
 	void comboBox_BezierCurveC2_AddItem(const QString &name, int id, const UiBezierCurveC2 *uiBezierC2);
 	void comboBox_BezierCurveC2Int_AddItem(const QString &name, int id, const UiBezierC2Interpolated *uiBezierC2Int);
+	void comboBox_BezierSurfaceC0_AddItem(const QString &name, int id, const UiBezierSurfaceC0 *uiBezierSurfaceC0);
+	void comboBox_BezierSurfaceC2_AddItem(const QString &name, int id, const UiBezierSurfaceC2 *uiBezierSurfaceC2);
 	void connectPoint3D(const QString &name, int id, const UiPoint3D *uiPoint3d);
 	void myGLWidgetKeyPressed(QKeyEvent *event);
 	void myGLWidgetMouseMoved(QMouseEvent *event);
@@ -52,6 +61,7 @@ private slots:
 	void radioBtnDeleteToggled(bool checked);
 	void doubleSpinbox_eValueChanged(double e);
 	void stereo_button_toggled(bool checked);
+	void getBSData(BezierSurfaceData data, const QString &name);
 };
 
 #endif // MODELOWANIEGEOMETRYCZNE1_H
