@@ -6,6 +6,7 @@
 #include "point3d.h"
 #include "uiBezierCurveC0.h"
 #include "uiBezierCurveC2.h"
+#include "uiBezierC2Interpolated.h"
 
 Cursor3D::Cursor3D(ObjectType type) : DrawableObject(type, "Cursor3D"),
 m_worldCoords(QVector3D(0, 0, 0)), m_posX(0), m_posY(0), m_posZ(0), m_mode(Mode::Translate)
@@ -50,9 +51,9 @@ void Cursor3D::setModelMatrix(const QMatrix4x4 &matrix)
 void Cursor3D::createVertices()
 {
 	m_vertices.push_back(QVector4D(0, 0.0, 0.0, 1));
-	m_vertices.push_back(QVector4D(0.08, 0.0, 0.0, 1));
-	m_vertices.push_back(QVector4D(0, 0.08, 0.0, 1));
-	m_vertices.push_back(QVector4D(0, 0, 0.08, 1));
+	m_vertices.push_back(QVector4D(0.1, 0.0, 0.0, 1));
+	m_vertices.push_back(QVector4D(0, 0.1, 0.0, 1));
+	m_vertices.push_back(QVector4D(0, 0, 0.1, 1));
 }
 
 void Cursor3D::generateIndices()
@@ -86,6 +87,12 @@ void Cursor3D::addPoint(std::unordered_map<int, std::unique_ptr<UiConnector>> &s
 			static_cast<UiBezierCurveC2*>(sceneObjects.find(m_activeObjects.at(0)->getId())->second.get())->addPoint(sceneObjects.find(id)->second.get()->getObject(), m_activeObjects.at(0)->getId());
 			break;
 		}
+		case ObjectType::bezierC2Interpolated:
+		{
+			int id = getClosestPointId(sceneObjects);
+			static_cast<UiBezierC2Interpolated*>(sceneObjects.find(m_activeObjects.at(0)->getId())->second.get())->addPoint(sceneObjects.find(id)->second.get()->getObject(), m_activeObjects.at(0)->getId());
+			break;
+		}
 		}
 	}
 }
@@ -106,6 +113,12 @@ void Cursor3D::deletePoint(std::unordered_map<int, std::unique_ptr<UiConnector>>
 		{
 			int id = getClosestPointId(sceneObjects);
 			static_cast<UiBezierCurveC2*>(sceneObjects.find(m_activeObjects.at(0)->getId())->second.get())->removePoint(id, m_activeObjects.at(0)->getId());
+			break;
+		}
+		case ObjectType::bezierC2Interpolated:
+		{
+			int id = getClosestPointId(sceneObjects);
+			static_cast<UiBezierC2Interpolated*>(sceneObjects.find(m_activeObjects.at(0)->getId())->second.get())->removePoint(id, m_activeObjects.at(0)->getId());
 			break;
 		}
 		}
@@ -205,67 +218,101 @@ void Cursor3D::markObject(std::unordered_map<int, std::unique_ptr<UiConnector>>&
 //	//	m_obtainedObject->setModelMatrix(m_modelMatrix);
 //	//}
 //}
-
-void Cursor3D::updatePosition(float x, float y, int width, int height, const Camera &camera)
+void Cursor3D::updatePosition(float x, float y, int width, int height, const Camera &camera, bool z)
 {
 	m_posX = x / (width * 0.5f) - 1.0f;
 	m_posY = -y / (height * 0.5f) + 1.0f;
+	/*QVector3D right = camera.getRightVector();
+	QVector3D up = camera.getUpVector();
+	QVector3D forward = camera.getForwardVector();
+	QVector3D eye = camera.getEyeVector();*/
 	QVector3D prevPos = m_worldCoords;
-	m_worldCoords = QVector3D(m_posX - camera.m_viewMatrix.row(0).w(),
-		m_posY - camera.m_viewMatrix.row(1).w(),
-		m_posZ - camera.m_viewMatrix.row(2).w() - 1);
-	setModelMatrix((Camera::createRotationX(camera.m_pitch) * Camera::createRotationY(camera.m_yaw)).inverted()
-		* Camera::createTranslation(m_worldCoords));
+	m_worldCoords = m_posX * camera.getRightVector() - (camera.getForwardVector() - camera.getEyeVector()) + m_posY * camera.getUpVector();
+	/*QVector3D pos;
+	if (z)
+	{
+		pos = m_posY * (forward - eye);
+	}
+	else
+	{
+		pos = m_posX * right - (forward - eye) + m_posY * up;
+	}*/
+	setModelMatrix(Camera::createTranslation(m_worldCoords));
 	if (m_mode == Mode::Translate)
 	{
 		prevPos = m_worldCoords - prevPos;
 		for (auto activeObject : m_activeObjects)
 		{
 			activeObject.second->translate(prevPos);
+			//activeObject.second->setModelMatrix(m_modelMatrix);
 			if (activeObject.second->m_type == DrawableObject::ObjectType::point3D)
 			{
 				std::static_pointer_cast<Point3D>(activeObject.second)->notifyAncestorsPositionChanged();
 			}
 		}
 	}
-
-	//switch (m_mode)
-	//{
-	//case Mode::Idle:
-	//{
-	//	break;
-	//}
-	//case Mode::Translate:
-	//{
-	//	/*if (m_obtainedObject != nullptr)
-	//	{
-	//		m_obtainedObject->setModelMatrix(getModelMatrix());
-	//		if (m_obtainedObject->m_type == DrawableObject::ObjectType::point3D)
-	//		{
-	//			std::static_pointer_cast<Point3D>(m_obtainedObject)->notifyAncestorsPositionChanged();
-	//		}
-	//	}*/
-	//	prevPos = m_worldCoords - prevPos;
-	//	for (auto activeObject : m_activeObjects)
-	//	{
-	//		activeObject.second->translate(prevPos);
-	//		if (activeObject.second->m_type == DrawableObject::ObjectType::point3D)
-	//		{
-	//			std::static_pointer_cast<Point3D>(activeObject.second)->notifyAncestorsPositionChanged();
-	//		}
-	//	}
-	//	break;
-	//}
-	//case Mode::Add:
-	//{
-	//	break;
-	//}
-	//case Mode::Delete:
-	//{
-	//	break;
-	//}
-	//}
 }
+
+//void Cursor3D::updatePosition(float x, float y, int width, int height, const Camera &camera)
+//{
+//	m_posX = x / (width * 0.5f) - 1.0f;
+//	m_posY = -y / (height * 0.5f) + 1.0f;
+//	QVector3D prevPos = m_worldCoords;
+//	m_worldCoords = QVector3D(m_posX - camera.m_viewMatrix.row(0).w(),
+//		m_posY - camera.m_viewMatrix.row(1).w(),
+//		m_posZ - camera.m_viewMatrix.row(2).w() - 1);
+//	setModelMatrix((Camera::createRotationX(camera.m_pitch) * Camera::createRotationY(camera.m_yaw)).inverted()
+//		* Camera::createTranslation(m_worldCoords));
+//	if (m_mode == Mode::Translate)
+//	{
+//		prevPos = m_worldCoords - prevPos;
+//		for (auto activeObject : m_activeObjects)
+//		{
+//			activeObject.second->translate(prevPos);
+//			if (activeObject.second->m_type == DrawableObject::ObjectType::point3D)
+//			{
+//				std::static_pointer_cast<Point3D>(activeObject.second)->notifyAncestorsPositionChanged();
+//			}
+//		}
+//	}
+//
+//	//switch (m_mode)
+//	//{
+//	//case Mode::Idle:
+//	//{
+//	//	break;
+//	//}
+//	//case Mode::Translate:
+//	//{
+//	//	/*if (m_obtainedObject != nullptr)
+//	//	{
+//	//		m_obtainedObject->setModelMatrix(getModelMatrix());
+//	//		if (m_obtainedObject->m_type == DrawableObject::ObjectType::point3D)
+//	//		{
+//	//			std::static_pointer_cast<Point3D>(m_obtainedObject)->notifyAncestorsPositionChanged();
+//	//		}
+//	//	}*/
+//	//	prevPos = m_worldCoords - prevPos;
+//	//	for (auto activeObject : m_activeObjects)
+//	//	{
+//	//		activeObject.second->translate(prevPos);
+//	//		if (activeObject.second->m_type == DrawableObject::ObjectType::point3D)
+//	//		{
+//	//			std::static_pointer_cast<Point3D>(activeObject.second)->notifyAncestorsPositionChanged();
+//	//		}
+//	//	}
+//	//	break;
+//	//}
+//	//case Mode::Add:
+//	//{
+//	//	break;
+//	//}
+//	//case Mode::Delete:
+//	//{
+//	//	break;
+//	//}
+//	//}
+//}
 
 void Cursor3D::clearAllObjects()
 {
@@ -284,7 +331,8 @@ int Cursor3D::getClosestObjectId(std::unordered_map<int, std::unique_ptr<UiConne
 	for (auto const &object : sceneObjects)
 	{
 		if (!object.second.get()->getObject()->m_enabled || object.second.get()->getObject()->m_type == ObjectType::bezierCurveC0
-			|| object.second.get()->getObject()->m_type == ObjectType::bezierCurveC2 || object.second.get()->getObject()->getId() == this->getId())
+			|| object.second.get()->getObject()->m_type == ObjectType::bezierCurveC2 || object.second.get()->getObject()->m_type == ObjectType::bezierC2Interpolated
+			|| object.second.get()->getObject()->getId() == this->getId())
 		{
 			continue;
 		}
@@ -306,7 +354,8 @@ int Cursor3D::getNewClosestObjectId(std::unordered_map<int, std::unique_ptr<UiCo
 	for (auto const &object : sceneObjects)
 	{
 		if (!object.second.get()->getObject()->m_enabled || object.second.get()->getObject()->m_type == ObjectType::bezierCurveC0
-			|| object.second.get()->getObject()->m_type == ObjectType::bezierCurveC2 || object.second.get()->getObject()->getId() == this->getId())
+			|| object.second.get()->getObject()->m_type == ObjectType::bezierCurveC2 || object.second.get()->getObject()->m_type == ObjectType::bezierC2Interpolated
+			|| object.second.get()->getObject()->getId() == this->getId())
 		{
 			continue;
 		}

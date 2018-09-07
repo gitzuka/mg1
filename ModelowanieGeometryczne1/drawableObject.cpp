@@ -1,9 +1,10 @@
 #include "drawableObject.h"
 #include "utils.h"
+#include "camera.h"
 int DrawableObject::current_id = 0;
 
-DrawableObject::DrawableObject(ObjectType type, const QString &name, bool enabled)
-	: m_type(type), m_enabled(enabled), m_color(), m_name(name), m_id(current_id++)
+DrawableObject::DrawableObject(ObjectType type, const QString &name, bool enabled, bool intersectable)
+	: m_type(type), m_enabled(enabled), m_color(), m_name(name), m_rotation(QQuaternion(1,0,0,0)), m_id(current_id++), m_intersectable(intersectable)
 {
 }
 
@@ -47,6 +48,11 @@ const QString& DrawableObject::getName() const
 	return m_name;
 }
 
+bool DrawableObject::isIntersectable() const
+{
+	return m_intersectable;
+}
+
 void DrawableObject::setName(const QString &name)
 {
 	m_name = name;
@@ -55,6 +61,27 @@ void DrawableObject::setName(const QString &name)
 QVector3D DrawableObject::getPosition() const
 {
 	return QVector3D(m_modelMatrix.row(0).w(), m_modelMatrix.row(1).w(), m_modelMatrix.row(2).w());
+}
+
+QVector3D DrawableObject::getRotation() const
+{
+	return m_rotation.toEulerAngles();
+}
+
+void DrawableObject::rotate(QVector3D eulerAngles)
+{
+	/*QQuaternion q1 = QQuaternion::fromAxisAndAngle(QVector3D(1,0,0), eulerAngles.x());
+	QQuaternion q2 = QQuaternion::fromAxisAndAngle(QVector3D(0, 1, 0), eulerAngles.y());
+	QQuaternion q3 = QQuaternion::fromAxisAndAngle(QVector3D(0, 0, 1), eulerAngles.z());*/
+	//m_rotation = (q1 * q2 * q3).normalized();
+	m_rotation = QQuaternion::fromEulerAngles(eulerAngles).normalized();
+	m_modelMatrix = Camera::createTranslation(m_pos) * QMatrix4x4(m_rotation.toRotationMatrix());
+}
+
+void DrawableObject::setPosition(QVector3D pos)
+{
+	m_pos = pos;
+	m_modelMatrix = Camera::createTranslation(m_pos) * QMatrix4x4(m_rotation.toRotationMatrix());
 }
 
 const QMatrix4x4& DrawableObject::getModelMatrix() const

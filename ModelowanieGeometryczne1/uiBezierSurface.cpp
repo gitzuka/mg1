@@ -1,14 +1,15 @@
 #include "uiBezierSurface.h"
 
-UiBezierSurface::UiBezierSurface(std::shared_ptr<BezierSurface> bezierSurface) : m_bezierSurface(bezierSurface)
+UiBezierSurface::UiBezierSurface(std::shared_ptr<BezierSurface> bezierSurface) 
+	: m_checkBoxBezierGrid(new QCheckBox("Show Bezier Grid")), m_checkBoxControlGrid(new QCheckBox("Show Control Grid")), m_bezierSurface(bezierSurface)
 {
 	updateSurfaceData(m_bezierSurface->m_parameters);
-	/*m_bezierSurface->initialize(m_bezierSurface->m_parameters);
-	updateSurface();*/
 }
 
 UiBezierSurface::~UiBezierSurface()
 {
+	delete m_checkBoxBezierGrid;
+	delete m_checkBoxControlGrid;
 }
 
 std::shared_ptr<DrawableObject> UiBezierSurface::getObject()
@@ -19,6 +20,16 @@ std::shared_ptr<DrawableObject> UiBezierSurface::getObject()
 std::shared_ptr<BezierSurface> UiBezierSurface::getBezierSurface()
 {
 	return m_bezierSurface;
+}
+
+QCheckBox* UiBezierSurface::getCBBezierGrid() const
+{
+	return m_checkBoxBezierGrid;
+}
+
+QCheckBox* UiBezierSurface::getCBControlGrid() const
+{
+	return m_checkBoxControlGrid;
 }
 
 void UiBezierSurface::changeName(const QString &name, int id)
@@ -32,7 +43,7 @@ void UiBezierSurface::changeName(const QString &name, int id)
 void UiBezierSurface::updateSurface() const
 {
 	m_bezierSurface->createVertices();
-	m_bezierSurface->generateIndices();
+	//m_bezierSurface->generateIndices();
 }
 
 void UiBezierSurface::updateScreenSize(float width, float height)
@@ -58,4 +69,16 @@ void UiBezierSurface::getPoints(int surfaceId)
 	{
 		emit requestedPoints(m_bezierSurface->getPoints());
 	}
+}
+
+void UiBezierSurface::changeControlGridState(int state)
+{
+	m_bezierSurface->m_showControlGrid = state;
+	m_bezierSurface->createVertices();
+}
+
+void UiBezierSurface::changeBezierGridState(int state)
+{
+	m_bezierSurface->m_showBezierGrid = state;
+	m_bezierSurface->createVertices();
 }

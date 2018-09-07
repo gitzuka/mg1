@@ -27,17 +27,24 @@ public:
 	int getId() const;
 	const std::vector<QVector4D>& getVertices() const;
 	const QString& getName() const;
+	bool isIntersectable() const;
 	void setName(const QString &name);
 	QVector3D getPosition() const;
+	QVector3D getRotation() const;
+	virtual void rotate(QVector3D eulerAngles);
+	virtual void setPosition(QVector3D pos);
 
 protected:
-	DrawableObject(ObjectType type, const QString &name, bool enabled = true);
+	DrawableObject(ObjectType type, const QString &name, bool enabled = true, bool intersectable = false);
 
 	std::vector<QVector4D> m_vertices;
 	std::vector<int> m_indices;
 	float3 m_color;
 	QString m_name;
 	QMatrix4x4 m_modelMatrix;
+	QVector3D m_pos;
+	QQuaternion m_rotation;
+	bool m_intersectable;
 
 	virtual void createVertices() = 0;
 	virtual void generateIndices() = 0;

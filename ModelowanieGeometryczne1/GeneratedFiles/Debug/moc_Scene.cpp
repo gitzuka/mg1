@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Scene_t {
     QByteArrayData data[47];
-    char stringdata0[717];
+    char stringdata0[705];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -48,37 +48,37 @@ QT_MOC_LITERAL(12, 144, 10), // "uiBezierC2"
 QT_MOC_LITERAL(13, 155, 25), // "addedBezierC2Interpolated"
 QT_MOC_LITERAL(14, 181, 29), // "const UiBezierC2Interpolated*"
 QT_MOC_LITERAL(15, 211, 20), // "addedBezierSurfaceC0"
-QT_MOC_LITERAL(16, 232, 24), // "const UiBezierSurfaceC0*"
-QT_MOC_LITERAL(17, 257, 17), // "uiBezierSurfaceC0"
-QT_MOC_LITERAL(18, 275, 20), // "addedBezierSurfaceC2"
-QT_MOC_LITERAL(19, 296, 24), // "const UiBezierSurfaceC2*"
-QT_MOC_LITERAL(20, 321, 17), // "uiBezierSurfaceC2"
-QT_MOC_LITERAL(21, 339, 12), // "addedPoint3D"
-QT_MOC_LITERAL(22, 352, 16), // "const UiPoint3D*"
-QT_MOC_LITERAL(23, 369, 6), // "object"
-QT_MOC_LITERAL(24, 376, 6), // "update"
-QT_MOC_LITERAL(25, 383, 11), // "editModeBC0"
-QT_MOC_LITERAL(26, 395, 11), // "editModeBC2"
-QT_MOC_LITERAL(27, 407, 14), // "editModeBC2Int"
-QT_MOC_LITERAL(28, 422, 15), // "objectActivated"
-QT_MOC_LITERAL(29, 438, 17), // "objectDeactivated"
-QT_MOC_LITERAL(30, 456, 21), // "createdBSControlPoint"
-QT_MOC_LITERAL(31, 478, 19), // "updateControlPoints"
-QT_MOC_LITERAL(32, 498, 38), // "std::vector<std::shared_ptr<P..."
-QT_MOC_LITERAL(33, 537, 13), // "controlPoints"
-QT_MOC_LITERAL(34, 551, 16), // "std::vector<int>"
-QT_MOC_LITERAL(35, 568, 7), // "prevIds"
-QT_MOC_LITERAL(36, 576, 18), // "removeUiConnectors"
-QT_MOC_LITERAL(37, 595, 3), // "ids"
-QT_MOC_LITERAL(38, 599, 19), // "performCursorAction"
-QT_MOC_LITERAL(39, 619, 8), // "multiple"
-QT_MOC_LITERAL(40, 628, 11), // "resetCursor"
-QT_MOC_LITERAL(41, 640, 16), // "createObjectMenu"
-QT_MOC_LITERAL(42, 657, 3), // "pos"
-QT_MOC_LITERAL(43, 661, 10), // "QList<int>"
-QT_MOC_LITERAL(44, 672, 12), // "deleteObject"
-QT_MOC_LITERAL(45, 685, 19), // "selectCursorObjects"
-QT_MOC_LITERAL(46, 705, 11) // "QList<int>&"
+QT_MOC_LITERAL(16, 232, 18), // "UiBezierSurfaceC0*"
+QT_MOC_LITERAL(17, 251, 17), // "uiBezierSurfaceC0"
+QT_MOC_LITERAL(18, 269, 20), // "addedBezierSurfaceC2"
+QT_MOC_LITERAL(19, 290, 18), // "UiBezierSurfaceC2*"
+QT_MOC_LITERAL(20, 309, 17), // "uiBezierSurfaceC2"
+QT_MOC_LITERAL(21, 327, 12), // "addedPoint3D"
+QT_MOC_LITERAL(22, 340, 16), // "const UiPoint3D*"
+QT_MOC_LITERAL(23, 357, 6), // "object"
+QT_MOC_LITERAL(24, 364, 6), // "update"
+QT_MOC_LITERAL(25, 371, 11), // "editModeBC0"
+QT_MOC_LITERAL(26, 383, 11), // "editModeBC2"
+QT_MOC_LITERAL(27, 395, 14), // "editModeBC2Int"
+QT_MOC_LITERAL(28, 410, 15), // "objectActivated"
+QT_MOC_LITERAL(29, 426, 17), // "objectDeactivated"
+QT_MOC_LITERAL(30, 444, 21), // "createdBSControlPoint"
+QT_MOC_LITERAL(31, 466, 19), // "updateControlPoints"
+QT_MOC_LITERAL(32, 486, 38), // "std::vector<std::shared_ptr<P..."
+QT_MOC_LITERAL(33, 525, 13), // "controlPoints"
+QT_MOC_LITERAL(34, 539, 16), // "std::vector<int>"
+QT_MOC_LITERAL(35, 556, 7), // "prevIds"
+QT_MOC_LITERAL(36, 564, 18), // "removeUiConnectors"
+QT_MOC_LITERAL(37, 583, 3), // "ids"
+QT_MOC_LITERAL(38, 587, 19), // "performCursorAction"
+QT_MOC_LITERAL(39, 607, 8), // "multiple"
+QT_MOC_LITERAL(40, 616, 11), // "resetCursor"
+QT_MOC_LITERAL(41, 628, 16), // "createObjectMenu"
+QT_MOC_LITERAL(42, 645, 3), // "pos"
+QT_MOC_LITERAL(43, 649, 10), // "QList<int>"
+QT_MOC_LITERAL(44, 660, 12), // "deleteObject"
+QT_MOC_LITERAL(45, 673, 19), // "selectCursorObjects"
+QT_MOC_LITERAL(46, 693, 11) // "QList<int>&"
 
     },
     "Scene\0addedTorus\0\0name\0id\0const UiTorus*\0"
@@ -87,9 +87,9 @@ QT_MOC_LITERAL(46, 705, 11) // "QList<int>&"
     "addedBezierCurveC2\0const UiBezierCurveC2*\0"
     "uiBezierC2\0addedBezierC2Interpolated\0"
     "const UiBezierC2Interpolated*\0"
-    "addedBezierSurfaceC0\0const UiBezierSurfaceC0*\0"
+    "addedBezierSurfaceC0\0UiBezierSurfaceC0*\0"
     "uiBezierSurfaceC0\0addedBezierSurfaceC2\0"
-    "const UiBezierSurfaceC2*\0uiBezierSurfaceC2\0"
+    "UiBezierSurfaceC2*\0uiBezierSurfaceC2\0"
     "addedPoint3D\0const UiPoint3D*\0object\0"
     "update\0editModeBC0\0editModeBC2\0"
     "editModeBC2Int\0objectActivated\0"
@@ -182,8 +182,8 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         case 1: _t->addedBezierCurveC0((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiBezierCurveC0*(*)>(_a[3]))); break;
         case 2: _t->addedBezierCurveC2((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiBezierCurveC2*(*)>(_a[3]))); break;
         case 3: _t->addedBezierC2Interpolated((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiBezierC2Interpolated*(*)>(_a[3]))); break;
-        case 4: _t->addedBezierSurfaceC0((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiBezierSurfaceC0*(*)>(_a[3]))); break;
-        case 5: _t->addedBezierSurfaceC2((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiBezierSurfaceC2*(*)>(_a[3]))); break;
+        case 4: _t->addedBezierSurfaceC0((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< UiBezierSurfaceC0*(*)>(_a[3]))); break;
+        case 5: _t->addedBezierSurfaceC2((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< UiBezierSurfaceC2*(*)>(_a[3]))); break;
         case 6: _t->addedPoint3D((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiPoint3D*(*)>(_a[3]))); break;
         case 7: _t->update(); break;
         case 8: _t->editModeBC0((*reinterpret_cast< int(*)>(_a[1]))); break;
@@ -245,14 +245,14 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
             }
         }
         {
-            typedef void (Scene::*_t)(const QString & , int , const UiBezierSurfaceC0 * );
+            typedef void (Scene::*_t)(const QString & , int , UiBezierSurfaceC0 * );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::addedBezierSurfaceC0)) {
                 *result = 4;
                 return;
             }
         }
         {
-            typedef void (Scene::*_t)(const QString & , int , const UiBezierSurfaceC2 * );
+            typedef void (Scene::*_t)(const QString & , int , UiBezierSurfaceC2 * );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::addedBezierSurfaceC2)) {
                 *result = 5;
                 return;
@@ -382,14 +382,14 @@ void Scene::addedBezierC2Interpolated(const QString & _t1, int _t2, const UiBezi
 }
 
 // SIGNAL 4
-void Scene::addedBezierSurfaceC0(const QString & _t1, int _t2, const UiBezierSurfaceC0 * _t3)
+void Scene::addedBezierSurfaceC0(const QString & _t1, int _t2, UiBezierSurfaceC0 * _t3)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
 
 // SIGNAL 5
-void Scene::addedBezierSurfaceC2(const QString & _t1, int _t2, const UiBezierSurfaceC2 * _t3)
+void Scene::addedBezierSurfaceC2(const QString & _t1, int _t2, UiBezierSurfaceC2 * _t3)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 5, _a);

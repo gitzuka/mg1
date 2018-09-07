@@ -12,6 +12,7 @@
 #include "bezierC2Interpolated.h"
 #include "uiBezierSurfaceC0.h"
 #include "uiBezierSurfaceC2.h"
+#include "Intersections.h"
 
 Scene::Scene() : m_stereoscopy(false), m_isCursor3d(false)
 {
@@ -131,6 +132,87 @@ void Scene::createPoint3Dmenu(const QPoint& pos, const QList<int>& ids)
 	myMenu.exec(pos);
 }
 
+void Scene::createIntersectionMenu(const QPoint& pos, const QList<int>& ids)
+{
+	for (int i = 0; i < ids.count(); ++i)
+	{
+		if (getSceneObject(ids.at(i)) == nullptr || !getSceneObject(ids.at(i))->isIntersectable())
+		{
+			return;
+		}
+	}
+	QMenu myMenu;
+	QAction *createIntersection = myMenu.addAction("Check Intersections");
+	connect(createIntersection, &QAction::triggered, this, [this, &ids]()
+	{
+		checkIntersections(ids);
+	});
+	myMenu.exec(pos);
+}
+
+void Scene::checkIntersections(const QList<int>& ids)
+{
+	std::shared_ptr<IntersectableObject> surface1 = std::dynamic_pointer_cast<IntersectableObject>(getUiConntector(ids.at(0))->getObject());
+	std::shared_ptr<IntersectableObject> surface2 = std::dynamic_pointer_cast<IntersectableObject>(getUiConntector(ids.at(1))->getObject());
+	QVector3D testpoint = QVector3D(0.0, 0.5f, -0.1f);
+	int id = createDrawableObject("Point3D");
+	getUiConntector(id)->getObject()->setPosition(testpoint);
+	getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
+	QVector2D uv1 = Intersections::findClosestPoint(surface1, testpoint);
+	QVector3D point1 = surface1->getPointByUV(uv1.x(), uv1.y());
+	id = createDrawableObject("Point3D");
+	getUiConntector(id)->getObject()->setPosition(point1);
+	getUiConntector(id)->getObject()->setColor(float3(255, 0, 0));
+	QVector2D uv2 = Intersections::findClosestPoint(surface2, testpoint);
+	QVector3D point2 = surface2->getPointByUV(uv2.x(), uv2.y());
+	id = createDrawableObject("Point3D");
+	getUiConntector(id)->getObject()->setPosition(point2);
+	getUiConntector(id)->getObject()->setColor(float3(0, 0, 255));
+	QVector4D intersectionUVs = Intersections::findIntersectionPoint(surface1, surface2, uv1, uv2);
+
+	QVector3D point3 = surface1->getPointByUV(intersectionUVs.x(), intersectionUVs.y());
+	id = createDrawableObject("Point3D");
+	getUiConntector(id)->getObject()->setPosition(point3);
+	getUiConntector(id)->getObject()->setColor(float3(0, 255, 255));
+
+	QVector3D point4 = surface2->getPointByUV(intersectionUVs.z(), intersectionUVs.w());
+	id = createDrawableObject("Point3D");
+	getUiConntector(id)->getObject()->setPosition(point4);
+	getUiConntector(id)->getObject()->setColor(float3(255, 0, 255));
+
+
+	//std::shared_ptr<BezierSurface> surface1 = std::static_pointer_cast<BezierSurface>(getUiConntector(ids.at(0))->getObject());
+	//std::shared_ptr<BezierSurface> surface2 = std::static_pointer_cast<BezierSurface>(getUiConntector(ids.at(1))->getObject());
+	//QVector3D testpoint = QVector3D(0.4f, 0.1f, -0.4f);
+	//int id = createDrawableObject("Point3D");
+	//getUiConntector(id)->getObject()->setPosition(testpoint);
+	//getUiConntector(id)->getObject()->setName("testpoint");
+	//getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
+	//QVector2D uv1 = Intersections::findClosestPoint(surface1, testpoint);
+	//QVector2D uv2 = Intersections::findClosestPoint(surface2, testpoint);
+	//QVector3D curorPos = m_cursor->getPosition();
+	//QVector3D point1 = surface1->getPointByUV(uv1.x(), uv1.y());
+	//id = createDrawableObject("Point3D");
+	//getUiConntector(id)->getObject()->setPosition(point1);
+	//getUiConntector(id)->getObject()->setColor(float3(255, 0, 0));
+	//QVector3D point2 = surface2->getPointByUV(uv2.x(), uv2.y());
+	//id = createDrawableObject("Point3D");
+	//getUiConntector(id)->getObject()->setPosition(point2);
+	//getUiConntector(id)->getObject()->setColor(float3(0, 0, 255));
+
+	//QVector4D intersectionUVs = Intersections::findIntersectionPoint(surface1, surface2, uv1, uv2);
+
+	//QVector3D point3 = surface1->getPointByUV(intersectionUVs.x(), intersectionUVs.y());
+	//id = createDrawableObject("Point3D");
+	//getUiConntector(id)->getObject()->setPosition(point3);
+	//getUiConntector(id)->getObject()->setColor(float3(0, 255, 255));
+
+	//QVector3D point4 = surface2->getPointByUV(intersectionUVs.z(), intersectionUVs.w());
+	//id = createDrawableObject("Point3D");
+	//getUiConntector(id)->getObject()->setPosition(point4);
+	//getUiConntector(id)->getObject()->setColor(float3(255, 0, 255));
+}
+
 void Scene::setActiveObject(int id)
 {
 	if (m_cursor->getActiveObject() != nullptr)
@@ -179,14 +261,7 @@ QPair<int, DrawableObject::ObjectType> Scene::createUiConnector(const QString& n
 	{
 		uiConnector = std::make_unique<UiBezierC2Interpolated>(std::make_shared<BezierC2Interpolated>(BezierC2Interpolated::ObjectType::bezierC2Interpolated, name));
 	}
-	/*else if (name == "BezierSurfaceC0")
-	{
-		uiConnector = std::make_unique<UiBezierSurfaceC0>(std::make_shared<BezierSurfaceC0>(BezierSurfaceC0::ObjectType::bezierSurfaceC0, name, surfaceType));
-	}
-	else if (name == "BezierSurfaceC2")
-	{
-		uiConnector = std::make_unique<UiBezierSurfaceC2>(std::make_shared<BezierSurfaceC2>(BezierSurfaceC2::ObjectType::bezierSurfaceC2, name, surfaceType));
-	}*/
+
 	int id = uiConnector->getObject()->getId();
 	DrawableObject::ObjectType type = uiConnector->getObject()->m_type;
 	addUiConnector(std::move(uiConnector));
@@ -200,11 +275,24 @@ void Scene::createObjectMenu(const QPoint &pos, const QList<int> &ids)
 	if (ids.count() == 1)
 	{
 		if (getSceneObject(ids.at(0))->m_type == DrawableObject::ObjectType::bezierCurveC0)
+		{
 			createBC0menu(pos, ids.at(0));
+			return;
+		}
 		if (getSceneObject(ids.at(0))->m_type == DrawableObject::ObjectType::bezierCurveC2)
+		{
 			createBC2menu(pos, ids.at(0));
+			return;
+		}
 		if (getSceneObject(ids.at(0))->m_type == DrawableObject::ObjectType::bezierC2Interpolated)
+		{
 			createBC2IntMenu(pos, ids.at(0));
+			return;
+		}
+	}
+	if (ids.count() == 2)
+	{
+		createIntersectionMenu(pos, ids);
 		return;
 	}
 	createPoint3Dmenu(pos, ids);
@@ -263,9 +351,9 @@ void Scene::draw() const
 	if (!m_stereoscopy)
 	{
 		QMatrix4x4 PV = m_camera.m_projectionMatrix * m_camera.m_viewMatrix;
+		std::vector<QVector4D> vertices;
 		for (auto const& sceneObject : m_uiConnectors)
 		{
-			std::vector<QVector4D> vertices;
 			vertices.reserve(sceneObject.second.get()->getObject()->getVertices().size());
 			QMatrix4x4 PVM = PV * sceneObject.second.get()->getObject()->getModelMatrix();
 			for (std::vector<QVector4D>::const_iterator it = sceneObject.second.get()->getObject()->getVertices().begin(); it != sceneObject.second.get()->getObject()->getVertices().end(); ++it)
@@ -275,6 +363,7 @@ void Scene::draw() const
 				vertices.push_back(vec);
 			}
 			sceneObject.second.get()->getObject()->draw(vertices);
+			vertices.clear();
 		}
 	}
 	else
@@ -316,9 +405,9 @@ void Scene::toggleCursor3D(bool isActive)
 	m_isCursor3d = isActive;
 }
 
-void Scene::updateCursorPosition(float x, float y, int width, int heigth)
+void Scene::updateCursorPosition(float x, float y, int width, int heigth, bool z)
 {
-	m_cursor->updatePosition(x, y, width, heigth, m_camera);
+	m_cursor->updatePosition(x, y, width, heigth, m_camera, z);
 }
 
 int Scene::createDrawableObject(const QString &name)
@@ -384,18 +473,30 @@ UiConnector* Scene::getUiConntector(int id) const
 
 void Scene::createBezierSurfaceC2(const BezierSurfaceData &data)
 {
-}
-
-void Scene::createBezierSurfaceC0(const BezierSurfaceData &data)
-{
-	std::unique_ptr<UiBezierSurfaceC0> uiConnector = 
-		std::make_unique<UiBezierSurfaceC0>(std::make_shared<BezierSurfaceC0>(BezierSurfaceC0::ObjectType::bezierSurfaceC0, "BezierSurfaceC0", data));
-	emit addedBezierSurfaceC0("BezierSurfaceC0", uiConnector->getObject()->getId(), uiConnector.get());
+	std::unique_ptr<UiBezierSurfaceC2> uiConnector =
+		std::make_unique<UiBezierSurfaceC2>(std::make_shared<BezierSurfaceC2>(BezierSurfaceC2::ObjectType::bezierSurfaceC2, "BezierSurfaceC2", data));
 	for (const auto &point : uiConnector->getBezierSurface()->getPoints())
 	{
 		std::unique_ptr<UiPoint3D> uiPoint3D = std::make_unique<UiPoint3D>(point);
 		emit createdBSControlPoint("", -1, uiPoint3D.get());
 		addUiConnector(std::move(uiPoint3D));
 	}
+	int id = uiConnector->getObject()->getId();
 	addUiConnector(std::move(uiConnector));
+	emit addedBezierSurfaceC2("BezierSurfaceC2", id, static_cast<UiBezierSurfaceC2*>(getUiConntector(id)));
+}
+
+void Scene::createBezierSurfaceC0(const BezierSurfaceData &data)
+{
+	std::unique_ptr<UiBezierSurfaceC0> uiConnector =
+		std::make_unique<UiBezierSurfaceC0>(std::make_shared<BezierSurfaceC0>(BezierSurfaceC0::ObjectType::bezierSurfaceC0, "BezierSurfaceC0", data));
+	for (const auto &point : uiConnector->getBezierSurface()->getPoints())
+	{
+		std::unique_ptr<UiPoint3D> uiPoint3D = std::make_unique<UiPoint3D>(point);
+		emit createdBSControlPoint("", -1, uiPoint3D.get());
+		addUiConnector(std::move(uiPoint3D));
+	}
+	int id = uiConnector->getObject()->getId();
+	addUiConnector(std::move(uiConnector));
+	emit addedBezierSurfaceC0("BezierSurfaceC0", id, static_cast<UiBezierSurfaceC0*>(getUiConntector(id)));
 }

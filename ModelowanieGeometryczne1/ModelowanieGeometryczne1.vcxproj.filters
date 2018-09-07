@@ -311,6 +311,9 @@
     <ClCompile Include="bezierSurfaceSettings.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Intersections.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="modelowaniegeometryczne1.ui">
@@ -458,6 +461,12 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_bezierSurfaceSettings.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="intersectableObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Intersections.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

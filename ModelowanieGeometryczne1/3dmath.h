@@ -5,6 +5,7 @@
 namespace math3d 
 {
 	static QVector4D getPointBetweenPoints(QVector4D p1, QVector4D p2, float distanceRatio);
+	static QVector4D getPointBetweenPoints(QVector3D p1, QVector3D p2, float distanceRatio);
 	static float calculateDistance2D(float x1, float x2, float y1, float y2);
 	static float calculateDistance2D(const std::shared_ptr<DrawableObject> &object1, const std::shared_ptr<DrawableObject> &object2);
 	static float calculateDistance3D(float x1, float x2, float y1, float y2, float z1, float z2);
@@ -14,6 +15,11 @@ namespace math3d
 	inline QVector4D getPointBetweenPoints(QVector4D p1, QVector4D p2, float distanceRatio)
 	{
 		return (p1 + (p2 - p1) * distanceRatio);
+	}
+
+	inline QVector4D getPointBetweenPoints(QVector3D p1, QVector3D p2, float distanceRatio)
+	{
+		return QVector4D(p1 + (p2 - p1) * distanceRatio, 1.0f);
 	}
 
 	inline float calculateDistance2D(float x1, float x2, float y1, float y2)

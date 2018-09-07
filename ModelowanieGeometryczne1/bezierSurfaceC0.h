@@ -10,10 +10,9 @@ public:
 	BezierSurfaceC0(ObjectType type, const QString &name, const BezierSurfaceData &parameters);
 	~BezierSurfaceC0();
 
-	void pointMoved(int id) override;
+	QVector3D calculateDerivative(double t, QVector3D a, QVector3D b, QVector3D c, QVector3D d) const override;
 
 private:
-	void createVertices() override;
 	void planeSurfacePatches() override;
 	void cylinderSurfacePatches() override;
 	void planeSurfacePatchesPoints() override;

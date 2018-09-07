@@ -15,6 +15,8 @@ public:
 	const QMatrix4x4& getModelMatrix() const override;
 
 	void setPosition(const QVector4D &point);
+	void setBezierSurfacePosition(const QVector3D &pos, const QQuaternion &quaternion);
+	//void setBezierSurfaceRotation(const QVector3D &pos, const QVector3D &rot, const QQuaternion &quaternion);
 	void setAncestor(std::weak_ptr<DrawableObject> ancestor);
 	void notifyAncestorsPositionChanged();
 

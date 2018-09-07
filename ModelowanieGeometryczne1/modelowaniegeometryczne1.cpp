@@ -12,7 +12,7 @@
 #include "bezierSurfaceSettings.h"
 
 ModelowanieGeometryczne1::ModelowanieGeometryczne1(QWidget *parent)
-	: QMainWindow(parent)
+	: QMainWindow(parent), m_activeObjectId(-1)
 {
 	ui.setupUi(this);
 	m_scene.m_cursor = std::make_shared<Cursor3D>(Cursor3D::ObjectType::cursor3D);
@@ -64,8 +64,16 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.pushButton_BSC0, SIGNAL(clicked()), this, SLOT(pushButton_BSC0Clicked()));
 	connect(ui.pushButton_BSC2, SIGNAL(clicked()), this, SLOT(pushButton_BSC2Clicked()));
 
-	//TODO: commented lines
+	connect(ui.doubleSpinBox_PosX, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_PosXValueChanged(double)));
+	connect(ui.doubleSpinBox_PosY, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_PosYValueChanged(double)));
+	connect(ui.doubleSpinBox_PosZ, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_PosZValueChanged(double)));
+	connect(ui.doubleSpinBox_RotX, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_RotXValueChanged(double)));
+	connect(ui.doubleSpinBox_RotY, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_RotYValueChanged(double)));
+	connect(ui.doubleSpinBox_RotZ, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_RotZValueChanged(double)));
+
+
 	connect(ui.checkBox_pointer, SIGNAL(stateChanged(int)), ui.myGLWidget, SLOT(checkBox_pointerStateChanged(int)));
+	connect(ui.pushButton_Intersections, SIGNAL(clicked()), this, SLOT(pushButton_IntersectionsClicked()));
 	connect(ui.pushButton_AddObject, SIGNAL(clicked()), this, SLOT(pushButton_AddObjectClicked()));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.listWidget_ObjectsList, SLOT(removeItem()));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.myGLWidget, SLOT(updateGL()));
@@ -78,11 +86,12 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.comboBox_BC2, SIGNAL(itemSelected(int, int)), this, SLOT(showBC2CheckBoxes(int, int)));
 	connect(ui.comboBox_BC2Int, SIGNAL(itemSelected(int, int)), this, SLOT(showBC2IntCheckBoxes(int, int)));
 	connect(ui.comboBox_BC2Int, SIGNAL(itemSelected(int, int)), ui.listWidget_BC2Int, SLOT(updateCurveId(int)));
-	//connect(ui.comboBox_BSC0, SIGNAL(itemSelected(int, int)), this, SLOT(showBC2IntCheckBoxes(int, int)));
 	connect(ui.comboBox_BSC0, SIGNAL(itemSelected(int, int)), ui.listWidget_BSC0, SLOT(updateSurfaceId(int)));
+	connect(ui.comboBox_BSC0, SIGNAL(itemSelected(int, int)), this, SLOT(showBSC0CheckBoxes(int, int)));
 	connect(ui.comboBox_BSC0, SIGNAL(allItemsRemoved()), ui.listWidget_BSC0, SLOT(clear()));
-	//connect(ui.comboBox_BSC2, SIGNAL(itemSelected(int, int)), this, SLOT(showBC2IntCheckBoxes(int, int)));
 	connect(ui.comboBox_BSC2, SIGNAL(itemSelected(int, int)), ui.listWidget_BSC2, SLOT(updateSurfaceId(int)));
+	connect(ui.comboBox_BSC2, SIGNAL(itemSelected(int, int)), this, SLOT(showBSC2CheckBoxes(int, int)));
+	connect(ui.comboBox_BSC2, SIGNAL(allItemsRemoved()), ui.listWidget_BSC2, SLOT(clear()));
 	connect(ui.comboBox_BezierCurveC0, SIGNAL(currentIndexChanged(int)), ui.comboBox_BezierCurveC0, SLOT(selectCurve(int)));
 	connect(ui.comboBox_BC2, SIGNAL(currentIndexChanged(int)), ui.comboBox_BC2, SLOT(selectCurve(int)));
 	connect(ui.comboBox_BC2Int, SIGNAL(currentIndexChanged(int)), ui.comboBox_BC2Int, SLOT(selectCurve(int)));
@@ -97,6 +106,8 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BSC0, SLOT(deleteItem(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(removeItemEvent(int)), ui.comboBox_BSC2, SLOT(deleteItem(int)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(itemSelected(QList<int>&)), &m_scene, SLOT(selectCursorObjects(QList<int>&)));
+	connect(ui.listWidget_ObjectsList, SIGNAL(itemSelected(QList<int>&)), this, SLOT(updateMyGLWidget()));
+	connect(ui.listWidget_ObjectsList, SIGNAL(itemSelected(QList<int>&)), this, SLOT(getObjectDetails(QList<int>&)));
 	connect(ui.listWidget_ObjectsList, SIGNAL(rightClick(const QPoint&, const QList<int>&)), &m_scene, SLOT(createObjectMenu(const QPoint&, const QList<int>&)));
 
 	connect(ui.listWidget_BC0Parameters, SIGNAL(removedItem(int, int)), ui.myGLWidget, SLOT(updateGL()));
@@ -109,10 +120,10 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(&m_scene, SIGNAL(addedBezierCurveC2(const QString&, int, const UiBezierCurveC2*)), this, SLOT(comboBox_BezierCurveC2_AddItem(const QString&, int, const UiBezierCurveC2*)));
 	connect(&m_scene, SIGNAL(addedBezierC2Interpolated(const QString&, int, const UiBezierC2Interpolated*)), ui.listWidget_ObjectsList, SLOT(addBezierC2Interpolated(const QString&, int)));
 	connect(&m_scene, SIGNAL(addedBezierC2Interpolated(const QString&, int, const UiBezierC2Interpolated*)), this, SLOT(comboBox_BezierCurveC2Int_AddItem(const QString&, int, const UiBezierC2Interpolated*)));
-	connect(&m_scene, SIGNAL(addedBezierSurfaceC0(const QString&, int, const UiBezierSurfaceC0*)), ui.listWidget_ObjectsList, SLOT(addObject(const QString&, int)));
-	connect(&m_scene, SIGNAL(addedBezierSurfaceC0(const QString&, int, const UiBezierSurfaceC0*)), this, SLOT(comboBox_BezierSurfaceC0_AddItem(const QString&, int, const UiBezierSurfaceC0*)));
-	connect(&m_scene, SIGNAL(addedBezierSurfaceC2(const QString&, int, const UiBezierSurfaceC2*)), ui.listWidget_ObjectsList, SLOT(addObject(const QString&, int)));
-	connect(&m_scene, SIGNAL(addedBezierSurfaceC2(const QString&, int, const UiBezierSurfaceC2*)), this, SLOT(comboBox_BezierSurfaceC2_AddItem(const QString&, int, const UiBezierSurfaceC2*)));
+	connect(&m_scene, SIGNAL(addedBezierSurfaceC0(const QString&, int, UiBezierSurfaceC0*)), ui.listWidget_ObjectsList, SLOT(addObject(const QString&, int)));
+	connect(&m_scene, SIGNAL(addedBezierSurfaceC0(const QString&, int, UiBezierSurfaceC0*)), this, SLOT(comboBox_BezierSurfaceC0_AddItem(const QString&, int, UiBezierSurfaceC0*)));
+	connect(&m_scene, SIGNAL(addedBezierSurfaceC2(const QString&, int, UiBezierSurfaceC2*)), ui.listWidget_ObjectsList, SLOT(addObject(const QString&, int)));
+	connect(&m_scene, SIGNAL(addedBezierSurfaceC2(const QString&, int, UiBezierSurfaceC2*)), this, SLOT(comboBox_BezierSurfaceC2_AddItem(const QString&, int, UiBezierSurfaceC2*)));
 	connect(&m_scene, SIGNAL(addedTorus(const QString&, int, const UiTorus*)), ui.listWidget_ObjectsList, SLOT(addTorus(const QString&, int)));
 	connect(&m_scene, SIGNAL(addedTorus(const QString&, int, const UiTorus*)), this, SLOT(comboBox_Torus_AddItem(const QString&, int, const UiTorus*)));
 	connect(&m_scene, SIGNAL(addedPoint3D(const QString&, int, const UiPoint3D*)), ui.listWidget_ObjectsList, SLOT(addPoint3D(const QString&, int)));
@@ -128,10 +139,20 @@ void ModelowanieGeometryczne1::connectSignals()
 void ModelowanieGeometryczne1::label_3dCoordsChangeText(float x, float y, float z)
 {
 	QString text = "Cursor3D coords: "
-		+ QString::number(x) + ", "
-		+ QString::number(y) + ", "
-		+ QString::number(z);
+		+ QString::number(x, 'g', 4) + ", "
+		+ QString::number(y, 'g', 4) + ", "
+		+ QString::number(z, 'g', 4);
 	ui.label_3dCoords->setText(text);
+}
+
+void ModelowanieGeometryczne1::setDetailSpinboxesSignalsState(bool state)
+{
+	ui.doubleSpinBox_PosX->blockSignals(state);
+	ui.doubleSpinBox_PosY->blockSignals(state);
+	ui.doubleSpinBox_PosZ->blockSignals(state);
+	ui.doubleSpinBox_RotX->blockSignals(state);
+	ui.doubleSpinBox_RotY->blockSignals(state);
+	ui.doubleSpinBox_RotZ->blockSignals(state);
 }
 
 BezierSurfaceData::SurfaceType ModelowanieGeometryczne1::surfaceTypePopup() const
@@ -186,7 +207,17 @@ void ModelowanieGeometryczne1::pushButton_BSC0Clicked()
 
 void ModelowanieGeometryczne1::pushButton_BSC2Clicked()
 {
-
+	UiBezierSurface *uiBezierSurface = static_cast<UiBezierSurface*>(m_scene.getUiConntector(ui.comboBox_BSC2->getSurfaceId()));
+	if (uiBezierSurface == nullptr)
+	{
+		return;
+	}
+	BezierSurfaceSettings *formBS = new BezierSurfaceSettings(this);
+	formBS->initialize(std::static_pointer_cast<BezierSurface>(uiBezierSurface->getObject())->getSurfaceData());
+	connect(formBS, SIGNAL(closing(BezierSurfaceData, const QString&)), uiBezierSurface, SLOT(updateSurfaceData(BezierSurfaceData)));
+	formBS->setAttribute(Qt::WA_DeleteOnClose);
+	formBS->show();
+	ui.myGLWidget->updateGL();
 }
 
 void ModelowanieGeometryczne1::label_screenCoordsChangeText(QMouseEvent* event)
@@ -224,14 +255,14 @@ void ModelowanieGeometryczne1::comboBox_BezierCurveC2Int_AddItem(const QString& 
 	ui.comboBox_BC2Int->addItem(id, name);
 }
 
-void ModelowanieGeometryczne1::comboBox_BezierSurfaceC0_AddItem(const QString& name, int id, const UiBezierSurfaceC0* uiBezierSurfaceC0)
+void ModelowanieGeometryczne1::comboBox_BezierSurfaceC0_AddItem(const QString& name, int id, UiBezierSurfaceC0* uiBezierSurfaceC0)
 {
 	uiBezierSurfaceC0->connectToUi(&ui);
 	uiBezierSurfaceC0->connectToScene(&m_scene);
 	ui.comboBox_BSC0->addItem(id, name);
 }
 
-void ModelowanieGeometryczne1::comboBox_BezierSurfaceC2_AddItem(const QString& name, int id, const UiBezierSurfaceC2* uiBezierSurfaceC2)
+void ModelowanieGeometryczne1::comboBox_BezierSurfaceC2_AddItem(const QString& name, int id, UiBezierSurfaceC2* uiBezierSurfaceC2)
 {
 	uiBezierSurfaceC2->connectToUi(&ui);
 	uiBezierSurfaceC2->connectToScene(&m_scene);
@@ -273,6 +304,18 @@ void ModelowanieGeometryczne1::myGLWidgetKeyPressed(QKeyEvent *event)
 		ui.radioButton_Delete->setChecked(true);
 		break;
 	}
+	case 'X':
+	{
+
+	}
+	case 'Y':
+	{
+
+	}
+	case 'Z':
+	{
+
+	}
 	}
 }
 
@@ -280,21 +323,13 @@ void ModelowanieGeometryczne1::myGLWidgetMouseMoved(QMouseEvent *event)
 {
 	float dx = event->x() - m_scene.m_camera.m_mousePos.x();
 	float dy = event->y() - m_scene.m_camera.m_mousePos.y();
-	/*if (event->buttons() & Qt::LeftButton)
-	{
-	}
-	else*/ if (event->buttons() & Qt::MiddleButton)
+	if (event->buttons() & Qt::MiddleButton)
 	{
 		m_scene.m_camera.mouseMoved(dx, dy);
 	}
 	if (m_scene.m_isCursor3d)
 	{
-		//TODO: cursor z translation
-		/*if (QGuiApplication::keyboardModifiers() & Qt::ControlModifier)
-		{
-			m_scene.m_cursorPosZ = dy;
-		}*/
-		m_scene.updateCursorPosition(event->x(), event->y(), ui.myGLWidget->getWidth(), ui.myGLWidget->getHeight());
+		m_scene.updateCursorPosition(event->x(), event->y(), ui.myGLWidget->getWidth(), ui.myGLWidget->getHeight(), QGuiApplication::keyboardModifiers() & Qt::ControlModifier);
 	}
 	m_scene.m_camera.m_mousePos = event->pos();
 	QVector4D c = m_scene.m_cursor->getPosition();
@@ -334,14 +369,14 @@ void ModelowanieGeometryczne1::showBC0CheckBoxes(int currId, int prevId)
 	const UiBezierCurveC0 *uibc0 = static_cast<const UiBezierCurveC0*>(m_scene.getUiConntector(prevId));
 	if (uibc0 != nullptr)
 	{
-		ui.verticalLayout_BC2->removeWidget(uibc0->getCBPolyline());
+		ui.verticalLayout_BC0->removeWidget(uibc0->getCBPolyline());
 		uibc0->getCBPolyline()->hide();
 	}
 	uibc0 = static_cast<const UiBezierCurveC0*>(m_scene.getUiConntector(currId));
 	if (uibc0 != nullptr)
 	{
 		uibc0->getCBPolyline()->show();
-		ui.verticalLayout_BC2->addWidget(uibc0->getCBPolyline());
+		ui.verticalLayout_BC0->addWidget(uibc0->getCBPolyline());
 	}
 }
 
@@ -362,6 +397,46 @@ void ModelowanieGeometryczne1::showBC2CheckBoxes(int currId, int prevId)
 		uibc2->getCBDeBoor()->show();
 		ui.verticalLayout_BC2->addWidget(uibc2->getCBPolyline());
 		ui.verticalLayout_BC2->addWidget(uibc2->getCBDeBoor());
+	}
+}
+
+void ModelowanieGeometryczne1::showBSC0CheckBoxes(int currId, int prevId)
+{
+	UiBezierSurfaceC0 *uibsc0 = static_cast<UiBezierSurfaceC0*>(m_scene.getUiConntector(prevId));
+	if (uibsc0 != nullptr)
+	{
+		uibsc0->getCBBezierGrid()->hide();
+		ui.verticalLayout_BSC0->removeWidget(uibsc0->getCBBezierGrid());
+		uibsc0->getCBControlGrid()->hide();
+		ui.verticalLayout_BSC0->removeWidget(uibsc0->getCBControlGrid());
+	}
+	uibsc0 = static_cast<UiBezierSurfaceC0*>(m_scene.getUiConntector(currId));
+	if (uibsc0 != nullptr)
+	{
+		uibsc0->getCBBezierGrid()->show();
+		ui.verticalLayout_BSC0->addWidget(uibsc0->getCBBezierGrid());
+		uibsc0->getCBControlGrid()->show();
+		ui.verticalLayout_BSC0->addWidget(uibsc0->getCBControlGrid());
+	}
+}
+
+void ModelowanieGeometryczne1::showBSC2CheckBoxes(int currId, int prevId)
+{
+	UiBezierSurfaceC2 *uibsc2 = static_cast<UiBezierSurfaceC2*>(m_scene.getUiConntector(prevId));
+	if (uibsc2 != nullptr)
+	{
+		uibsc2->getCBBezierGrid()->hide();
+		ui.verticalLayout_BSC2->removeWidget(uibsc2->getCBBezierGrid());
+		uibsc2->getCBControlGrid()->hide();
+		ui.verticalLayout_BSC2->removeWidget(uibsc2->getCBControlGrid());
+	}
+	uibsc2 = static_cast<UiBezierSurfaceC2*>(m_scene.getUiConntector(currId));
+	if (uibsc2 != nullptr)
+	{
+		uibsc2->getCBBezierGrid()->show();
+		ui.verticalLayout_BSC2->addWidget(uibsc2->getCBBezierGrid());
+		uibsc2->getCBControlGrid()->show();
+		ui.verticalLayout_BSC2->addWidget(uibsc2->getCBControlGrid());
 	}
 }
 
@@ -427,4 +502,108 @@ void ModelowanieGeometryczne1::getBSData(BezierSurfaceData data, const QString &
 	{
 		m_scene.createBezierSurfaceC2(data);
 	}
+}
+
+void ModelowanieGeometryczne1::getObjectDetails(QList<int>& objectsIds)
+{
+	m_prevActiveObjectId = m_activeObjectId;
+	m_activeObjectId = objectsIds.at(0);
+	auto object = m_scene.getUiConntector(m_activeObjectId);
+	if (object == nullptr || m_prevActiveObjectId == m_activeObjectId)
+	{
+		return;
+	}
+	QVector3D pos = object->getObject()->getPosition();
+	setDetailSpinboxesSignalsState(true);
+	ui.doubleSpinBox_PosX->setValue(pos.x());
+	ui.doubleSpinBox_PosY->setValue(pos.y());
+	ui.doubleSpinBox_PosZ->setValue(pos.z());
+	QVector3D rot = object->getObject()->getRotation();
+	ui.doubleSpinBox_RotX->setValue(rot.x());
+	ui.doubleSpinBox_RotY->setValue(rot.y());
+	ui.doubleSpinBox_RotZ->setValue(rot.z());
+	setDetailSpinboxesSignalsState(false);
+}
+
+void ModelowanieGeometryczne1::doubleSpinbox_PosXValueChanged(double val)
+{
+	auto object = m_scene.getUiConntector(m_activeObjectId);
+	if (object == nullptr)
+	{
+		return;
+	}
+	object->getObject()->setPosition(QVector3D(val, ui.doubleSpinBox_PosY->value(), ui.doubleSpinBox_PosZ->value()));
+	updateMyGLWidget();
+}
+
+void ModelowanieGeometryczne1::doubleSpinbox_PosYValueChanged(double val)
+{
+	auto object = m_scene.getUiConntector(m_activeObjectId);
+	if (object == nullptr)
+	{
+		return;
+	}
+	object->getObject()->setPosition(QVector3D(ui.doubleSpinBox_PosX->value(), val, ui.doubleSpinBox_PosZ->value()));
+	updateMyGLWidget();
+}
+
+void ModelowanieGeometryczne1::doubleSpinbox_PosZValueChanged(double val)
+{
+	auto object = m_scene.getUiConntector(m_activeObjectId);
+	if (object == nullptr)
+	{
+		return;
+	}
+	object->getObject()->setPosition(QVector3D(ui.doubleSpinBox_PosX->value(), ui.doubleSpinBox_PosY->value(), val));
+	updateMyGLWidget();
+}
+
+void ModelowanieGeometryczne1::doubleSpinbox_RotXValueChanged(double val)
+{
+	auto object = m_scene.getUiConntector(m_activeObjectId);
+	if (object == nullptr)
+	{
+		return;
+	}
+	object->getObject()->rotate(QVector3D(val, ui.doubleSpinBox_RotY->value(), ui.doubleSpinBox_RotZ->value()));
+	updateMyGLWidget();
+}
+
+void ModelowanieGeometryczne1::doubleSpinbox_RotYValueChanged(double val)
+{
+	auto object = m_scene.getUiConntector(m_activeObjectId);
+	if (object == nullptr)
+	{
+		return;
+	}
+	object->getObject()->rotate(QVector3D(ui.doubleSpinBox_RotX->value(), val, ui.doubleSpinBox_RotZ->value()));
+	updateMyGLWidget();
+}
+
+void ModelowanieGeometryczne1::doubleSpinbox_RotZValueChanged(double val)
+{
+	auto object = m_scene.getUiConntector(m_activeObjectId);
+	if (object == nullptr)
+	{
+		return;
+	}
+	object->getObject()->rotate(QVector3D(ui.doubleSpinBox_RotX->value(), ui.doubleSpinBox_RotY->value(), val));
+	updateMyGLWidget();
+}
+
+void ModelowanieGeometryczne1::pushButton_IntersectionsClicked()
+{/*
+	std::shared_ptr<BezierSurface> surface = std::static_pointer_cast<BezierSurface>(m_scene.getUiConntector(1)->getObject());
+	QVector3D testpoint = QVector3D(0.4f, 0.4f, -0.4f);
+	int id = m_scene.createDrawableObject("Point3D");
+	m_scene.getUiConntector(id)->getObject()->setPosition(testpoint);
+	m_scene.getUiConntector(id)->getObject()->setName("testpoint");
+	m_scene.getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
+	QVector2D d = Intersections::findClosestPoint(surface, testpoint);
+	QVector3D curorPos = m_scene.m_cursor->getPosition();
+	QVector3D point = surface->getPointByUV(d.x(), d.y());
+	id = m_scene.createDrawableObject("Point3D");
+	m_scene.getUiConntector(id)->getObject()->setPosition(point);
+	m_scene.getUiConntector(id)->getObject()->setName("IntersectionPoint");
+	m_scene.getUiConntector(id)->getObject()->setColor(float3(255,0,0));*/
 }

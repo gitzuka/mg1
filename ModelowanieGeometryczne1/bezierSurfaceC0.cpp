@@ -1,4 +1,6 @@
 #include "BezierSurfaceC0.h"
+#include "curveCubic.h"
+#include "3dmath.h"
 
 BezierSurfaceC0::BezierSurfaceC0(ObjectType type, const QString &name, const BezierSurfaceData &parameters) : BezierSurface(type, name, parameters)
 {
@@ -8,31 +10,17 @@ BezierSurfaceC0::~BezierSurfaceC0()
 {
 }
 
-void BezierSurfaceC0::pointMoved(int id)
+QVector3D BezierSurfaceC0::calculateDerivative(double t, QVector3D a, QVector3D b, QVector3D c, QVector3D d) const
 {
-	createVertices();
-}
+	double tnew = 1 - t;
+	QVector3D d0 = 3 * (b - a);
+	QVector3D d1 = 3 * (c - b);
+	QVector3D d2 = 3 * (d - c);
 
-void BezierSurfaceC0::createVertices()
-{
-	m_vertices.clear();
-	m_vertices.reserve((m_parameters.m_u + 1) * (m_parameters.m_v + 1) + m_points.size());
-	for (int i = 0; i < m_points.size(); ++i)
-	{
-		m_vertices.push_back(QVector4D(m_points.at(i)->getPosition(), 1.0f));
-	}
-	float u = 1.0f / m_parameters.m_u;
-	float v = 1.0f / m_parameters.m_v;
-	for (const auto &patch : m_patches)
-	{
-		for (float i = 0; i <= 1.0f; i += u)
-		{
-			for (float j = 0; j <= 1.0f; j += v)
-			{
-				m_vertices.push_back(QVector4D(getPointOnSurface(patch, i, j), 1.0f));
-			}
-		}
-	}
+	QVector3D dd0 = d0 * tnew + d1 * t;
+	QVector3D dd1 = d1 * tnew + d2 * t;
+
+	return QVector3D(dd0 * tnew + dd1 * t);
 }
 
 void BezierSurfaceC0::planeSurfacePatches()
@@ -68,6 +56,7 @@ void BezierSurfaceC0::cylinderSurfacePatches()
 			BezierPatch patch(j, i);
 			int cornerIndexX = j * 3;
 			int cornerIndexY = i * 3;
+
 			for (int k = 0; k < 4; k++)
 			{
 				for (int l = 0; l < 4; l++)
@@ -92,9 +81,8 @@ void BezierSurfaceC0::planeSurfacePatchesPoints()
 	int pointsX = 3 * m_parameters.m_patchesX + 1;
 	int pointsY = 3 * m_parameters.m_patchesY + 1;
 
-	float screenFactor = 0.001f;
-	float distX = screenFactor * m_width / (pointsX - 1);
-	float distY = screenFactor * m_height / (pointsY - 1);
+	float distX =  m_parameters.m_sizeX / (pointsX - 1);
+	float distY =  m_parameters.m_sizeY / (pointsY - 1);
 
 	for (int i = 0; i < pointsY; ++i)
 	{
@@ -102,6 +90,7 @@ void BezierSurfaceC0::planeSurfacePatchesPoints()
 		{
 			std::shared_ptr<Point3D> point = std::make_shared<Point3D>(ObjectType::point3D, "Point3D");
 			point->setPosition(QVector4D(j * distX, 0, -i * distY, 1));
+			//point->DrawableObject::setPosition(QVector3D(j * distX, 0, -i * distY));
 			m_points.push_back(point);
 		}
 	}
@@ -112,16 +101,16 @@ void BezierSurfaceC0::cylinderSurfacePatchesPoints()
 	int pointsX = 3 * m_parameters.m_patchesX;
 	int pointsY = 3 * m_parameters.m_patchesY + 1;
 	float angle = 360.0f / pointsX;
-	float screenFactor = 0.001f;
-	float distY = screenFactor * m_height / (pointsY - 1);
-	for (int j = 0; j < pointsY; j++)
+	float distY = m_parameters.m_height / (pointsY - 1);
+	for (int i = 0; i < pointsY; i++)
 	{
-		for (int i = 0; i < pointsX; i++)
+		for (int j = 0; j < pointsX; j++)
 		{
 			std::shared_ptr<Point3D> point = std::make_shared<Point3D>(ObjectType::point3D, "Point3D");
-			float x = cos(i * angle * M_PI / 180.0f) * m_parameters.m_radius;
-			float y = sin(i * angle *M_PI / 180.0f) * m_parameters.m_radius;
-			point->setPosition(QVector4D(x, j * distY, y, 1));
+			float x = cos(j * angle * M_PI / 180.0f) * m_parameters.m_radius;
+			float y = sin(j * angle * M_PI / 180.0f) * m_parameters.m_radius;
+			point->setPosition(QVector4D(x, i * distY, y, 1));
+			//point->DrawableObject::setPosition(QVector3D(x, i * distY, y));
 			m_points.push_back(point);
 		}
 	}
@@ -129,14 +118,14 @@ void BezierSurfaceC0::cylinderSurfacePatchesPoints()
 
 QVector3D BezierSurfaceC0::calculateSurfacePoint(float t, QVector3D a, QVector3D b, QVector3D c, QVector3D d) const
 {
-	float param = 1 - t;
-	a = a * param + b * t;
-	b = b * param + c * t;
-	c = c * param + d * t;
+	float tnew = 1 - t;
+	a = a * tnew + b * t;
+	b = b * tnew + c * t;
+	c = c * tnew + d * t;
 
-	a = a * param + b * t;
-	b = b * param + c * t;
+	a = a * tnew + b * t;
+	b = b * tnew + c * t;
 
-	return QVector3D(a * param + b * t);
+	return QVector3D(a * tnew + b * t);
 }
 

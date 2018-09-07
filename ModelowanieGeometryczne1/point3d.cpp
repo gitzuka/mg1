@@ -40,13 +40,6 @@ void Point3D::draw(std::vector<QVector4D>& vec, float3 color) const
 	}
 }
 
-//template<class T, class U>
-//std::weak_ptr<T>
-//static_pointer_cast(std::weak_ptr<U> const& r)
-//{
-//	return std::static_pointer_cast<T>(std::shared_ptr<U>(r));
-//}
-
 void Point3D::setModelMatrix(const QMatrix4x4 &matrix)
 {
 	m_modelMatrix = matrix;
@@ -80,8 +73,33 @@ const QMatrix4x4& Point3D::getModelMatrix() const
 
 void Point3D::setPosition(const QVector4D& point)
 {
-	m_modelMatrix.setColumn(3, point);
+	//m_modelMatrix.setColumn(3, point);
+	m_pos = point.toVector3D();
+	QVector3D position = QMatrix4x4(m_rotation.toRotationMatrix()) * (m_pos);
+	m_modelMatrix = Camera::createTranslation(position);
 }
+
+void Point3D::setBezierSurfacePosition(const QVector3D& pos, const QQuaternion &quaternion)
+{
+	m_rotation = quaternion;
+	QVector3D position = QMatrix4x4(quaternion.toRotationMatrix()) * (m_pos);
+	m_modelMatrix = Camera::createTranslation(pos + position);
+}
+
+//void Point3D::setBezierSurfaceRotation(const QVector3D& pos, const QVector3D& rot, const QQuaternion &quaternion)
+//{
+//	//QQuaternion q1 = QQuaternion::fromAxisAndAngle(QVector3D(1, 0, 0), rot.x()).normalized();
+//	//QQuaternion q2 = QQuaternion::fromAxisAndAngle(QVector3D(0, 1, 0), rot.y()).normalized();
+//	//QQuaternion q3 = QQuaternion::fromAxisAndAngle(QVector3D(0, 0, 1), rot.z()).normalized();
+//	////m_rotation = q3 * q1 * q2;
+//	//m_rotation = q1 * q2 * q3;
+//	//QVector3D axisX, axisY, axisZ;
+//	//quaternion.getAxes(&axisX, &axisY, &axisZ);
+//	//QVector3D angles = m_rotation.toEulerAngles();
+//	QVector3D position = QMatrix4x4(quaternion.toRotationMatrix()) * (m_pos);
+//	m_modelMatrix = Camera::createTranslation(pos + position);
+//
+//}
 
 void Point3D::setAncestor(std::weak_ptr<DrawableObject> ancestor)
 {

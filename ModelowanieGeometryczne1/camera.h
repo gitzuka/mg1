@@ -12,6 +12,7 @@ public:
 	float m_yaw;
 	QPoint m_mousePos;
 	QVector3D m_eyeVector;
+	QVector3D m_origin;
 	QMatrix4x4 m_viewMatrix;
 	QMatrix4x4 m_projectionMatrix;
 	QMatrix4x4 m_m_projectionMatrixStereoL, m_m_projectionMatrixStereoR;
@@ -22,6 +23,10 @@ public:
 	void keyPressed(const unsigned char key);
 	void mouseMoved(float x, float y);
 	void updateStereoscopy(float e, float width, float heigth);
+	QVector3D getEyeVector() const;
+	QVector3D getRightVector() const;
+	QVector3D getUpVector() const;
+	QVector3D getForwardVector() const;
 
 	static QMatrix4x4 createLookAt(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
 	static QMatrix4x4 createLookAt(const QVector3D &eye, const QVector3D &target, const QVector3D &up);

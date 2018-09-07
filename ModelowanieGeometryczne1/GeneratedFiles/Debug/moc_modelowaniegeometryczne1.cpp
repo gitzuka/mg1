@@ -9,6 +9,7 @@
 #include "../../modelowaniegeometryczne1.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
+#include <QtCore/QList>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'modelowaniegeometryczne1.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
@@ -21,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ModelowanieGeometryczne1_t {
-    QByteArrayData data[56];
-    char stringdata0[1004];
+    QByteArrayData data[69];
+    char stringdata0[1292];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -58,35 +59,48 @@ QT_MOC_LITERAL(23, 389, 33), // "comboBox_BezierCurveC2Int_Add..."
 QT_MOC_LITERAL(24, 423, 29), // "const UiBezierC2Interpolated*"
 QT_MOC_LITERAL(25, 453, 13), // "uiBezierC2Int"
 QT_MOC_LITERAL(26, 467, 32), // "comboBox_BezierSurfaceC0_AddItem"
-QT_MOC_LITERAL(27, 500, 24), // "const UiBezierSurfaceC0*"
-QT_MOC_LITERAL(28, 525, 17), // "uiBezierSurfaceC0"
-QT_MOC_LITERAL(29, 543, 32), // "comboBox_BezierSurfaceC2_AddItem"
-QT_MOC_LITERAL(30, 576, 24), // "const UiBezierSurfaceC2*"
-QT_MOC_LITERAL(31, 601, 17), // "uiBezierSurfaceC2"
-QT_MOC_LITERAL(32, 619, 14), // "connectPoint3D"
-QT_MOC_LITERAL(33, 634, 16), // "const UiPoint3D*"
-QT_MOC_LITERAL(34, 651, 9), // "uiPoint3d"
-QT_MOC_LITERAL(35, 661, 20), // "myGLWidgetKeyPressed"
-QT_MOC_LITERAL(36, 682, 10), // "QKeyEvent*"
-QT_MOC_LITERAL(37, 693, 20), // "myGLWidgetMouseMoved"
-QT_MOC_LITERAL(38, 714, 22), // "myGLWidgetMousePressed"
-QT_MOC_LITERAL(39, 737, 16), // "updateMyGLWidget"
-QT_MOC_LITERAL(40, 754, 17), // "showBC0CheckBoxes"
-QT_MOC_LITERAL(41, 772, 6), // "currId"
-QT_MOC_LITERAL(42, 779, 6), // "prevId"
-QT_MOC_LITERAL(43, 786, 17), // "showBC2CheckBoxes"
-QT_MOC_LITERAL(44, 804, 20), // "showBC2IntCheckBoxes"
-QT_MOC_LITERAL(45, 825, 19), // "radioBtnIdleToggled"
-QT_MOC_LITERAL(46, 845, 7), // "checked"
-QT_MOC_LITERAL(47, 853, 24), // "radioBtnTranslateToggled"
-QT_MOC_LITERAL(48, 878, 18), // "radioBtnAddToggled"
-QT_MOC_LITERAL(49, 897, 21), // "radioBtnDeleteToggled"
-QT_MOC_LITERAL(50, 919, 27), // "doubleSpinbox_eValueChanged"
-QT_MOC_LITERAL(51, 947, 1), // "e"
-QT_MOC_LITERAL(52, 949, 21), // "stereo_button_toggled"
-QT_MOC_LITERAL(53, 971, 9), // "getBSData"
-QT_MOC_LITERAL(54, 981, 17), // "BezierSurfaceData"
-QT_MOC_LITERAL(55, 999, 4) // "data"
+QT_MOC_LITERAL(27, 500, 18), // "UiBezierSurfaceC0*"
+QT_MOC_LITERAL(28, 519, 17), // "uiBezierSurfaceC0"
+QT_MOC_LITERAL(29, 537, 32), // "comboBox_BezierSurfaceC2_AddItem"
+QT_MOC_LITERAL(30, 570, 18), // "UiBezierSurfaceC2*"
+QT_MOC_LITERAL(31, 589, 17), // "uiBezierSurfaceC2"
+QT_MOC_LITERAL(32, 607, 14), // "connectPoint3D"
+QT_MOC_LITERAL(33, 622, 16), // "const UiPoint3D*"
+QT_MOC_LITERAL(34, 639, 9), // "uiPoint3d"
+QT_MOC_LITERAL(35, 649, 20), // "myGLWidgetKeyPressed"
+QT_MOC_LITERAL(36, 670, 10), // "QKeyEvent*"
+QT_MOC_LITERAL(37, 681, 20), // "myGLWidgetMouseMoved"
+QT_MOC_LITERAL(38, 702, 22), // "myGLWidgetMousePressed"
+QT_MOC_LITERAL(39, 725, 16), // "updateMyGLWidget"
+QT_MOC_LITERAL(40, 742, 17), // "showBC0CheckBoxes"
+QT_MOC_LITERAL(41, 760, 6), // "currId"
+QT_MOC_LITERAL(42, 767, 6), // "prevId"
+QT_MOC_LITERAL(43, 774, 17), // "showBC2CheckBoxes"
+QT_MOC_LITERAL(44, 792, 18), // "showBSC0CheckBoxes"
+QT_MOC_LITERAL(45, 811, 18), // "showBSC2CheckBoxes"
+QT_MOC_LITERAL(46, 830, 20), // "showBC2IntCheckBoxes"
+QT_MOC_LITERAL(47, 851, 19), // "radioBtnIdleToggled"
+QT_MOC_LITERAL(48, 871, 7), // "checked"
+QT_MOC_LITERAL(49, 879, 24), // "radioBtnTranslateToggled"
+QT_MOC_LITERAL(50, 904, 18), // "radioBtnAddToggled"
+QT_MOC_LITERAL(51, 923, 21), // "radioBtnDeleteToggled"
+QT_MOC_LITERAL(52, 945, 27), // "doubleSpinbox_eValueChanged"
+QT_MOC_LITERAL(53, 973, 1), // "e"
+QT_MOC_LITERAL(54, 975, 21), // "stereo_button_toggled"
+QT_MOC_LITERAL(55, 997, 9), // "getBSData"
+QT_MOC_LITERAL(56, 1007, 17), // "BezierSurfaceData"
+QT_MOC_LITERAL(57, 1025, 4), // "data"
+QT_MOC_LITERAL(58, 1030, 16), // "getObjectDetails"
+QT_MOC_LITERAL(59, 1047, 11), // "QList<int>&"
+QT_MOC_LITERAL(60, 1059, 10), // "objectsIds"
+QT_MOC_LITERAL(61, 1070, 30), // "doubleSpinbox_PosXValueChanged"
+QT_MOC_LITERAL(62, 1101, 3), // "val"
+QT_MOC_LITERAL(63, 1105, 30), // "doubleSpinbox_PosYValueChanged"
+QT_MOC_LITERAL(64, 1136, 30), // "doubleSpinbox_PosZValueChanged"
+QT_MOC_LITERAL(65, 1167, 30), // "doubleSpinbox_RotXValueChanged"
+QT_MOC_LITERAL(66, 1198, 30), // "doubleSpinbox_RotYValueChanged"
+QT_MOC_LITERAL(67, 1229, 30), // "doubleSpinbox_RotZValueChanged"
+QT_MOC_LITERAL(68, 1260, 31) // "pushButton_IntersectionsClicked"
 
     },
     "ModelowanieGeometryczne1\0cursor3dItemAcquired\0"
@@ -103,20 +117,29 @@ QT_MOC_LITERAL(55, 999, 4) // "data"
     "comboBox_BezierCurveC2Int_AddItem\0"
     "const UiBezierC2Interpolated*\0"
     "uiBezierC2Int\0comboBox_BezierSurfaceC0_AddItem\0"
-    "const UiBezierSurfaceC0*\0uiBezierSurfaceC0\0"
+    "UiBezierSurfaceC0*\0uiBezierSurfaceC0\0"
     "comboBox_BezierSurfaceC2_AddItem\0"
-    "const UiBezierSurfaceC2*\0uiBezierSurfaceC2\0"
+    "UiBezierSurfaceC2*\0uiBezierSurfaceC2\0"
     "connectPoint3D\0const UiPoint3D*\0"
     "uiPoint3d\0myGLWidgetKeyPressed\0"
     "QKeyEvent*\0myGLWidgetMouseMoved\0"
     "myGLWidgetMousePressed\0updateMyGLWidget\0"
     "showBC0CheckBoxes\0currId\0prevId\0"
-    "showBC2CheckBoxes\0showBC2IntCheckBoxes\0"
+    "showBC2CheckBoxes\0showBSC0CheckBoxes\0"
+    "showBSC2CheckBoxes\0showBC2IntCheckBoxes\0"
     "radioBtnIdleToggled\0checked\0"
     "radioBtnTranslateToggled\0radioBtnAddToggled\0"
     "radioBtnDeleteToggled\0doubleSpinbox_eValueChanged\0"
     "e\0stereo_button_toggled\0getBSData\0"
-    "BezierSurfaceData\0data"
+    "BezierSurfaceData\0data\0getObjectDetails\0"
+    "QList<int>&\0objectsIds\0"
+    "doubleSpinbox_PosXValueChanged\0val\0"
+    "doubleSpinbox_PosYValueChanged\0"
+    "doubleSpinbox_PosZValueChanged\0"
+    "doubleSpinbox_RotXValueChanged\0"
+    "doubleSpinbox_RotYValueChanged\0"
+    "doubleSpinbox_RotZValueChanged\0"
+    "pushButton_IntersectionsClicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -126,7 +149,7 @@ static const uint qt_meta_data_ModelowanieGeometryczne1[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      29,   14, // methods
+      39,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -134,37 +157,47 @@ static const uint qt_meta_data_ModelowanieGeometryczne1[] = {
        4,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  159,    2, 0x06 /* Public */,
-       3,    0,  162,    2, 0x06 /* Public */,
-       4,    1,  163,    2, 0x06 /* Public */,
-       4,    0,  166,    2, 0x26 /* Public | MethodCloned */,
+       1,    1,  209,    2, 0x06 /* Public */,
+       3,    0,  212,    2, 0x06 /* Public */,
+       4,    1,  213,    2, 0x06 /* Public */,
+       4,    0,  216,    2, 0x26 /* Public | MethodCloned */,
 
  // slots: name, argc, parameters, tag, flags
-       6,    0,  167,    2, 0x08 /* Private */,
-       7,    0,  168,    2, 0x08 /* Private */,
-       8,    0,  169,    2, 0x08 /* Private */,
-       9,    1,  170,    2, 0x08 /* Private */,
-      12,    3,  173,    2, 0x08 /* Private */,
-      17,    3,  180,    2, 0x08 /* Private */,
-      20,    3,  187,    2, 0x08 /* Private */,
-      23,    3,  194,    2, 0x08 /* Private */,
-      26,    3,  201,    2, 0x08 /* Private */,
-      29,    3,  208,    2, 0x08 /* Private */,
-      32,    3,  215,    2, 0x08 /* Private */,
-      35,    1,  222,    2, 0x08 /* Private */,
-      37,    1,  225,    2, 0x08 /* Private */,
-      38,    1,  228,    2, 0x08 /* Private */,
-      39,    0,  231,    2, 0x08 /* Private */,
-      40,    2,  232,    2, 0x08 /* Private */,
-      43,    2,  237,    2, 0x08 /* Private */,
-      44,    2,  242,    2, 0x08 /* Private */,
-      45,    1,  247,    2, 0x08 /* Private */,
-      47,    1,  250,    2, 0x08 /* Private */,
-      48,    1,  253,    2, 0x08 /* Private */,
-      49,    1,  256,    2, 0x08 /* Private */,
-      50,    1,  259,    2, 0x08 /* Private */,
-      52,    1,  262,    2, 0x08 /* Private */,
-      53,    2,  265,    2, 0x08 /* Private */,
+       6,    0,  217,    2, 0x08 /* Private */,
+       7,    0,  218,    2, 0x08 /* Private */,
+       8,    0,  219,    2, 0x08 /* Private */,
+       9,    1,  220,    2, 0x08 /* Private */,
+      12,    3,  223,    2, 0x08 /* Private */,
+      17,    3,  230,    2, 0x08 /* Private */,
+      20,    3,  237,    2, 0x08 /* Private */,
+      23,    3,  244,    2, 0x08 /* Private */,
+      26,    3,  251,    2, 0x08 /* Private */,
+      29,    3,  258,    2, 0x08 /* Private */,
+      32,    3,  265,    2, 0x08 /* Private */,
+      35,    1,  272,    2, 0x08 /* Private */,
+      37,    1,  275,    2, 0x08 /* Private */,
+      38,    1,  278,    2, 0x08 /* Private */,
+      39,    0,  281,    2, 0x08 /* Private */,
+      40,    2,  282,    2, 0x08 /* Private */,
+      43,    2,  287,    2, 0x08 /* Private */,
+      44,    2,  292,    2, 0x08 /* Private */,
+      45,    2,  297,    2, 0x08 /* Private */,
+      46,    2,  302,    2, 0x08 /* Private */,
+      47,    1,  307,    2, 0x08 /* Private */,
+      49,    1,  310,    2, 0x08 /* Private */,
+      50,    1,  313,    2, 0x08 /* Private */,
+      51,    1,  316,    2, 0x08 /* Private */,
+      52,    1,  319,    2, 0x08 /* Private */,
+      54,    1,  322,    2, 0x08 /* Private */,
+      55,    2,  325,    2, 0x08 /* Private */,
+      58,    1,  330,    2, 0x08 /* Private */,
+      61,    1,  333,    2, 0x08 /* Private */,
+      63,    1,  336,    2, 0x08 /* Private */,
+      64,    1,  339,    2, 0x08 /* Private */,
+      65,    1,  342,    2, 0x08 /* Private */,
+      66,    1,  345,    2, 0x08 /* Private */,
+      67,    1,  348,    2, 0x08 /* Private */,
+      68,    0,  351,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    2,
@@ -191,13 +224,23 @@ static const uint qt_meta_data_ModelowanieGeometryczne1[] = {
     QMetaType::Void, QMetaType::Int, QMetaType::Int,   41,   42,
     QMetaType::Void, QMetaType::Int, QMetaType::Int,   41,   42,
     QMetaType::Void, QMetaType::Int, QMetaType::Int,   41,   42,
-    QMetaType::Void, QMetaType::Bool,   46,
-    QMetaType::Void, QMetaType::Bool,   46,
-    QMetaType::Void, QMetaType::Bool,   46,
-    QMetaType::Void, QMetaType::Bool,   46,
-    QMetaType::Void, QMetaType::Double,   51,
-    QMetaType::Void, QMetaType::Bool,   46,
-    QMetaType::Void, 0x80000000 | 54, QMetaType::QString,   55,   13,
+    QMetaType::Void, QMetaType::Int, QMetaType::Int,   41,   42,
+    QMetaType::Void, QMetaType::Int, QMetaType::Int,   41,   42,
+    QMetaType::Void, QMetaType::Bool,   48,
+    QMetaType::Void, QMetaType::Bool,   48,
+    QMetaType::Void, QMetaType::Bool,   48,
+    QMetaType::Void, QMetaType::Bool,   48,
+    QMetaType::Void, QMetaType::Double,   53,
+    QMetaType::Void, QMetaType::Bool,   48,
+    QMetaType::Void, 0x80000000 | 56, QMetaType::QString,   57,   13,
+    QMetaType::Void, 0x80000000 | 59,   60,
+    QMetaType::Void, QMetaType::Double,   62,
+    QMetaType::Void, QMetaType::Double,   62,
+    QMetaType::Void, QMetaType::Double,   62,
+    QMetaType::Void, QMetaType::Double,   62,
+    QMetaType::Void, QMetaType::Double,   62,
+    QMetaType::Void, QMetaType::Double,   62,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -220,8 +263,8 @@ void ModelowanieGeometryczne1::qt_static_metacall(QObject *_o, QMetaObject::Call
         case 9: _t->comboBox_BezierCurveC0_AddItem((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiBezierCurveC0*(*)>(_a[3]))); break;
         case 10: _t->comboBox_BezierCurveC2_AddItem((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiBezierCurveC2*(*)>(_a[3]))); break;
         case 11: _t->comboBox_BezierCurveC2Int_AddItem((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiBezierC2Interpolated*(*)>(_a[3]))); break;
-        case 12: _t->comboBox_BezierSurfaceC0_AddItem((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiBezierSurfaceC0*(*)>(_a[3]))); break;
-        case 13: _t->comboBox_BezierSurfaceC2_AddItem((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiBezierSurfaceC2*(*)>(_a[3]))); break;
+        case 12: _t->comboBox_BezierSurfaceC0_AddItem((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< UiBezierSurfaceC0*(*)>(_a[3]))); break;
+        case 13: _t->comboBox_BezierSurfaceC2_AddItem((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< UiBezierSurfaceC2*(*)>(_a[3]))); break;
         case 14: _t->connectPoint3D((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiPoint3D*(*)>(_a[3]))); break;
         case 15: _t->myGLWidgetKeyPressed((*reinterpret_cast< QKeyEvent*(*)>(_a[1]))); break;
         case 16: _t->myGLWidgetMouseMoved((*reinterpret_cast< QMouseEvent*(*)>(_a[1]))); break;
@@ -229,14 +272,24 @@ void ModelowanieGeometryczne1::qt_static_metacall(QObject *_o, QMetaObject::Call
         case 18: _t->updateMyGLWidget(); break;
         case 19: _t->showBC0CheckBoxes((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         case 20: _t->showBC2CheckBoxes((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 21: _t->showBC2IntCheckBoxes((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 22: _t->radioBtnIdleToggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 23: _t->radioBtnTranslateToggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 24: _t->radioBtnAddToggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 25: _t->radioBtnDeleteToggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 26: _t->doubleSpinbox_eValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 27: _t->stereo_button_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 28: _t->getBSData((*reinterpret_cast< BezierSurfaceData(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 21: _t->showBSC0CheckBoxes((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 22: _t->showBSC2CheckBoxes((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 23: _t->showBC2IntCheckBoxes((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 24: _t->radioBtnIdleToggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 25: _t->radioBtnTranslateToggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 26: _t->radioBtnAddToggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 27: _t->radioBtnDeleteToggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 28: _t->doubleSpinbox_eValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 29: _t->stereo_button_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 30: _t->getBSData((*reinterpret_cast< BezierSurfaceData(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 31: _t->getObjectDetails((*reinterpret_cast< QList<int>(*)>(_a[1]))); break;
+        case 32: _t->doubleSpinbox_PosXValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 33: _t->doubleSpinbox_PosYValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 34: _t->doubleSpinbox_PosZValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 35: _t->doubleSpinbox_RotXValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 36: _t->doubleSpinbox_RotYValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 37: _t->doubleSpinbox_RotZValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 38: _t->pushButton_IntersectionsClicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -291,13 +344,13 @@ int ModelowanieGeometryczne1::qt_metacall(QMetaObject::Call _c, int _id, void **
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 29)
+        if (_id < 39)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 29;
+        _id -= 39;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 29)
+        if (_id < 39)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 29;
+        _id -= 39;
     }
     return _id;
 }

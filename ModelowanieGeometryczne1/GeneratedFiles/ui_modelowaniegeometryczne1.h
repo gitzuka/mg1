@@ -55,6 +55,7 @@ public:
     QTabWidget *myTabWidget;
     QWidget *tab_Objects;
     QVBoxLayout *verticalLayout_4;
+    QVBoxLayout *verticalLayout_15;
     ListWidgetMain *listWidget_ObjectsList;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *pushButton_AddObject;
@@ -115,11 +116,32 @@ public:
     QRadioButton *radioButton_Translate;
     QRadioButton *radioButton_Add;
     QRadioButton *radioButton_Delete;
+    QPushButton *pushButton_Intersections;
     QSpacerItem *verticalSpacer_2;
     QVBoxLayout *verticalLayout_9;
+    QVBoxLayout *verticalLayout_16;
+    QGridLayout *gridLayout_ObjectDetails;
+    QLabel *label_7;
+    QDoubleSpinBox *doubleSpinBox_RotY;
+    QDoubleSpinBox *doubleSpinBox_PosX;
+    QLabel *label_8;
+    QDoubleSpinBox *doubleSpinBox_PosZ;
+    QDoubleSpinBox *doubleSpinBox_RotX;
+    QLabel *label_11;
+    QLabel *label_6;
+    QLabel *label_10;
+    QDoubleSpinBox *doubleSpinBox_PosY;
+    QLabel *label_9;
+    QDoubleSpinBox *doubleSpinBox_RotZ;
+    QLabel *label_12;
+    QLabel *label_13;
     QCheckBox *checkBox_pointer;
     QLabel *label_screenCoords;
     QLabel *label_3dCoords;
+    QHBoxLayout *horizontalLayout_4;
+    QDoubleSpinBox *doubleSpinBox_CursorX;
+    QDoubleSpinBox *doubleSpinBox_CursorY;
+    QDoubleSpinBox *doubleSpinBox_CursorZ;
     QMenuBar *menuBar;
     QStatusBar *statusBar;
     QToolBar *mainToolBar;
@@ -129,7 +151,9 @@ public:
     {
         if (ModelowanieGeometryczne1Class->objectName().isEmpty())
             ModelowanieGeometryczne1Class->setObjectName(QStringLiteral("ModelowanieGeometryczne1Class"));
-        ModelowanieGeometryczne1Class->resize(1107, 717);
+        ModelowanieGeometryczne1Class->resize(1143, 914);
+        ModelowanieGeometryczne1Class->setMouseTracking(false);
+        ModelowanieGeometryczne1Class->setFocusPolicy(Qt::ClickFocus);
         centralWidget = new QWidget(ModelowanieGeometryczne1Class);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setAutoFillBackground(true);
@@ -145,6 +169,7 @@ public:
         gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        gridLayout->setSizeConstraint(QLayout::SetMaximumSize);
         myGLWidget = new MyGLWidget(centralWidget);
         myGLWidget->setObjectName(QStringLiteral("myGLWidget"));
         myGLWidget->setMinimumSize(QSize(800, 600));
@@ -160,6 +185,7 @@ public:
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(0);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
         myTabWidget = new QTabWidget(centralWidget);
         myTabWidget->setObjectName(QStringLiteral("myTabWidget"));
         tab_Objects = new QWidget();
@@ -169,8 +195,19 @@ public:
         verticalLayout_4->setContentsMargins(11, 11, 11, 11);
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
         verticalLayout_4->setContentsMargins(0, 0, 0, 0);
+        verticalLayout_15 = new QVBoxLayout();
+        verticalLayout_15->setSpacing(6);
+        verticalLayout_15->setObjectName(QStringLiteral("verticalLayout_15"));
+
+        verticalLayout_4->addLayout(verticalLayout_15);
+
         listWidget_ObjectsList = new ListWidgetMain(tab_Objects);
         listWidget_ObjectsList->setObjectName(QStringLiteral("listWidget_ObjectsList"));
+        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(listWidget_ObjectsList->sizePolicy().hasHeightForWidth());
+        listWidget_ObjectsList->setSizePolicy(sizePolicy);
         listWidget_ObjectsList->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
         verticalLayout_4->addWidget(listWidget_ObjectsList);
@@ -214,7 +251,7 @@ public:
         toolBox->setObjectName(QStringLiteral("toolBox"));
         page_Torus = new QWidget();
         page_Torus->setObjectName(QStringLiteral("page_Torus"));
-        page_Torus->setGeometry(QRect(0, 0, 293, 400));
+        page_Torus->setGeometry(QRect(0, 0, 296, 471));
         verticalLayout_8 = new QVBoxLayout(page_Torus);
         verticalLayout_8->setSpacing(0);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -292,7 +329,7 @@ public:
         toolBox->addItem(page_Torus, QStringLiteral("Torus"));
         page_BezierCurveC0 = new QWidget();
         page_BezierCurveC0->setObjectName(QStringLiteral("page_BezierCurveC0"));
-        page_BezierCurveC0->setGeometry(QRect(0, 0, 98, 107));
+        page_BezierCurveC0->setGeometry(QRect(0, 0, 91, 118));
         verticalLayout_11 = new QVBoxLayout(page_BezierCurveC0);
         verticalLayout_11->setSpacing(0);
         verticalLayout_11->setContentsMargins(11, 11, 11, 11);
@@ -318,7 +355,7 @@ public:
         toolBox->addItem(page_BezierCurveC0, QStringLiteral("Bezier Curve C0"));
         page_BezierCurveC2 = new QWidget();
         page_BezierCurveC2->setObjectName(QStringLiteral("page_BezierCurveC2"));
-        page_BezierCurveC2->setGeometry(QRect(0, 0, 98, 107));
+        page_BezierCurveC2->setGeometry(QRect(0, 0, 91, 118));
         verticalLayout_12 = new QVBoxLayout(page_BezierCurveC2);
         verticalLayout_12->setSpacing(6);
         verticalLayout_12->setContentsMargins(11, 11, 11, 11);
@@ -343,7 +380,7 @@ public:
         toolBox->addItem(page_BezierCurveC2, QStringLiteral("Bezier Curve C2"));
         page_BezierC2Int = new QWidget();
         page_BezierC2Int->setObjectName(QStringLiteral("page_BezierC2Int"));
-        page_BezierC2Int->setGeometry(QRect(0, 0, 98, 107));
+        page_BezierC2Int->setGeometry(QRect(0, 0, 91, 118));
         verticalLayout_10 = new QVBoxLayout(page_BezierC2Int);
         verticalLayout_10->setSpacing(0);
         verticalLayout_10->setContentsMargins(11, 11, 11, 11);
@@ -368,7 +405,7 @@ public:
         toolBox->addItem(page_BezierC2Int, QStringLiteral("Bezier Curve C2 Interpolated"));
         page_bezierSurfaceC0 = new QWidget();
         page_bezierSurfaceC0->setObjectName(QStringLiteral("page_bezierSurfaceC0"));
-        page_bezierSurfaceC0->setGeometry(QRect(0, 0, 293, 400));
+        page_bezierSurfaceC0->setGeometry(QRect(0, 0, 95, 151));
         verticalLayout_13 = new QVBoxLayout(page_bezierSurfaceC0);
         verticalLayout_13->setSpacing(6);
         verticalLayout_13->setContentsMargins(11, 11, 11, 11);
@@ -398,7 +435,7 @@ public:
         toolBox->addItem(page_bezierSurfaceC0, QStringLiteral("Bezier Surface C0"));
         page_bezierSurfaceC2 = new QWidget();
         page_bezierSurfaceC2->setObjectName(QStringLiteral("page_bezierSurfaceC2"));
-        page_bezierSurfaceC2->setGeometry(QRect(0, 0, 98, 140));
+        page_bezierSurfaceC2->setGeometry(QRect(0, 0, 95, 151));
         verticalLayout_14 = new QVBoxLayout(page_bezierSurfaceC2);
         verticalLayout_14->setSpacing(6);
         verticalLayout_14->setContentsMargins(11, 11, 11, 11);
@@ -495,6 +532,11 @@ public:
 
         verticalLayout_5->addWidget(radioButton_Delete);
 
+        pushButton_Intersections = new QPushButton(tab_Other);
+        pushButton_Intersections->setObjectName(QStringLiteral("pushButton_Intersections"));
+
+        verticalLayout_5->addWidget(pushButton_Intersections);
+
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_5->addItem(verticalSpacer_2);
@@ -510,19 +552,144 @@ public:
         verticalLayout_9->setSpacing(5);
         verticalLayout_9->setObjectName(QStringLiteral("verticalLayout_9"));
         verticalLayout_9->setContentsMargins(5, 0, -1, 0);
+        verticalLayout_16 = new QVBoxLayout();
+        verticalLayout_16->setSpacing(6);
+        verticalLayout_16->setObjectName(QStringLiteral("verticalLayout_16"));
+        verticalLayout_16->setSizeConstraint(QLayout::SetFixedSize);
+        gridLayout_ObjectDetails = new QGridLayout();
+        gridLayout_ObjectDetails->setSpacing(6);
+        gridLayout_ObjectDetails->setObjectName(QStringLiteral("gridLayout_ObjectDetails"));
+        label_7 = new QLabel(centralWidget);
+        label_7->setObjectName(QStringLiteral("label_7"));
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(label_7->sizePolicy().hasHeightForWidth());
+        label_7->setSizePolicy(sizePolicy1);
+
+        gridLayout_ObjectDetails->addWidget(label_7, 3, 0, 1, 1);
+
+        doubleSpinBox_RotY = new QDoubleSpinBox(centralWidget);
+        doubleSpinBox_RotY->setObjectName(QStringLiteral("doubleSpinBox_RotY"));
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(doubleSpinBox_RotY->sizePolicy().hasHeightForWidth());
+        doubleSpinBox_RotY->setSizePolicy(sizePolicy2);
+        doubleSpinBox_RotY->setMaximum(360);
+
+        gridLayout_ObjectDetails->addWidget(doubleSpinBox_RotY, 3, 3, 1, 1);
+
+        doubleSpinBox_PosX = new QDoubleSpinBox(centralWidget);
+        doubleSpinBox_PosX->setObjectName(QStringLiteral("doubleSpinBox_PosX"));
+        sizePolicy2.setHeightForWidth(doubleSpinBox_PosX->sizePolicy().hasHeightForWidth());
+        doubleSpinBox_PosX->setSizePolicy(sizePolicy2);
+        doubleSpinBox_PosX->setMinimum(-20);
+        doubleSpinBox_PosX->setMaximum(20);
+        doubleSpinBox_PosX->setSingleStep(0.01);
+
+        gridLayout_ObjectDetails->addWidget(doubleSpinBox_PosX, 1, 1, 1, 1);
+
+        label_8 = new QLabel(centralWidget);
+        label_8->setObjectName(QStringLiteral("label_8"));
+        sizePolicy1.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
+        label_8->setSizePolicy(sizePolicy1);
+
+        gridLayout_ObjectDetails->addWidget(label_8, 1, 4, 1, 1);
+
+        doubleSpinBox_PosZ = new QDoubleSpinBox(centralWidget);
+        doubleSpinBox_PosZ->setObjectName(QStringLiteral("doubleSpinBox_PosZ"));
+        sizePolicy2.setHeightForWidth(doubleSpinBox_PosZ->sizePolicy().hasHeightForWidth());
+        doubleSpinBox_PosZ->setSizePolicy(sizePolicy2);
+        doubleSpinBox_PosZ->setMinimum(-20);
+        doubleSpinBox_PosZ->setMaximum(20);
+        doubleSpinBox_PosZ->setSingleStep(0.01);
+
+        gridLayout_ObjectDetails->addWidget(doubleSpinBox_PosZ, 1, 5, 1, 1);
+
+        doubleSpinBox_RotX = new QDoubleSpinBox(centralWidget);
+        doubleSpinBox_RotX->setObjectName(QStringLiteral("doubleSpinBox_RotX"));
+        sizePolicy2.setHeightForWidth(doubleSpinBox_RotX->sizePolicy().hasHeightForWidth());
+        doubleSpinBox_RotX->setSizePolicy(sizePolicy2);
+        doubleSpinBox_RotX->setMaximum(360);
+
+        gridLayout_ObjectDetails->addWidget(doubleSpinBox_RotX, 3, 1, 1, 1);
+
+        label_11 = new QLabel(centralWidget);
+        label_11->setObjectName(QStringLiteral("label_11"));
+        sizePolicy1.setHeightForWidth(label_11->sizePolicy().hasHeightForWidth());
+        label_11->setSizePolicy(sizePolicy1);
+
+        gridLayout_ObjectDetails->addWidget(label_11, 3, 2, 1, 1);
+
+        label_6 = new QLabel(centralWidget);
+        label_6->setObjectName(QStringLiteral("label_6"));
+        sizePolicy1.setHeightForWidth(label_6->sizePolicy().hasHeightForWidth());
+        label_6->setSizePolicy(sizePolicy1);
+
+        gridLayout_ObjectDetails->addWidget(label_6, 1, 0, 1, 1);
+
+        label_10 = new QLabel(centralWidget);
+        label_10->setObjectName(QStringLiteral("label_10"));
+        sizePolicy1.setHeightForWidth(label_10->sizePolicy().hasHeightForWidth());
+        label_10->setSizePolicy(sizePolicy1);
+
+        gridLayout_ObjectDetails->addWidget(label_10, 1, 2, 1, 1);
+
+        doubleSpinBox_PosY = new QDoubleSpinBox(centralWidget);
+        doubleSpinBox_PosY->setObjectName(QStringLiteral("doubleSpinBox_PosY"));
+        sizePolicy2.setHeightForWidth(doubleSpinBox_PosY->sizePolicy().hasHeightForWidth());
+        doubleSpinBox_PosY->setSizePolicy(sizePolicy2);
+        doubleSpinBox_PosY->setMinimum(-20);
+        doubleSpinBox_PosY->setMaximum(20);
+        doubleSpinBox_PosY->setSingleStep(0.01);
+
+        gridLayout_ObjectDetails->addWidget(doubleSpinBox_PosY, 1, 3, 1, 1);
+
+        label_9 = new QLabel(centralWidget);
+        label_9->setObjectName(QStringLiteral("label_9"));
+        sizePolicy1.setHeightForWidth(label_9->sizePolicy().hasHeightForWidth());
+        label_9->setSizePolicy(sizePolicy1);
+
+        gridLayout_ObjectDetails->addWidget(label_9, 3, 4, 1, 1);
+
+        doubleSpinBox_RotZ = new QDoubleSpinBox(centralWidget);
+        doubleSpinBox_RotZ->setObjectName(QStringLiteral("doubleSpinBox_RotZ"));
+        sizePolicy2.setHeightForWidth(doubleSpinBox_RotZ->sizePolicy().hasHeightForWidth());
+        doubleSpinBox_RotZ->setSizePolicy(sizePolicy2);
+        doubleSpinBox_RotZ->setMaximum(360);
+
+        gridLayout_ObjectDetails->addWidget(doubleSpinBox_RotZ, 3, 5, 1, 1);
+
+        label_12 = new QLabel(centralWidget);
+        label_12->setObjectName(QStringLiteral("label_12"));
+
+        gridLayout_ObjectDetails->addWidget(label_12, 0, 0, 1, 6);
+
+        label_13 = new QLabel(centralWidget);
+        label_13->setObjectName(QStringLiteral("label_13"));
+
+        gridLayout_ObjectDetails->addWidget(label_13, 2, 0, 1, 6);
+
+
+        verticalLayout_16->addLayout(gridLayout_ObjectDetails);
+
+
+        verticalLayout_9->addLayout(verticalLayout_16);
+
         checkBox_pointer = new QCheckBox(centralWidget);
         checkBox_pointer->setObjectName(QStringLiteral("checkBox_pointer"));
-        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(checkBox_pointer->sizePolicy().hasHeightForWidth());
-        checkBox_pointer->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(checkBox_pointer->sizePolicy().hasHeightForWidth());
+        checkBox_pointer->setSizePolicy(sizePolicy3);
         checkBox_pointer->setMinimumSize(QSize(0, 20));
         checkBox_pointer->setMaximumSize(QSize(16777215, 10));
         checkBox_pointer->setIconSize(QSize(20, 20));
         checkBox_pointer->setTristate(false);
 
-        verticalLayout_9->addWidget(checkBox_pointer, 0, Qt::AlignVCenter);
+        verticalLayout_9->addWidget(checkBox_pointer);
 
         label_screenCoords = new QLabel(centralWidget);
         label_screenCoords->setObjectName(QStringLiteral("label_screenCoords"));
@@ -535,19 +702,54 @@ public:
 
         verticalLayout_9->addWidget(label_3dCoords);
 
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setSpacing(6);
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
+        doubleSpinBox_CursorX = new QDoubleSpinBox(centralWidget);
+        doubleSpinBox_CursorX->setObjectName(QStringLiteral("doubleSpinBox_CursorX"));
+        doubleSpinBox_CursorX->setDecimals(4);
+        doubleSpinBox_CursorX->setMinimum(-20);
+        doubleSpinBox_CursorX->setMaximum(20);
+        doubleSpinBox_CursorX->setSingleStep(0.01);
+
+        horizontalLayout_4->addWidget(doubleSpinBox_CursorX);
+
+        doubleSpinBox_CursorY = new QDoubleSpinBox(centralWidget);
+        doubleSpinBox_CursorY->setObjectName(QStringLiteral("doubleSpinBox_CursorY"));
+        doubleSpinBox_CursorY->setDecimals(4);
+        doubleSpinBox_CursorY->setMinimum(-20);
+        doubleSpinBox_CursorY->setMaximum(20);
+        doubleSpinBox_CursorY->setSingleStep(0.01);
+
+        horizontalLayout_4->addWidget(doubleSpinBox_CursorY);
+
+        doubleSpinBox_CursorZ = new QDoubleSpinBox(centralWidget);
+        doubleSpinBox_CursorZ->setObjectName(QStringLiteral("doubleSpinBox_CursorZ"));
+        doubleSpinBox_CursorZ->setDecimals(4);
+        doubleSpinBox_CursorZ->setMinimum(-20);
+        doubleSpinBox_CursorZ->setMaximum(20);
+        doubleSpinBox_CursorZ->setSingleStep(0.01);
+
+        horizontalLayout_4->addWidget(doubleSpinBox_CursorZ);
+
+
+        verticalLayout_9->addLayout(horizontalLayout_4);
+
 
         verticalLayout->addLayout(verticalLayout_9);
 
 
         horizontalLayout->addLayout(verticalLayout);
 
+        horizontalLayout->setStretch(0, 30);
+        horizontalLayout->setStretch(1, 11);
 
         gridLayout_2->addLayout(horizontalLayout, 0, 0, 2, 1);
 
         ModelowanieGeometryczne1Class->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ModelowanieGeometryczne1Class);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1107, 26));
+        menuBar->setGeometry(QRect(0, 0, 1143, 26));
         menuBar->setDefaultUp(false);
         ModelowanieGeometryczne1Class->setMenuBar(menuBar);
         statusBar = new QStatusBar(ModelowanieGeometryczne1Class);
@@ -560,7 +762,7 @@ public:
         retranslateUi(ModelowanieGeometryczne1Class);
 
         myTabWidget->setCurrentIndex(0);
-        toolBox->setCurrentIndex(4);
+        toolBox->setCurrentIndex(0);
         toolBox->layout()->setSpacing(0);
 
 
@@ -593,7 +795,16 @@ public:
         radioButton_Translate->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Translate", Q_NULLPTR));
         radioButton_Add->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Add", Q_NULLPTR));
         radioButton_Delete->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Delete", Q_NULLPTR));
+        pushButton_Intersections->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Find intersections", Q_NULLPTR));
         myTabWidget->setTabText(myTabWidget->indexOf(tab_Other), QApplication::translate("ModelowanieGeometryczne1Class", "Other features", Q_NULLPTR));
+        label_7->setText(QApplication::translate("ModelowanieGeometryczne1Class", "X", Q_NULLPTR));
+        label_8->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Z", Q_NULLPTR));
+        label_11->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Y", Q_NULLPTR));
+        label_6->setText(QApplication::translate("ModelowanieGeometryczne1Class", "X", Q_NULLPTR));
+        label_10->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Y", Q_NULLPTR));
+        label_9->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Z", Q_NULLPTR));
+        label_12->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Position", Q_NULLPTR));
+        label_13->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Rotation", Q_NULLPTR));
         checkBox_pointer->setText(QApplication::translate("ModelowanieGeometryczne1Class", "3d pointer", Q_NULLPTR));
         label_screenCoords->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Screen coords:", Q_NULLPTR));
         label_3dCoords->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Scene coords:", Q_NULLPTR));

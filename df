@@ -1,0 +1,72 @@
+[33mcommit b65e49eae616836fd11c524c4b7cfb15e06a4d22[m[33m ([m[1;36mHEAD -> [m[1;32mbeziersurfacec0[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/beziersurfacec0[m[33m)[m
+Author: gitzuka <andrzejzuk93@gmail.com>
+Date:   Mon Jul 23 18:59:15 2018 +0200
+
+    finished interpolating curves
+
+[33mcommit 9cc90a67b9b555a2a6445c423aeda0f9498fa3f9[m
+Merge: 89601b2 63fccdd
+Author: gitzuka <andrzejzuk93@gmail.com>
+Date:   Tue May 22 23:42:40 2018 +0200
+
+    conflicts resolved
+
+[33mcommit 89601b227ae61f8c524604a698b365690903b15b[m
+Author: gitzuka <andrzejzuk93@gmail.com>
+Date:   Tue May 22 23:38:33 2018 +0200
+
+    before merge
+
+[33mcommit 63fccddf8ef66ea4f7b5d7f56b6d337d480423a0[m[33m ([m[1;32mqcomponents[m[33m)[m
+Author: gitzuka <andrzejzuk93@gmail.com>
+Date:   Tue May 22 23:37:12 2018 +0200
+
+    sdf
+
+[33mcommit 42ae652b0c5fe0121406f01272355481d51d3eee[m[33m ([m[1;31morigin/qcomponents[m[33m)[m
+Author: gitzuka <andrzejzuk93@gmail.com>
+Date:   Tue May 22 23:27:35 2018 +0200
+
+    cursor behaviour modified
+
+[33mcommit 1195e7ab82b97401de56f91decdecec6b46c8933[m
+Author: gitzuka <andrzejzuk93@gmail.com>
+Date:   Sun May 20 15:50:30 2018 +0200
+
+    fixed minor bug with bc2
+
+[33mcommit 6aed72cfb4cdbcf5ee82d17fdb76b95ff8cb8d71[m
+Author: gitzuka <andrzejzuk93@gmail.com>
+Date:   Wed May 16 16:20:28 2018 +0200
+
+    almost finished bc0 and bc2
+
+[33mcommit 4286dd861d58a6633d033dd2f0e56631eb525a3f[m
+Author: gitzuka <andrzejzuk93@gmail.com>
+Date:   Wed Apr 11 23:39:31 2018 +0200
+
+    ui components and chagned list to set
+
+[33mcommit c8e16fcaff65c69596fe3467ab1aff963e7a82c9[m
+Author: gitzuka <andrzejzuk93@gmail.com>
+Date:   Wed Apr 11 18:38:45 2018 +0200
+
+    before rebuilding to map components
+
+[33mcommit 1466e16dedb0e6fc81cc28a19146c1bb904c422e[m
+Author: gitzuka <andrzejzuk93@gmail.com>
+Date:   Fri Feb 23 12:27:44 2018 +0100
+
+    before changes
+
+[33mcommit 57a367d899fd6cf83a2c96e468f7a3872663e3b4[m
+Author: gitzuka <andrzejzuk93@gmail.com>
+Date:   Thu Sep 28 17:31:13 2017 +0200
+
+    test add new file
+
+[33mcommit f05e7dfb72f15cc86616d8930ed7ed195816eede[m
+Author: gitzuka <andrzejzuk93@gmail.com>
+Date:   Thu Sep 28 17:17:17 2017 +0200
+
+    initial project version

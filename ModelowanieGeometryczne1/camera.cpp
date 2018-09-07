@@ -2,7 +2,7 @@
 #include <qmath.h>
 
 
-Camera::Camera() : m_pitch(0), m_yaw(0), m_eyeVector(0, 0, 1), m_viewMatrix(createTranslation(-m_eyeVector))
+Camera::Camera() : m_pitch(0), m_yaw(0), m_eyeVector(0, 0, 1), m_origin(0, 0, 0), m_viewMatrix(createTranslation(-m_eyeVector))
 {
 }
 
@@ -59,6 +59,7 @@ void Camera::keyPressed(const unsigned char key)
 	QVector3D strafe(m_viewMatrix.row(0).x(), m_viewMatrix.row(0).y(), m_viewMatrix.row(0).z());
 
 	m_eyeVector += (-dz * forward + dx * strafe + dy * vertical) * SPEED;
+	m_origin += (-dz * forward + dx * strafe + dy * vertical) * SPEED;
 	updateView();
 }
 
@@ -74,6 +75,26 @@ void Camera::updateStereoscopy(float e, float width, float heigth)
 {
 	m_m_projectionMatrixStereoL = createStereoProjection(true, width, heigth, e);
 	m_m_projectionMatrixStereoR = createStereoProjection(false, width, heigth, e);
+}
+
+QVector3D Camera::getEyeVector() const
+{
+	return m_eyeVector;
+}
+
+QVector3D Camera::getRightVector() const
+{
+	return QVector3D(m_viewMatrix.row(0).x(), m_viewMatrix.row(0).y(), m_viewMatrix.row(0).z());
+}
+
+QVector3D Camera::getUpVector() const
+{
+	return QVector3D(m_viewMatrix.row(1).x(), m_viewMatrix.row(1).y(), m_viewMatrix.row(1).z());
+}
+
+QVector3D Camera::getForwardVector() const
+{
+	return QVector3D(m_viewMatrix.row(2).x(), m_viewMatrix.row(2).y(), m_viewMatrix.row(2).z());
 }
 
 QMatrix4x4 Camera::createLookAt(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
@@ -169,16 +190,16 @@ QMatrix4x4 Camera::createProjection(float width, float heigth, float near, float
 	};
 	return projection;*/
 
-		//float ar = width / heigth; //aspect ratio
-		//float tang = tan(angle * 0.5f);
-		//QMatrix4x4 projection =
-		//{
-		//	1.0f / (ar * tang), 0, 0, 0,
-		//	0, 1.0f / tang, 0, 0,
-		//	0, 0, (-near - far) / (near - far), 2 * near * far / (near - far),
-		//	0, 0, 1.0f, 0
-		//};
-		//return projection;
+	//float ar = width / heigth; //aspect ratio
+	//float tang = tan(angle * 0.5f);
+	//QMatrix4x4 projection =
+	//{
+	//	1.0f / (ar * tang), 0, 0, 0,
+	//	0, 1.0f / tang, 0, 0,
+	//	0, 0, (-near - far) / (near - far), 2 * near * far / (near - far),
+	//	0, 0, 1.0f, 0
+	//};
+	//return projection;
 
 	QMatrix4x4 projection =
 	{

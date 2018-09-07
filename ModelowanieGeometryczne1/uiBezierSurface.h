@@ -14,9 +14,13 @@ public:
 	virtual void connectToScene(const Scene *scene) const = 0;
 	std::shared_ptr<DrawableObject> getObject() override;
 	std::shared_ptr<BezierSurface> getBezierSurface();
+	QCheckBox* getCBBezierGrid() const;
+	QCheckBox* getCBControlGrid() const;
 
 protected:
 	explicit UiBezierSurface(std::shared_ptr<BezierSurface> bezierSurface);
+	QCheckBox *m_checkBoxBezierGrid;
+	QCheckBox *m_checkBoxControlGrid;
 
 private:
 	std::shared_ptr<BezierSurface> m_bezierSurface;
@@ -34,5 +38,6 @@ public slots:
 	void updateScreenSize(float width, float height);
 	void updateSurfaceData(BezierSurfaceData data);
 	void getPoints(int surfaceId);
-
+	void changeBezierGridState(int state);
+	void changeControlGridState(int state);
 };

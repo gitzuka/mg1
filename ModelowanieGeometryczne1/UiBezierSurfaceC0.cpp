@@ -21,15 +21,14 @@ void UiBezierSurfaceC0::connectToUi(const Ui_ModelowanieGeometryczne1Class* ui) 
 	QObject::connect(this, &UiBezierSurfaceC0::requestedPoints, ui->listWidget_BSC0, &ListWidgetBezierSurface::displayPoints);
 	QObject::connect(this, &UiBezierSurfaceC0::requestedPoints2, ui->listWidget_ObjectsList, &ListWidgetMain::addPoints);
 	QObject::connect(this, &UiBezierSurfaceC0::surfaceDeleted, ui->comboBox_BSC0, &ComboBoxBezierSurface::deleteItem);
-
 	emit requestedPoints2(m_bezierSurfaceC0->getPoints());
-
-	//QObject::connect(m_checkBoxPolyline, &QCheckBox::stateChanged, this, &UiBezierCurveC0::changePolylineState);
-	//QObject::connect(m_checkBoxPolyline, &QCheckBox::stateChanged, ui->myGLWidget, &MyGLWidget::updateGL);
+	QObject::connect(m_checkBoxBezierGrid, &QCheckBox::stateChanged, this, &UiBezierSurfaceC0::changeBezierGridState);
+	QObject::connect(m_checkBoxBezierGrid, &QCheckBox::stateChanged, ui->myGLWidget, &MyGLWidget::updateGL);
+	QObject::connect(m_checkBoxControlGrid, &QCheckBox::stateChanged, this, &UiBezierSurfaceC0::changeControlGridState);
+	QObject::connect(m_checkBoxControlGrid, &QCheckBox::stateChanged, ui->myGLWidget, &MyGLWidget::updateGL);
 }
 
 void UiBezierSurfaceC0::connectToScene(const Scene* scene) const
 {
-	//QObject::connect(scene, &Scene::update, this, &UiBezierSurface::updateSurface);
 	QObject::connect(this, &UiBezierSurfaceC0::deletingSurface, scene, &Scene::removeUiConnectors);
 }

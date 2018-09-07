@@ -5,7 +5,7 @@
 class BezierPatch
 {
 public:
-	BezierPatch(int u = 4, int v = 4);
+	BezierPatch(int u, int v);
 
 	int getU() const;
 	int getV() const;

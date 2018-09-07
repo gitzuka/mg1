@@ -27,7 +27,7 @@ public:
 
 	void draw() const;
 	void toggleCursor3D(bool isActive);
-	void updateCursorPosition(float x, float y, int width, int heigth);
+	void updateCursorPosition(float x, float y, int width, int heigth, bool z);
 	int createDrawableObject(const QString &name);
 	UiConnector* getUiConntector(int id) const;
 	void createBezierSurfaceC0(const BezierSurfaceData &data);
@@ -44,6 +44,8 @@ private:
 	void createBC2menu(const QPoint &pos, int id);
 	void createBC2IntMenu(const QPoint &pos, int id);
 	void createPoint3Dmenu(const QPoint &pos, const QList<int> &ids);
+	void createIntersectionMenu(const QPoint &pos, const QList<int> &ids);
+	void checkIntersections(const QList<int> &ids);
 	void setActiveObject(int id);
 	//returns nullptr if object not found
 	std::shared_ptr<DrawableObject> getSceneObject(int id);
@@ -65,8 +67,8 @@ signals:
 	void addedBezierCurveC0(const QString &name, int id, const UiBezierCurveC0 *uiBezierC0);
 	void addedBezierCurveC2(const QString &name, int id, const UiBezierCurveC2 *uiBezierC2);
 	void addedBezierC2Interpolated(const QString &name, int id, const UiBezierC2Interpolated *uiBezierC2);
-	void addedBezierSurfaceC0(const QString &name, int id, const UiBezierSurfaceC0 *uiBezierSurfaceC0);
-	void addedBezierSurfaceC2(const QString &name, int id, const UiBezierSurfaceC2 *uiBezierSurfaceC2);
+	void addedBezierSurfaceC0(const QString &name, int id, UiBezierSurfaceC0 *uiBezierSurfaceC0);
+	void addedBezierSurfaceC2(const QString &name, int id, UiBezierSurfaceC2 *uiBezierSurfaceC2);
 	void addedPoint3D(const QString &name, int id, const UiPoint3D *object);
 	void update() const;
 	void editModeBC0(int id);

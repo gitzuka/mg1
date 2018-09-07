@@ -25,9 +25,12 @@ private:
 		"Torus", "Point3D", "BezierCurveC0", "BezierCurveC2", "BezierC2Interpolated", "BezierSurfaceC0", "BezierSurfaceC2" 
 	};
 	QList<int> m_selectedObjectsIds;
+	int m_activeObjectId;
+	int m_prevActiveObjectId;
 
 	void connectSignals();
 	void label_3dCoordsChangeText(float x, float y, float z);
+	void setDetailSpinboxesSignalsState(bool state);
 	BezierSurfaceData::SurfaceType surfaceTypePopup() const;
 	
 
@@ -45,8 +48,8 @@ private slots:
 	void comboBox_BezierCurveC0_AddItem(const QString &name, int id, const UiBezierCurveC0 *uiBezierC0);
 	void comboBox_BezierCurveC2_AddItem(const QString &name, int id, const UiBezierCurveC2 *uiBezierC2);
 	void comboBox_BezierCurveC2Int_AddItem(const QString &name, int id, const UiBezierC2Interpolated *uiBezierC2Int);
-	void comboBox_BezierSurfaceC0_AddItem(const QString &name, int id, const UiBezierSurfaceC0 *uiBezierSurfaceC0);
-	void comboBox_BezierSurfaceC2_AddItem(const QString &name, int id, const UiBezierSurfaceC2 *uiBezierSurfaceC2);
+	void comboBox_BezierSurfaceC0_AddItem(const QString &name, int id, UiBezierSurfaceC0 *uiBezierSurfaceC0);
+	void comboBox_BezierSurfaceC2_AddItem(const QString &name, int id, UiBezierSurfaceC2 *uiBezierSurfaceC2);
 	void connectPoint3D(const QString &name, int id, const UiPoint3D *uiPoint3d);
 	void myGLWidgetKeyPressed(QKeyEvent *event);
 	void myGLWidgetMouseMoved(QMouseEvent *event);
@@ -54,6 +57,8 @@ private slots:
 	void updateMyGLWidget();
 	void showBC0CheckBoxes(int currId, int prevId);
 	void showBC2CheckBoxes(int currId, int prevId);
+	void showBSC0CheckBoxes(int currId, int prevId);
+	void showBSC2CheckBoxes(int currId, int prevId);
 	void showBC2IntCheckBoxes(int currId, int prevId);
 	void radioBtnIdleToggled(bool checked);
 	void radioBtnTranslateToggled(bool checked);
@@ -62,6 +67,14 @@ private slots:
 	void doubleSpinbox_eValueChanged(double e);
 	void stereo_button_toggled(bool checked);
 	void getBSData(BezierSurfaceData data, const QString &name);
+	void getObjectDetails(QList<int> &objectsIds);
+	void doubleSpinbox_PosXValueChanged(double val);
+	void doubleSpinbox_PosYValueChanged(double val);
+	void doubleSpinbox_PosZValueChanged(double val);
+	void doubleSpinbox_RotXValueChanged(double val);
+	void doubleSpinbox_RotYValueChanged(double val);
+	void doubleSpinbox_RotZValueChanged(double val);
+	void pushButton_IntersectionsClicked();
 };
 
 #endif // MODELOWANIEGEOMETRYCZNE1_H
