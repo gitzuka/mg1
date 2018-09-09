@@ -13,6 +13,7 @@
 #include "uiBezierSurfaceC0.h"
 #include "uiBezierSurfaceC2.h"
 #include "Intersections.h"
+#include "3dmath.h"
 
 Scene::Scene() : m_stereoscopy(false), m_isCursor3d(false)
 {
@@ -154,63 +155,20 @@ void Scene::checkIntersections(const QList<int>& ids)
 {
 	std::shared_ptr<IntersectableObject> surface1 = std::dynamic_pointer_cast<IntersectableObject>(getUiConntector(ids.at(0))->getObject());
 	std::shared_ptr<IntersectableObject> surface2 = std::dynamic_pointer_cast<IntersectableObject>(getUiConntector(ids.at(1))->getObject());
-	QVector3D testpoint = QVector3D(0.0, 0.5f, -0.1f);
+	QVector3D testpoint = QVector3D(0.0, 0.f, 0.f);
 	int id = createDrawableObject("Point3D");
 	getUiConntector(id)->getObject()->setPosition(testpoint);
 	getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
-	QVector2D uv1 = Intersections::findClosestPoint(surface1, testpoint);
-	QVector3D point1 = surface1->getPointByUV(uv1.x(), uv1.y());
+	QVector4D uvuv = Intersections::findIntersectionPoint(surface1, surface2, testpoint);
+	QVector3D point1 = surface1->getPointByUV(uvuv.x(), uvuv.y());
 	id = createDrawableObject("Point3D");
 	getUiConntector(id)->getObject()->setPosition(point1);
 	getUiConntector(id)->getObject()->setColor(float3(255, 0, 0));
-	QVector2D uv2 = Intersections::findClosestPoint(surface2, testpoint);
-	QVector3D point2 = surface2->getPointByUV(uv2.x(), uv2.y());
+	QVector3D point2 = surface2->getPointByUV(uvuv.z(), uvuv.w());
 	id = createDrawableObject("Point3D");
 	getUiConntector(id)->getObject()->setPosition(point2);
 	getUiConntector(id)->getObject()->setColor(float3(0, 0, 255));
-	QVector4D intersectionUVs = Intersections::findIntersectionPoint(surface1, surface2, uv1, uv2);
-
-	QVector3D point3 = surface1->getPointByUV(intersectionUVs.x(), intersectionUVs.y());
-	id = createDrawableObject("Point3D");
-	getUiConntector(id)->getObject()->setPosition(point3);
-	getUiConntector(id)->getObject()->setColor(float3(0, 255, 255));
-
-	QVector3D point4 = surface2->getPointByUV(intersectionUVs.z(), intersectionUVs.w());
-	id = createDrawableObject("Point3D");
-	getUiConntector(id)->getObject()->setPosition(point4);
-	getUiConntector(id)->getObject()->setColor(float3(255, 0, 255));
-
-
-	//std::shared_ptr<BezierSurface> surface1 = std::static_pointer_cast<BezierSurface>(getUiConntector(ids.at(0))->getObject());
-	//std::shared_ptr<BezierSurface> surface2 = std::static_pointer_cast<BezierSurface>(getUiConntector(ids.at(1))->getObject());
-	//QVector3D testpoint = QVector3D(0.4f, 0.1f, -0.4f);
-	//int id = createDrawableObject("Point3D");
-	//getUiConntector(id)->getObject()->setPosition(testpoint);
-	//getUiConntector(id)->getObject()->setName("testpoint");
-	//getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
-	//QVector2D uv1 = Intersections::findClosestPoint(surface1, testpoint);
-	//QVector2D uv2 = Intersections::findClosestPoint(surface2, testpoint);
-	//QVector3D curorPos = m_cursor->getPosition();
-	//QVector3D point1 = surface1->getPointByUV(uv1.x(), uv1.y());
-	//id = createDrawableObject("Point3D");
-	//getUiConntector(id)->getObject()->setPosition(point1);
-	//getUiConntector(id)->getObject()->setColor(float3(255, 0, 0));
-	//QVector3D point2 = surface2->getPointByUV(uv2.x(), uv2.y());
-	//id = createDrawableObject("Point3D");
-	//getUiConntector(id)->getObject()->setPosition(point2);
-	//getUiConntector(id)->getObject()->setColor(float3(0, 0, 255));
-
-	//QVector4D intersectionUVs = Intersections::findIntersectionPoint(surface1, surface2, uv1, uv2);
-
-	//QVector3D point3 = surface1->getPointByUV(intersectionUVs.x(), intersectionUVs.y());
-	//id = createDrawableObject("Point3D");
-	//getUiConntector(id)->getObject()->setPosition(point3);
-	//getUiConntector(id)->getObject()->setColor(float3(0, 255, 255));
-
-	//QVector3D point4 = surface2->getPointByUV(intersectionUVs.z(), intersectionUVs.w());
-	//id = createDrawableObject("Point3D");
-	//getUiConntector(id)->getObject()->setPosition(point4);
-	//getUiConntector(id)->getObject()->setColor(float3(255, 0, 255));
+	
 }
 
 void Scene::setActiveObject(int id)
