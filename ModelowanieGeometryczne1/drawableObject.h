@@ -9,7 +9,7 @@ public:
 
 	enum class ObjectType
 	{
-		torus, point3D, cursor3D, bezierCurveC0, bezierCurveC2, bezierC2Interpolated, bezierSurfaceC0, bezierSurfaceC2
+		torus, point3D, cursor3D, bezierCurveC0, bezierCurveC2, bezierC2Interpolated, bezierSurfaceC0, bezierSurfaceC2, trimmingCurve
 	};
 
 	const ObjectType m_type;

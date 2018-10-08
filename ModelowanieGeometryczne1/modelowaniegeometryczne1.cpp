@@ -70,7 +70,12 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.doubleSpinBox_RotX, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_RotXValueChanged(double)));
 	connect(ui.doubleSpinBox_RotY, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_RotYValueChanged(double)));
 	connect(ui.doubleSpinBox_RotZ, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_RotZValueChanged(double)));
-
+	connect(ui.doubleSpinBox_CursorX, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_CursorXValueChanged(double)));
+	connect(ui.doubleSpinBox_CursorY, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_CursorYValueChanged(double)));
+	connect(ui.doubleSpinBox_CursorZ, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_CursorZValueChanged(double)));
+	connect(ui.doubleSpinBox_CursorX, SIGNAL(valueChanged(double)), this, SLOT(updateMyGLWidget()));
+	connect(ui.doubleSpinBox_CursorY, SIGNAL(valueChanged(double)), this, SLOT(updateMyGLWidget()));
+	connect(ui.doubleSpinBox_CursorZ, SIGNAL(valueChanged(double)), this, SLOT(updateMyGLWidget()));
 
 	connect(ui.checkBox_pointer, SIGNAL(stateChanged(int)), ui.myGLWidget, SLOT(checkBox_pointerStateChanged(int)));
 	connect(ui.pushButton_Intersections, SIGNAL(clicked()), this, SLOT(pushButton_IntersectionsClicked()));
@@ -589,6 +594,21 @@ void ModelowanieGeometryczne1::doubleSpinbox_RotZValueChanged(double val)
 	}
 	object->getObject()->rotate(QVector3D(ui.doubleSpinBox_RotX->value(), ui.doubleSpinBox_RotY->value(), val));
 	updateMyGLWidget();
+}
+
+void ModelowanieGeometryczne1::doubleSpinbox_CursorXValueChanged(double val)
+{
+	m_scene.m_cursor->setPosition(QVector3D(ui.doubleSpinBox_CursorX->value(), ui.doubleSpinBox_CursorY->value(), ui.doubleSpinBox_CursorZ->value()));
+}
+
+void ModelowanieGeometryczne1::doubleSpinbox_CursorYValueChanged(double val)
+{
+	m_scene.m_cursor->setPosition(QVector3D(ui.doubleSpinBox_CursorX->value(), ui.doubleSpinBox_CursorY->value(), ui.doubleSpinBox_CursorZ->value()));
+}
+
+void ModelowanieGeometryczne1::doubleSpinbox_CursorZValueChanged(double val)
+{
+	m_scene.m_cursor->setPosition(QVector3D(ui.doubleSpinBox_CursorX->value(), ui.doubleSpinBox_CursorY->value(), ui.doubleSpinBox_CursorZ->value()));
 }
 
 void ModelowanieGeometryczne1::pushButton_IntersectionsClicked()

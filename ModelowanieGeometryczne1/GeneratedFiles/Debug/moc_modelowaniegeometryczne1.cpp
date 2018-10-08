@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ModelowanieGeometryczne1_t {
-    QByteArrayData data[69];
-    char stringdata0[1292];
+    QByteArrayData data[72];
+    char stringdata0[1394];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -100,7 +100,10 @@ QT_MOC_LITERAL(64, 1136, 30), // "doubleSpinbox_PosZValueChanged"
 QT_MOC_LITERAL(65, 1167, 30), // "doubleSpinbox_RotXValueChanged"
 QT_MOC_LITERAL(66, 1198, 30), // "doubleSpinbox_RotYValueChanged"
 QT_MOC_LITERAL(67, 1229, 30), // "doubleSpinbox_RotZValueChanged"
-QT_MOC_LITERAL(68, 1260, 31) // "pushButton_IntersectionsClicked"
+QT_MOC_LITERAL(68, 1260, 33), // "doubleSpinbox_CursorXValueCha..."
+QT_MOC_LITERAL(69, 1294, 33), // "doubleSpinbox_CursorYValueCha..."
+QT_MOC_LITERAL(70, 1328, 33), // "doubleSpinbox_CursorZValueCha..."
+QT_MOC_LITERAL(71, 1362, 31) // "pushButton_IntersectionsClicked"
 
     },
     "ModelowanieGeometryczne1\0cursor3dItemAcquired\0"
@@ -139,6 +142,9 @@ QT_MOC_LITERAL(68, 1260, 31) // "pushButton_IntersectionsClicked"
     "doubleSpinbox_RotXValueChanged\0"
     "doubleSpinbox_RotYValueChanged\0"
     "doubleSpinbox_RotZValueChanged\0"
+    "doubleSpinbox_CursorXValueChanged\0"
+    "doubleSpinbox_CursorYValueChanged\0"
+    "doubleSpinbox_CursorZValueChanged\0"
     "pushButton_IntersectionsClicked"
 };
 #undef QT_MOC_LITERAL
@@ -149,7 +155,7 @@ static const uint qt_meta_data_ModelowanieGeometryczne1[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      39,   14, // methods
+      42,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -157,47 +163,50 @@ static const uint qt_meta_data_ModelowanieGeometryczne1[] = {
        4,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  209,    2, 0x06 /* Public */,
-       3,    0,  212,    2, 0x06 /* Public */,
-       4,    1,  213,    2, 0x06 /* Public */,
-       4,    0,  216,    2, 0x26 /* Public | MethodCloned */,
+       1,    1,  224,    2, 0x06 /* Public */,
+       3,    0,  227,    2, 0x06 /* Public */,
+       4,    1,  228,    2, 0x06 /* Public */,
+       4,    0,  231,    2, 0x26 /* Public | MethodCloned */,
 
  // slots: name, argc, parameters, tag, flags
-       6,    0,  217,    2, 0x08 /* Private */,
-       7,    0,  218,    2, 0x08 /* Private */,
-       8,    0,  219,    2, 0x08 /* Private */,
-       9,    1,  220,    2, 0x08 /* Private */,
-      12,    3,  223,    2, 0x08 /* Private */,
-      17,    3,  230,    2, 0x08 /* Private */,
-      20,    3,  237,    2, 0x08 /* Private */,
-      23,    3,  244,    2, 0x08 /* Private */,
-      26,    3,  251,    2, 0x08 /* Private */,
-      29,    3,  258,    2, 0x08 /* Private */,
-      32,    3,  265,    2, 0x08 /* Private */,
-      35,    1,  272,    2, 0x08 /* Private */,
-      37,    1,  275,    2, 0x08 /* Private */,
-      38,    1,  278,    2, 0x08 /* Private */,
-      39,    0,  281,    2, 0x08 /* Private */,
-      40,    2,  282,    2, 0x08 /* Private */,
-      43,    2,  287,    2, 0x08 /* Private */,
-      44,    2,  292,    2, 0x08 /* Private */,
-      45,    2,  297,    2, 0x08 /* Private */,
-      46,    2,  302,    2, 0x08 /* Private */,
-      47,    1,  307,    2, 0x08 /* Private */,
-      49,    1,  310,    2, 0x08 /* Private */,
-      50,    1,  313,    2, 0x08 /* Private */,
-      51,    1,  316,    2, 0x08 /* Private */,
-      52,    1,  319,    2, 0x08 /* Private */,
-      54,    1,  322,    2, 0x08 /* Private */,
-      55,    2,  325,    2, 0x08 /* Private */,
-      58,    1,  330,    2, 0x08 /* Private */,
-      61,    1,  333,    2, 0x08 /* Private */,
-      63,    1,  336,    2, 0x08 /* Private */,
-      64,    1,  339,    2, 0x08 /* Private */,
-      65,    1,  342,    2, 0x08 /* Private */,
-      66,    1,  345,    2, 0x08 /* Private */,
-      67,    1,  348,    2, 0x08 /* Private */,
-      68,    0,  351,    2, 0x08 /* Private */,
+       6,    0,  232,    2, 0x08 /* Private */,
+       7,    0,  233,    2, 0x08 /* Private */,
+       8,    0,  234,    2, 0x08 /* Private */,
+       9,    1,  235,    2, 0x08 /* Private */,
+      12,    3,  238,    2, 0x08 /* Private */,
+      17,    3,  245,    2, 0x08 /* Private */,
+      20,    3,  252,    2, 0x08 /* Private */,
+      23,    3,  259,    2, 0x08 /* Private */,
+      26,    3,  266,    2, 0x08 /* Private */,
+      29,    3,  273,    2, 0x08 /* Private */,
+      32,    3,  280,    2, 0x08 /* Private */,
+      35,    1,  287,    2, 0x08 /* Private */,
+      37,    1,  290,    2, 0x08 /* Private */,
+      38,    1,  293,    2, 0x08 /* Private */,
+      39,    0,  296,    2, 0x08 /* Private */,
+      40,    2,  297,    2, 0x08 /* Private */,
+      43,    2,  302,    2, 0x08 /* Private */,
+      44,    2,  307,    2, 0x08 /* Private */,
+      45,    2,  312,    2, 0x08 /* Private */,
+      46,    2,  317,    2, 0x08 /* Private */,
+      47,    1,  322,    2, 0x08 /* Private */,
+      49,    1,  325,    2, 0x08 /* Private */,
+      50,    1,  328,    2, 0x08 /* Private */,
+      51,    1,  331,    2, 0x08 /* Private */,
+      52,    1,  334,    2, 0x08 /* Private */,
+      54,    1,  337,    2, 0x08 /* Private */,
+      55,    2,  340,    2, 0x08 /* Private */,
+      58,    1,  345,    2, 0x08 /* Private */,
+      61,    1,  348,    2, 0x08 /* Private */,
+      63,    1,  351,    2, 0x08 /* Private */,
+      64,    1,  354,    2, 0x08 /* Private */,
+      65,    1,  357,    2, 0x08 /* Private */,
+      66,    1,  360,    2, 0x08 /* Private */,
+      67,    1,  363,    2, 0x08 /* Private */,
+      68,    1,  366,    2, 0x08 /* Private */,
+      69,    1,  369,    2, 0x08 /* Private */,
+      70,    1,  372,    2, 0x08 /* Private */,
+      71,    0,  375,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    2,
@@ -234,6 +243,9 @@ static const uint qt_meta_data_ModelowanieGeometryczne1[] = {
     QMetaType::Void, QMetaType::Bool,   48,
     QMetaType::Void, 0x80000000 | 56, QMetaType::QString,   57,   13,
     QMetaType::Void, 0x80000000 | 59,   60,
+    QMetaType::Void, QMetaType::Double,   62,
+    QMetaType::Void, QMetaType::Double,   62,
+    QMetaType::Void, QMetaType::Double,   62,
     QMetaType::Void, QMetaType::Double,   62,
     QMetaType::Void, QMetaType::Double,   62,
     QMetaType::Void, QMetaType::Double,   62,
@@ -289,7 +301,10 @@ void ModelowanieGeometryczne1::qt_static_metacall(QObject *_o, QMetaObject::Call
         case 35: _t->doubleSpinbox_RotXValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
         case 36: _t->doubleSpinbox_RotYValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
         case 37: _t->doubleSpinbox_RotZValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 38: _t->pushButton_IntersectionsClicked(); break;
+        case 38: _t->doubleSpinbox_CursorXValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 39: _t->doubleSpinbox_CursorYValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 40: _t->doubleSpinbox_CursorZValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 41: _t->pushButton_IntersectionsClicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -344,13 +359,13 @@ int ModelowanieGeometryczne1::qt_metacall(QMetaObject::Call _c, int _id, void **
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 39)
+        if (_id < 42)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 39;
+        _id -= 42;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 39)
+        if (_id < 42)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 39;
+        _id -= 42;
     }
     return _id;
 }

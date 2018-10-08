@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include "BezierSurfaceC0.h"
 
+class UiTrimmingCurve;
 class UiBezierCurveC2;
 class UiPoint3D;
 class UiTorus;
@@ -70,6 +71,7 @@ signals:
 	void addedBezierSurfaceC0(const QString &name, int id, UiBezierSurfaceC0 *uiBezierSurfaceC0);
 	void addedBezierSurfaceC2(const QString &name, int id, UiBezierSurfaceC2 *uiBezierSurfaceC2);
 	void addedPoint3D(const QString &name, int id, const UiPoint3D *object);
+	void addedTrimmingCurve(const QString &name, int id, const UiTrimmingCurve *trimmingCurve);
 	void update() const;
 	void editModeBC0(int id);
 	void editModeBC2(int id);

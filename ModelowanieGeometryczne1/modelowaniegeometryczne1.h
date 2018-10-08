@@ -74,6 +74,9 @@ private slots:
 	void doubleSpinbox_RotXValueChanged(double val);
 	void doubleSpinbox_RotYValueChanged(double val);
 	void doubleSpinbox_RotZValueChanged(double val);
+	void doubleSpinbox_CursorXValueChanged(double val);
+	void doubleSpinbox_CursorYValueChanged(double val);
+	void doubleSpinbox_CursorZValueChanged(double val);
 	void pushButton_IntersectionsClicked();
 };
 

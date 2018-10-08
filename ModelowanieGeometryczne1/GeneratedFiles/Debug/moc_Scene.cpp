@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Scene_t {
-    QByteArrayData data[47];
-    char stringdata0[705];
+    QByteArrayData data[50];
+    char stringdata0[761];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -56,29 +56,32 @@ QT_MOC_LITERAL(20, 309, 17), // "uiBezierSurfaceC2"
 QT_MOC_LITERAL(21, 327, 12), // "addedPoint3D"
 QT_MOC_LITERAL(22, 340, 16), // "const UiPoint3D*"
 QT_MOC_LITERAL(23, 357, 6), // "object"
-QT_MOC_LITERAL(24, 364, 6), // "update"
-QT_MOC_LITERAL(25, 371, 11), // "editModeBC0"
-QT_MOC_LITERAL(26, 383, 11), // "editModeBC2"
-QT_MOC_LITERAL(27, 395, 14), // "editModeBC2Int"
-QT_MOC_LITERAL(28, 410, 15), // "objectActivated"
-QT_MOC_LITERAL(29, 426, 17), // "objectDeactivated"
-QT_MOC_LITERAL(30, 444, 21), // "createdBSControlPoint"
-QT_MOC_LITERAL(31, 466, 19), // "updateControlPoints"
-QT_MOC_LITERAL(32, 486, 38), // "std::vector<std::shared_ptr<P..."
-QT_MOC_LITERAL(33, 525, 13), // "controlPoints"
-QT_MOC_LITERAL(34, 539, 16), // "std::vector<int>"
-QT_MOC_LITERAL(35, 556, 7), // "prevIds"
-QT_MOC_LITERAL(36, 564, 18), // "removeUiConnectors"
-QT_MOC_LITERAL(37, 583, 3), // "ids"
-QT_MOC_LITERAL(38, 587, 19), // "performCursorAction"
-QT_MOC_LITERAL(39, 607, 8), // "multiple"
-QT_MOC_LITERAL(40, 616, 11), // "resetCursor"
-QT_MOC_LITERAL(41, 628, 16), // "createObjectMenu"
-QT_MOC_LITERAL(42, 645, 3), // "pos"
-QT_MOC_LITERAL(43, 649, 10), // "QList<int>"
-QT_MOC_LITERAL(44, 660, 12), // "deleteObject"
-QT_MOC_LITERAL(45, 673, 19), // "selectCursorObjects"
-QT_MOC_LITERAL(46, 693, 11) // "QList<int>&"
+QT_MOC_LITERAL(24, 364, 18), // "addedTrimmingCurve"
+QT_MOC_LITERAL(25, 383, 22), // "const UiTrimmingCurve*"
+QT_MOC_LITERAL(26, 406, 13), // "trimmingCurve"
+QT_MOC_LITERAL(27, 420, 6), // "update"
+QT_MOC_LITERAL(28, 427, 11), // "editModeBC0"
+QT_MOC_LITERAL(29, 439, 11), // "editModeBC2"
+QT_MOC_LITERAL(30, 451, 14), // "editModeBC2Int"
+QT_MOC_LITERAL(31, 466, 15), // "objectActivated"
+QT_MOC_LITERAL(32, 482, 17), // "objectDeactivated"
+QT_MOC_LITERAL(33, 500, 21), // "createdBSControlPoint"
+QT_MOC_LITERAL(34, 522, 19), // "updateControlPoints"
+QT_MOC_LITERAL(35, 542, 38), // "std::vector<std::shared_ptr<P..."
+QT_MOC_LITERAL(36, 581, 13), // "controlPoints"
+QT_MOC_LITERAL(37, 595, 16), // "std::vector<int>"
+QT_MOC_LITERAL(38, 612, 7), // "prevIds"
+QT_MOC_LITERAL(39, 620, 18), // "removeUiConnectors"
+QT_MOC_LITERAL(40, 639, 3), // "ids"
+QT_MOC_LITERAL(41, 643, 19), // "performCursorAction"
+QT_MOC_LITERAL(42, 663, 8), // "multiple"
+QT_MOC_LITERAL(43, 672, 11), // "resetCursor"
+QT_MOC_LITERAL(44, 684, 16), // "createObjectMenu"
+QT_MOC_LITERAL(45, 701, 3), // "pos"
+QT_MOC_LITERAL(46, 705, 10), // "QList<int>"
+QT_MOC_LITERAL(47, 716, 12), // "deleteObject"
+QT_MOC_LITERAL(48, 729, 19), // "selectCursorObjects"
+QT_MOC_LITERAL(49, 749, 11) // "QList<int>&"
 
     },
     "Scene\0addedTorus\0\0name\0id\0const UiTorus*\0"
@@ -91,8 +94,9 @@ QT_MOC_LITERAL(46, 693, 11) // "QList<int>&"
     "uiBezierSurfaceC0\0addedBezierSurfaceC2\0"
     "UiBezierSurfaceC2*\0uiBezierSurfaceC2\0"
     "addedPoint3D\0const UiPoint3D*\0object\0"
-    "update\0editModeBC0\0editModeBC2\0"
-    "editModeBC2Int\0objectActivated\0"
+    "addedTrimmingCurve\0const UiTrimmingCurve*\0"
+    "trimmingCurve\0update\0editModeBC0\0"
+    "editModeBC2\0editModeBC2Int\0objectActivated\0"
     "objectDeactivated\0createdBSControlPoint\0"
     "updateControlPoints\0"
     "std::vector<std::shared_ptr<Point3D> >\0"
@@ -110,38 +114,39 @@ static const uint qt_meta_data_Scene[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      22,   14, // methods
+      23,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-      14,       // signalCount
+      15,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    3,  124,    2, 0x06 /* Public */,
-       7,    3,  131,    2, 0x06 /* Public */,
-      10,    3,  138,    2, 0x06 /* Public */,
-      13,    3,  145,    2, 0x06 /* Public */,
-      15,    3,  152,    2, 0x06 /* Public */,
-      18,    3,  159,    2, 0x06 /* Public */,
-      21,    3,  166,    2, 0x06 /* Public */,
-      24,    0,  173,    2, 0x06 /* Public */,
-      25,    1,  174,    2, 0x06 /* Public */,
-      26,    1,  177,    2, 0x06 /* Public */,
-      27,    1,  180,    2, 0x06 /* Public */,
-      28,    1,  183,    2, 0x06 /* Public */,
-      29,    1,  186,    2, 0x06 /* Public */,
-      30,    3,  189,    2, 0x06 /* Public */,
+       1,    3,  129,    2, 0x06 /* Public */,
+       7,    3,  136,    2, 0x06 /* Public */,
+      10,    3,  143,    2, 0x06 /* Public */,
+      13,    3,  150,    2, 0x06 /* Public */,
+      15,    3,  157,    2, 0x06 /* Public */,
+      18,    3,  164,    2, 0x06 /* Public */,
+      21,    3,  171,    2, 0x06 /* Public */,
+      24,    3,  178,    2, 0x06 /* Public */,
+      27,    0,  185,    2, 0x06 /* Public */,
+      28,    1,  186,    2, 0x06 /* Public */,
+      29,    1,  189,    2, 0x06 /* Public */,
+      30,    1,  192,    2, 0x06 /* Public */,
+      31,    1,  195,    2, 0x06 /* Public */,
+      32,    1,  198,    2, 0x06 /* Public */,
+      33,    3,  201,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      31,    2,  196,    2, 0x0a /* Public */,
-      36,    1,  201,    2, 0x0a /* Public */,
-      38,    1,  204,    2, 0x08 /* Private */,
-      38,    0,  207,    2, 0x28 /* Private | MethodCloned */,
-      40,    0,  208,    2, 0x08 /* Private */,
-      41,    2,  209,    2, 0x08 /* Private */,
-      44,    1,  214,    2, 0x08 /* Private */,
-      45,    1,  217,    2, 0x08 /* Private */,
+      34,    2,  208,    2, 0x0a /* Public */,
+      39,    1,  213,    2, 0x0a /* Public */,
+      41,    1,  216,    2, 0x08 /* Private */,
+      41,    0,  219,    2, 0x28 /* Private | MethodCloned */,
+      43,    0,  220,    2, 0x08 /* Private */,
+      44,    2,  221,    2, 0x08 /* Private */,
+      47,    1,  226,    2, 0x08 /* Private */,
+      48,    1,  229,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 5,    3,    4,    6,
@@ -151,6 +156,7 @@ static const uint qt_meta_data_Scene[] = {
     QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 16,    3,    4,   17,
     QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 19,    3,    4,   20,
     QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 22,    3,    4,   23,
+    QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 25,    3,    4,   26,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    4,
     QMetaType::Void, QMetaType::Int,    4,
@@ -160,14 +166,14 @@ static const uint qt_meta_data_Scene[] = {
     QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 22,    3,    4,   23,
 
  // slots: parameters
-    QMetaType::Void, 0x80000000 | 32, 0x80000000 | 34,   33,   35,
-    QMetaType::Void, 0x80000000 | 34,   37,
-    QMetaType::Void, QMetaType::Bool,   39,
+    QMetaType::Void, 0x80000000 | 35, 0x80000000 | 37,   36,   38,
+    QMetaType::Void, 0x80000000 | 37,   40,
+    QMetaType::Void, QMetaType::Bool,   42,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QPoint, 0x80000000 | 43,   42,   37,
+    QMetaType::Void, QMetaType::QPoint, 0x80000000 | 46,   45,   40,
     QMetaType::Void, QMetaType::Int,    4,
-    QMetaType::Void, 0x80000000 | 46,   37,
+    QMetaType::Void, 0x80000000 | 49,   40,
 
        0        // eod
 };
@@ -185,27 +191,28 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         case 4: _t->addedBezierSurfaceC0((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< UiBezierSurfaceC0*(*)>(_a[3]))); break;
         case 5: _t->addedBezierSurfaceC2((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< UiBezierSurfaceC2*(*)>(_a[3]))); break;
         case 6: _t->addedPoint3D((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiPoint3D*(*)>(_a[3]))); break;
-        case 7: _t->update(); break;
-        case 8: _t->editModeBC0((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 9: _t->editModeBC2((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 10: _t->editModeBC2Int((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 11: _t->objectActivated((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 12: _t->objectDeactivated((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 13: _t->createdBSControlPoint((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiPoint3D*(*)>(_a[3]))); break;
-        case 14: _t->updateControlPoints((*reinterpret_cast< std::vector<std::shared_ptr<Point3D> >(*)>(_a[1])),(*reinterpret_cast< const std::vector<int>(*)>(_a[2]))); break;
-        case 15: _t->removeUiConnectors((*reinterpret_cast< const std::vector<int>(*)>(_a[1]))); break;
-        case 16: _t->performCursorAction((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 17: _t->performCursorAction(); break;
-        case 18: _t->resetCursor(); break;
-        case 19: _t->createObjectMenu((*reinterpret_cast< const QPoint(*)>(_a[1])),(*reinterpret_cast< const QList<int>(*)>(_a[2]))); break;
-        case 20: _t->deleteObject((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 21: _t->selectCursorObjects((*reinterpret_cast< QList<int>(*)>(_a[1]))); break;
+        case 7: _t->addedTrimmingCurve((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiTrimmingCurve*(*)>(_a[3]))); break;
+        case 8: _t->update(); break;
+        case 9: _t->editModeBC0((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 10: _t->editModeBC2((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 11: _t->editModeBC2Int((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 12: _t->objectActivated((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 13: _t->objectDeactivated((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 14: _t->createdBSControlPoint((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiPoint3D*(*)>(_a[3]))); break;
+        case 15: _t->updateControlPoints((*reinterpret_cast< std::vector<std::shared_ptr<Point3D> >(*)>(_a[1])),(*reinterpret_cast< const std::vector<int>(*)>(_a[2]))); break;
+        case 16: _t->removeUiConnectors((*reinterpret_cast< const std::vector<int>(*)>(_a[1]))); break;
+        case 17: _t->performCursorAction((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 18: _t->performCursorAction(); break;
+        case 19: _t->resetCursor(); break;
+        case 20: _t->createObjectMenu((*reinterpret_cast< const QPoint(*)>(_a[1])),(*reinterpret_cast< const QList<int>(*)>(_a[2]))); break;
+        case 21: _t->deleteObject((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 22: _t->selectCursorObjects((*reinterpret_cast< QList<int>(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         switch (_id) {
         default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-        case 19:
+        case 20:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 1:
@@ -266,51 +273,58 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
             }
         }
         {
-            typedef void (Scene::*_t)() const;
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::update)) {
+            typedef void (Scene::*_t)(const QString & , int , const UiTrimmingCurve * );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::addedTrimmingCurve)) {
                 *result = 7;
                 return;
             }
         }
         {
-            typedef void (Scene::*_t)(int );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::editModeBC0)) {
+            typedef void (Scene::*_t)() const;
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::update)) {
                 *result = 8;
                 return;
             }
         }
         {
             typedef void (Scene::*_t)(int );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::editModeBC2)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::editModeBC0)) {
                 *result = 9;
                 return;
             }
         }
         {
             typedef void (Scene::*_t)(int );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::editModeBC2Int)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::editModeBC2)) {
                 *result = 10;
                 return;
             }
         }
         {
             typedef void (Scene::*_t)(int );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::objectActivated)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::editModeBC2Int)) {
                 *result = 11;
                 return;
             }
         }
         {
             typedef void (Scene::*_t)(int );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::objectDeactivated)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::objectActivated)) {
                 *result = 12;
+                return;
+            }
+        }
+        {
+            typedef void (Scene::*_t)(int );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::objectDeactivated)) {
+                *result = 13;
                 return;
             }
         }
         {
             typedef void (Scene::*_t)(const QString & , int , const UiPoint3D * );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::createdBSControlPoint)) {
-                *result = 13;
+                *result = 14;
                 return;
             }
         }
@@ -342,13 +356,13 @@ int Scene::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 22)
+        if (_id < 23)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 22;
+        _id -= 23;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 22)
+        if (_id < 23)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 22;
+        _id -= 23;
     }
     return _id;
 }
@@ -403,51 +417,58 @@ void Scene::addedPoint3D(const QString & _t1, int _t2, const UiPoint3D * _t3)
 }
 
 // SIGNAL 7
-void Scene::update()const
+void Scene::addedTrimmingCurve(const QString & _t1, int _t2, const UiTrimmingCurve * _t3)
 {
-    QMetaObject::activate(const_cast< Scene *>(this), &staticMetaObject, 7, Q_NULLPTR);
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    QMetaObject::activate(this, &staticMetaObject, 7, _a);
 }
 
 // SIGNAL 8
-void Scene::editModeBC0(int _t1)
+void Scene::update()const
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 8, _a);
+    QMetaObject::activate(const_cast< Scene *>(this), &staticMetaObject, 8, Q_NULLPTR);
 }
 
 // SIGNAL 9
-void Scene::editModeBC2(int _t1)
+void Scene::editModeBC0(int _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 9, _a);
 }
 
 // SIGNAL 10
-void Scene::editModeBC2Int(int _t1)
+void Scene::editModeBC2(int _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 10, _a);
 }
 
 // SIGNAL 11
-void Scene::objectActivated(int _t1)
+void Scene::editModeBC2Int(int _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 11, _a);
 }
 
 // SIGNAL 12
-void Scene::objectDeactivated(int _t1)
+void Scene::objectActivated(int _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 12, _a);
 }
 
 // SIGNAL 13
+void Scene::objectDeactivated(int _t1)
+{
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 13, _a);
+}
+
+// SIGNAL 14
 void Scene::createdBSControlPoint(const QString & _t1, int _t2, const UiPoint3D * _t3)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
-    QMetaObject::activate(this, &staticMetaObject, 13, _a);
+    QMetaObject::activate(this, &staticMetaObject, 14, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

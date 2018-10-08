@@ -150,6 +150,9 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_uiTorus.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_uiTrimmingCurve.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_modelowaniegeometryczne1.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
@@ -213,6 +216,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_uiTorus.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_uiTrimmingCurve.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Intersections.cpp" />
     <ClCompile Include="listWidgetBC0.cpp" />
     <ClCompile Include="listWidgetBC2.cpp" />
@@ -225,6 +231,7 @@
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="torus.cpp" />
     <ClCompile Include="float3.cpp" />
+    <ClCompile Include="trimmingCurve.cpp" />
     <ClCompile Include="uiBezierC2Interpolated.cpp" />
     <ClCompile Include="uiBezierCurveC0.cpp" />
     <ClCompile Include="uiBezierCurveC2.cpp" />
@@ -234,6 +241,7 @@
     <ClCompile Include="uiCursor3d.cpp" />
     <ClCompile Include="uiPoint3d.cpp" />
     <ClCompile Include="uiTorus.cpp" />
+    <ClCompile Include="uiTrimmingCurve.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="modelowaniegeometryczne1.h">
@@ -363,8 +371,19 @@
     <ClInclude Include="GeneratedFiles\ui_bezierSurfaceSettings.h" />
     <ClInclude Include="intersectableObject.h" />
     <ClInclude Include="Intersections.h" />
+    <ClInclude Include="trimmingCurve.h" />
     <ClInclude Include="uiBezierSurfaceC0.h" />
     <ClInclude Include="uiBezierSurfaceC2.h" />
+    <CustomBuild Include="uiTrimmingCurve.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing uiTrimmingCurve.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing uiTrimmingCurve.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets"</Command>
+    </CustomBuild>
     <ClInclude Include="utilsUi.h" />
     <CustomBuild Include="comboBoxBezierCurveC0.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

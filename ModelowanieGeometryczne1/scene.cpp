@@ -13,7 +13,8 @@
 #include "uiBezierSurfaceC0.h"
 #include "uiBezierSurfaceC2.h"
 #include "Intersections.h"
-#include "3dmath.h"
+#include "uiTrimmingCurve.h"
+#include "trimmingCurve.h"
 
 Scene::Scene() : m_stereoscopy(false), m_isCursor3d(false)
 {
@@ -156,6 +157,7 @@ void Scene::checkIntersections(const QList<int>& ids)
 	std::shared_ptr<IntersectableObject> surface1 = std::dynamic_pointer_cast<IntersectableObject>(getUiConntector(ids.at(0))->getObject());
 	std::shared_ptr<IntersectableObject> surface2 = std::dynamic_pointer_cast<IntersectableObject>(getUiConntector(ids.at(1))->getObject());
 	QVector3D testpoint = QVector3D(0.0, 0.f, 0.f);
+	testpoint = m_cursor->getPosition();
 	int id = createDrawableObject("Point3D");
 	getUiConntector(id)->getObject()->setPosition(testpoint);
 	getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
@@ -168,7 +170,50 @@ void Scene::checkIntersections(const QList<int>& ids)
 	id = createDrawableObject("Point3D");
 	getUiConntector(id)->getObject()->setPosition(point2);
 	getUiConntector(id)->getObject()->setColor(float3(0, 0, 255));
-	
+
+	std::vector<QVector4D> params = Intersections::getTrimmingCurve(surface1, surface2, testpoint);
+	std::vector<QVector4D> vertices;
+	vertices.reserve(params.size());
+	for (int i = 0; i < params.size(); ++i)
+	{
+		vertices.push_back(QVector4D(surface1->getPointByUV(params.at(i).x(), params.at(i).y()), 1.0f));
+	}
+	id = createDrawableObject("TrimmingCurve");
+	std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
+	curve->setVertices(vertices);
+
+	std::vector<QVector4D> vertices2;
+	vertices2.reserve(params.size());
+	for (int i = 0; i < params.size(); ++i)
+	{
+		vertices2.push_back(QVector4D(surface2->getPointByUV(params.at(i).z(), params.at(i).w()), 1.0f));
+	}
+	id = createDrawableObject("TrimmingCurve");
+	std::shared_ptr<TrimmingCurve> curve2 = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
+	curve2->setColor(128, 128, 0);
+	curve2->setVertices(vertices2);
+
+	/*std::vector<QVector4D> vertices3;
+	vertices3.reserve(params.size());
+	for (int i = 0; i < params.size(); ++i)
+	{
+		vertices3.push_back(QVector4D(surface1->getPointByUV(params.at(i).z(), params.at(i).w()), 1.0f));
+	}
+	id = createDrawableObject("TrimmingCurve");
+	std::shared_ptr<TrimmingCurve> curve3 = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
+	curve3->setColor(0, 128, 0); 
+	curve3->setVertices(vertices3);
+
+	std::vector<QVector4D> vertices4;
+	vertices4.reserve(params.size());
+	for (int i = 0; i < params.size(); ++i)
+	{
+		vertices4.push_back(QVector4D(surface2->getPointByUV(params.at(i).x(), params.at(i).y()), 1.0f));
+	}
+	id = createDrawableObject("TrimmingCurve");
+	std::shared_ptr<TrimmingCurve> curve4 = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
+	curve4->setColor(128, 0, 0);
+	curve4->setVertices(vertices4);*/
 }
 
 void Scene::setActiveObject(int id)
@@ -218,6 +263,10 @@ QPair<int, DrawableObject::ObjectType> Scene::createUiConnector(const QString& n
 	else if (name == "BezierC2Interpolated")
 	{
 		uiConnector = std::make_unique<UiBezierC2Interpolated>(std::make_shared<BezierC2Interpolated>(BezierC2Interpolated::ObjectType::bezierC2Interpolated, name));
+	}
+	else if (name == "TrimmingCurve")
+	{
+		uiConnector = std::make_unique<UiTrimmingCurve>(std::make_shared<TrimmingCurve>(TrimmingCurve::ObjectType::trimmingCurve, name));
 	}
 
 	int id = uiConnector->getObject()->getId();
@@ -396,6 +445,11 @@ int Scene::createDrawableObject(const QString &name)
 	case DrawableObject::ObjectType::bezierC2Interpolated:
 	{
 		emit addedBezierC2Interpolated(name, idType.first, static_cast<const UiBezierC2Interpolated*>(getUiConntector(idType.first)));
+		break;
+	}
+	case DrawableObject::ObjectType::trimmingCurve:
+	{
+		emit addedTrimmingCurve(name, idType.first, static_cast<const UiTrimmingCurve*>(getUiConntector(idType.first)));
 		break;
 	}
 	/*case DrawableObject::ObjectType::bezierSurfaceC0:
