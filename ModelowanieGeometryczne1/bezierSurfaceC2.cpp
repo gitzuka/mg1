@@ -20,6 +20,36 @@ QVector3D BezierSurfaceC2::calculateDerivative(double t, QVector3D a, QVector3D 
 	return derivative;
 }
 
+void BezierSurfaceC2::initializeFromPoints(const std::vector<int>& ids,
+	const std::vector<std::shared_ptr<Point3D>>& points)
+{
+	m_points.clear();
+	int X = m_parameters.m_patchesX + 3;
+	int Y = m_parameters.m_patchesY + 3;
+	for (int i = 0; i < Y; ++i)
+	{
+		for (int j = 0; j < X; ++j)
+		{
+			m_points.emplace_back(points[ids[j * Y + i]]);
+		}
+	}
+	planeSurfacePatches();
+	if (m_parameters.m_surfaceType == BezierSurfaceData::SurfaceType::cylinder)
+	{
+		m_points.clear();
+		for (int i = 0; i < Y; ++i)
+		{
+			for (int j = 0; j < X - 3; ++j)
+			{
+				if (std::find(m_points.begin(), m_points.end(), points[ids[j * Y + i]]) == m_points.end())
+				{
+					m_points.emplace_back(points[ids[j * Y + i]]);
+				}
+			}
+		}
+	}
+}
+
 //void BezierSurfaceC2::createVertices()
 //{
 //	m_vertices.clear();
@@ -164,13 +194,14 @@ void BezierSurfaceC2::cylinderSurfacePatchesPoints()
 		distY = m_parameters.m_height / (pointsY - 1);
 	}
 
+	float rad = M_PI / 180.0f;
 	for (int i = 0; i < pointsY; i++)
 	{
 		for (int j = 0; j < pointsX; j++)
 		{
 			std::shared_ptr<Point3D> point = std::make_shared<Point3D>(ObjectType::point3D, "Point3D");
-			float x = cos(j * angle * M_PI / 180.0f) * m_parameters.m_radius;
-			float z = sin(j * angle * M_PI / 180.0f) * m_parameters.m_radius;
+			float x = cos(j * angle * rad) * m_parameters.m_radius;
+			float z = sin(j * angle * rad) * m_parameters.m_radius;
 			point->setPosition(QVector4D(i * distY, x, z, 1));
 			m_points.push_back(point);
 		}

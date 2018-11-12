@@ -10,12 +10,13 @@
 #include "uiBezierSurfaceC0.h"
 #include "uiBezierSurfaceC2.h"
 #include "bezierSurfaceSettings.h"
+#include "fileManager.h"
 
 ModelowanieGeometryczne1::ModelowanieGeometryczne1(QWidget *parent)
 	: QMainWindow(parent), m_activeObjectId(-1)
 {
 	ui.setupUi(this);
-	m_scene.m_cursor = std::make_shared<Cursor3D>(Cursor3D::ObjectType::cursor3D);
+	m_scene.initialize();
 	connectSignals();
 	model = new QStringListModel(this);
 	model->setStringList(ui_drawableObjects);
@@ -54,12 +55,16 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(this, SIGNAL(cursor3dItemAcquired(int)), ui.listWidget_BSC2, SLOT(highlightItem(int)));
 	connect(this, SIGNAL(mouseClicked(bool)), &m_scene, SLOT(performCursorAction(bool)));
 	connect(this, SIGNAL(escKeyPressed()), &m_scene, SLOT(resetCursor()));
+	connect(this, SIGNAL(loadedFile(const QString&)), &m_scene, SLOT(loadScene(const QString&)));
 
 	connect(ui.radioButton_stereo, SIGNAL(toggled(bool)), this, SLOT(stereo_button_toggled(bool)));
 	connect(ui.radioButton_Idle, SIGNAL(toggled(bool)), this, SLOT(radioBtnIdleToggled(bool)));
 	connect(ui.radioButton_Translate, SIGNAL(toggled(bool)), this, SLOT(radioBtnTranslateToggled(bool)));
 	connect(ui.radioButton_Add, SIGNAL(toggled(bool)), this, SLOT(radioBtnAddToggled(bool)));
 	connect(ui.radioButton_Delete, SIGNAL(toggled(bool)), this, SLOT(radioBtnDeleteToggled(bool)));
+
+	connect(ui.actionLoad_Scene, &QAction::triggered, this, &ModelowanieGeometryczne1::loadScene);
+	connect(ui.actionSave_Scene, &QAction::triggered, this, &ModelowanieGeometryczne1::saveScene);
 
 	connect(ui.pushButton_BSC0, SIGNAL(clicked()), this, SLOT(pushButton_BSC0Clicked()));
 	connect(ui.pushButton_BSC2, SIGNAL(clicked()), this, SLOT(pushButton_BSC2Clicked()));
@@ -311,15 +316,18 @@ void ModelowanieGeometryczne1::myGLWidgetKeyPressed(QKeyEvent *event)
 	}
 	case 'X':
 	{
-
+		m_scene.showAxes('X');
+		break;
 	}
 	case 'Y':
 	{
-
+		m_scene.showAxes('Y');
+		break;
 	}
 	case 'Z':
 	{
-
+		m_scene.showAxes('Z');
+		break;
 	}
 	}
 }
@@ -626,4 +634,30 @@ void ModelowanieGeometryczne1::pushButton_IntersectionsClicked()
 	m_scene.getUiConntector(id)->getObject()->setPosition(point);
 	m_scene.getUiConntector(id)->getObject()->setName("IntersectionPoint");
 	m_scene.getUiConntector(id)->getObject()->setColor(float3(255,0,0));*/
+}
+
+void ModelowanieGeometryczne1::loadScene()
+{
+	QString filename = QFileDialog::getOpenFileName(this,
+		tr("Open scene file"), "",
+		tr("Scene files (*.json)"));
+	if (filename.isEmpty())
+	{
+		return;
+	}
+	QFile file(filename);
+
+	if (!file.open(QIODevice::ReadOnly))
+	{
+		QMessageBox::information(this, tr("Unable to open file"),
+			file.errorString());
+		return;
+	}
+	QString fileContent = file.readAll();
+	emit loadedFile(fileContent);
+}
+
+void ModelowanieGeometryczne1::saveScene()
+{
+
 }

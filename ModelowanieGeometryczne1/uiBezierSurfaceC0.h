@@ -5,7 +5,7 @@
 class UiBezierSurfaceC0 : public UiBezierSurface
 {
 public:
-	explicit UiBezierSurfaceC0(std::shared_ptr<BezierSurfaceC0> bezierSurfaceC0);
+	explicit UiBezierSurfaceC0(std::shared_ptr<BezierSurfaceC0> bezierSurfaceC0, bool loaded = false);
 	~UiBezierSurfaceC0();
 
 	void connectToUi(const Ui_ModelowanieGeometryczne1Class *ui) const override;

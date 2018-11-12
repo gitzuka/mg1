@@ -4,7 +4,8 @@
 int DrawableObject::current_id = 0;
 
 DrawableObject::DrawableObject(ObjectType type, const QString &name, bool enabled, bool intersectable)
-	: m_type(type), m_enabled(enabled), m_color(), m_name(name), m_rotation(QQuaternion(1,0,0,0)), m_id(current_id++), m_intersectable(intersectable)
+	: m_type(type), m_enabled(enabled), m_color(), m_name(name), m_scale(QVector3D(1, 1, 1)),
+	  m_rotation(QQuaternion(1, 0, 0, 0)), m_intersectable(intersectable), m_id(current_id++)
 {
 }
 
@@ -75,13 +76,19 @@ void DrawableObject::rotate(QVector3D eulerAngles)
 	QQuaternion q3 = QQuaternion::fromAxisAndAngle(QVector3D(0, 0, 1), eulerAngles.z());*/
 	//m_rotation = (q1 * q2 * q3).normalized();
 	m_rotation = QQuaternion::fromEulerAngles(eulerAngles).normalized();
-	m_modelMatrix = Camera::createTranslation(m_pos) * QMatrix4x4(m_rotation.toRotationMatrix());
+	m_modelMatrix = Camera::createTranslation(m_pos) * QMatrix4x4(m_rotation.toRotationMatrix()) * Camera::createScaling(m_scale);
 }
 
 void DrawableObject::setPosition(QVector3D pos)
 {
 	m_pos = pos;
-	m_modelMatrix = Camera::createTranslation(m_pos) * QMatrix4x4(m_rotation.toRotationMatrix());
+	m_modelMatrix = Camera::createTranslation(m_pos) * QMatrix4x4(m_rotation.toRotationMatrix()) * Camera::createScaling(m_scale);
+}
+
+void DrawableObject::setScale(QVector3D scale)
+{
+	m_scale = scale;
+	m_modelMatrix = Camera::createTranslation(m_pos)* QMatrix4x4(m_rotation.toRotationMatrix()) * Camera::createScaling(m_scale);
 }
 
 const QMatrix4x4& DrawableObject::getModelMatrix() const

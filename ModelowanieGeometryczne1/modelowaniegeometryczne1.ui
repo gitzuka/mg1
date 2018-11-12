@@ -356,7 +356,7 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>91</width>
+                   <width>98</width>
                    <height>118</height>
                   </rect>
                  </property>
@@ -403,7 +403,7 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>91</width>
+                   <width>98</width>
                    <height>118</height>
                   </rect>
                  </property>
@@ -443,7 +443,7 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>91</width>
+                   <width>98</width>
                    <height>118</height>
                   </rect>
                  </property>
@@ -486,7 +486,7 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>95</width>
+                   <width>98</width>
                    <height>151</height>
                   </rect>
                  </property>
@@ -533,7 +533,7 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>95</width>
+                   <width>98</width>
                    <height>151</height>
                   </rect>
                  </property>
@@ -1048,6 +1048,14 @@
    <property name="defaultUp">
     <bool>false</bool>
    </property>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <addaction name="actionLoad_Scene"/>
+    <addaction name="actionSave_Scene"/>
+   </widget>
+   <addaction name="menuOptions"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="mainToolBar">
@@ -1058,6 +1066,16 @@
     <bool>false</bool>
    </attribute>
   </widget>
+  <action name="actionLoad_Scene">
+   <property name="text">
+    <string>Load Scene</string>
+   </property>
+  </action>
+  <action name="actionSave_Scene">
+   <property name="text">
+    <string>Save Scene</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

@@ -1,6 +1,8 @@
 #include "bezierSurface.h"
 #include "utils.h"
 #include "camera.h"
+#include <unordered_set>
+#include <set>
 
 BezierSurface::BezierSurface(ObjectType type, const QString &name, const BezierSurfaceData &parameters) : DrawableObject(type, name, true, true),
 m_width(800), m_height(600), m_showBezierGrid(false), m_showControlGrid(false), m_curveFactor(0.05f), m_parameters(parameters)
@@ -291,7 +293,8 @@ void BezierSurface::createVertices()
 {
 	m_vertices.clear();
 	m_indices.clear();
-	int curveFactor = 20;
+	//int curveFactor = 20;
+	int curveFactor = 16;
 	m_vertices.reserve((m_parameters.m_u + 1) * (m_parameters.m_v + 1) + m_points.size());
 	for (int i = 0; i < m_points.size(); ++i)
 	{

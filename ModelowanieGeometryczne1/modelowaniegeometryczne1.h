@@ -38,6 +38,7 @@ signals:
 	void cursor3dItemAcquired(int);
 	void escKeyPressed();
 	void mouseClicked(bool multiple = false);
+	void loadedFile(const QString &fileContent);
 
 private slots:
 	void pushButton_AddObjectClicked();
@@ -78,6 +79,8 @@ private slots:
 	void doubleSpinbox_CursorYValueChanged(double val);
 	void doubleSpinbox_CursorZValueChanged(double val);
 	void pushButton_IntersectionsClicked();
+	void loadScene();
+	void saveScene();
 };
 
 #endif // MODELOWANIEGEOMETRYCZNE1_H

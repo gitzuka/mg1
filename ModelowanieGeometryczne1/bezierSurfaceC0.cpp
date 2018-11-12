@@ -23,6 +23,36 @@ QVector3D BezierSurfaceC0::calculateDerivative(double t, QVector3D a, QVector3D 
 	return QVector3D(dd0 * tnew + dd1 * t);
 }
 
+void BezierSurfaceC0::initializeFromPoints(const std::vector<int>& ids,
+	const std::vector<std::shared_ptr<Point3D>>& points)
+{
+	m_points.clear();
+	int X = m_parameters.m_patchesX * 3 + 1;
+	int Y = m_parameters.m_patchesY * 3 + 1;
+	for (int i = 0; i < Y; ++i)
+	{
+		for (int j = 0; j < X; ++j)
+		{
+			m_points.emplace_back(points[ids[j * Y + i]]);
+		}
+	}
+	planeSurfacePatches();
+	if (m_parameters.m_surfaceType == BezierSurfaceData::SurfaceType::cylinder)
+	{
+		m_points.clear();
+		for (int i = 0; i < Y; ++i)
+		{
+			for (int j = 0; j < X - 1; ++j)
+			{
+				if (std::find(m_points.begin(), m_points.end(), points[ids[j * Y + i]]) == m_points.end())
+				{
+					m_points.emplace_back(points[ids[j * Y + i]]);
+				}
+			}
+		}
+	}
+}
+
 void BezierSurfaceC0::planeSurfacePatches()
 {
 	for (int i = 0; i < m_parameters.m_patchesY; ++i)
@@ -81,8 +111,8 @@ void BezierSurfaceC0::planeSurfacePatchesPoints()
 	int pointsX = 3 * m_parameters.m_patchesX + 1;
 	int pointsY = 3 * m_parameters.m_patchesY + 1;
 
-	float distX =  m_parameters.m_sizeX / (pointsX - 1);
-	float distY =  m_parameters.m_sizeY / (pointsY - 1);
+	float distX = m_parameters.m_sizeX / (pointsX - 1);
+	float distY = m_parameters.m_sizeY / (pointsY - 1);
 
 	for (int i = 0; i < pointsY; ++i)
 	{
@@ -98,6 +128,8 @@ void BezierSurfaceC0::planeSurfacePatchesPoints()
 
 void BezierSurfaceC0::cylinderSurfacePatchesPoints()
 {
+	/*int pointsX = 3 * m_parameters.m_patchesX;
+	int pointsY = 3 * m_parameters.m_patchesY + 1;*/
 	int pointsX = 3 * m_parameters.m_patchesX;
 	int pointsY = 3 * m_parameters.m_patchesY + 1;
 	float angle = 360.0f / pointsX;

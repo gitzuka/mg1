@@ -268,6 +268,17 @@ QMatrix4x4 Camera::createScaling(float factor)
 	return scaling;
 }
 
+QMatrix4x4 Camera::createScaling(QVector3D factor)
+{
+	QMatrix4x4 scaling = {
+		factor.x(), 0, 0, 0,
+		0, factor.y(), 0, 0,
+		0, 0, factor.z(), 0,
+		0, 0, 0, 1
+	};
+	return scaling;
+}
+
 QMatrix4x4 Camera::createRotationX(float angle)
 {
 	float sinus = sin(angle);

@@ -9,7 +9,7 @@ public:
 
 	enum class ObjectType
 	{
-		torus, point3D, cursor3D, bezierCurveC0, bezierCurveC2, bezierC2Interpolated, bezierSurfaceC0, bezierSurfaceC2, trimmingCurve
+		torus, point3D, cursor3D, bezierCurveC0, bezierCurveC2, bezierC2Interpolated, bezierSurfaceC0, bezierSurfaceC2, trimmingCurve, axes
 	};
 
 	const ObjectType m_type;
@@ -33,6 +33,7 @@ public:
 	QVector3D getRotation() const;
 	virtual void rotate(QVector3D eulerAngles);
 	virtual void setPosition(QVector3D pos);
+	virtual void setScale(QVector3D scale);
 
 protected:
 	DrawableObject(ObjectType type, const QString &name, bool enabled = true, bool intersectable = false);
@@ -43,6 +44,7 @@ protected:
 	QString m_name;
 	QMatrix4x4 m_modelMatrix;
 	QVector3D m_pos;
+	QVector3D m_scale;
 	QQuaternion m_rotation;
 	bool m_intersectable;
 

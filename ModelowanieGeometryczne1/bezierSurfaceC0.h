@@ -11,6 +11,7 @@ public:
 	~BezierSurfaceC0();
 
 	QVector3D calculateDerivative(double t, QVector3D a, QVector3D b, QVector3D c, QVector3D d) const override;
+	void initializeFromPoints(const std::vector<int> &ids, const std::vector<std::shared_ptr<Point3D>> &points) override;
 
 private:
 	void planeSurfacePatches() override;

@@ -86,12 +86,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_modelowaniegeometryczne1.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_modelowaniegeometryczne1.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_modelowaniegeometryczne1.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
@@ -326,6 +320,24 @@
     <ClCompile Include="GeneratedFiles\Release\moc_uiTrimmingCurve.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="axes.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="uiAxes.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_uiAxes.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_uiAxes.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_modelowaniegeometryczne1.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_modelowaniegeometryczne1.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="modelowaniegeometryczne1.ui">
@@ -398,6 +410,9 @@
       <Filter>Header Files\UI</Filter>
     </CustomBuild>
     <CustomBuild Include="uiTrimmingCurve.h">
+      <Filter>Header Files\UI\UI connectors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="uiAxes.h">
       <Filter>Header Files\UI\UI connectors</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -485,6 +500,15 @@
     </ClInclude>
     <ClInclude Include="trimmingCurve.h">
       <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="axes.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="fileManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Json\json.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

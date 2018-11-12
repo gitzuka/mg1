@@ -18,7 +18,7 @@ public:
 	QCheckBox* getCBControlGrid() const;
 
 protected:
-	explicit UiBezierSurface(std::shared_ptr<BezierSurface> bezierSurface);
+	explicit UiBezierSurface(std::shared_ptr<BezierSurface> bezierSurface, bool loaded = false);
 	QCheckBox *m_checkBoxBezierGrid;
 	QCheckBox *m_checkBoxControlGrid;
 

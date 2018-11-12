@@ -1,9 +1,15 @@
 #include "uiBezierSurface.h"
 
-UiBezierSurface::UiBezierSurface(std::shared_ptr<BezierSurface> bezierSurface) 
+UiBezierSurface::UiBezierSurface(std::shared_ptr<BezierSurface> bezierSurface, bool loaded)
 	: m_checkBoxBezierGrid(new QCheckBox("Show Bezier Grid")), m_checkBoxControlGrid(new QCheckBox("Show Control Grid")), m_bezierSurface(bezierSurface)
 {
-	updateSurfaceData(m_bezierSurface->m_parameters);
+	if (!loaded)
+	{
+		updateSurfaceData(m_bezierSurface->m_parameters);
+	}
+	else
+	m_bezierSurface->createVertices();
+
 }
 
 UiBezierSurface::~UiBezierSurface()

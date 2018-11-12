@@ -2,7 +2,7 @@
 #include "scene.h"
 #include "ui_modelowaniegeometryczne1.h"
 
-UiBezierSurfaceC2::UiBezierSurfaceC2(std::shared_ptr<BezierSurfaceC2> bezierSurfaceC2) : UiBezierSurface(bezierSurfaceC2),
+UiBezierSurfaceC2::UiBezierSurfaceC2(std::shared_ptr<BezierSurfaceC2> bezierSurfaceC2, bool loaded) : UiBezierSurface(bezierSurfaceC2, loaded),
 	m_bezierSurfaceC2(bezierSurfaceC2)
 {
 }

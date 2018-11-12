@@ -5,6 +5,7 @@
 #include "bezierCurveC0.h"
 #include <unordered_map>
 #include "BezierSurfaceC0.h"
+#include "axes.h"
 
 class UiTrimmingCurve;
 class UiBezierCurveC2;
@@ -24,6 +25,7 @@ public:
 	bool m_stereoscopy;
 	bool m_isCursor3d;
 	std::shared_ptr<Cursor3D> m_cursor;
+	std::shared_ptr<Axes> m_axes;
 	Camera m_camera;
 
 	void draw() const;
@@ -33,6 +35,8 @@ public:
 	UiConnector* getUiConntector(int id) const;
 	void createBezierSurfaceC0(const BezierSurfaceData &data);
 	void createBezierSurfaceC2(const BezierSurfaceData &data);
+	void showAxes(char axis) const;
+	void initialize();
 
 private:
 	std::unordered_map<int, std::unique_ptr<UiConnector>> m_uiConnectors;
@@ -51,6 +55,7 @@ private:
 	//returns nullptr if object not found
 	std::shared_ptr<DrawableObject> getSceneObject(int id);
 	QPair<int, DrawableObject::ObjectType> createUiConnector(const QString &name);
+	void createUiConnector(const std::shared_ptr<DrawableObject> &object);
 
 public slots:
 	void updateControlPoints(std::vector<std::shared_ptr<Point3D>> controlPoints, const std::vector<int> &prevIds);
@@ -62,6 +67,7 @@ private slots:
 	void createObjectMenu(const QPoint &pos, const QList<int> &ids);
 	void deleteObject(int id);
 	void selectCursorObjects(QList<int> &ids);
+	void loadScene(const QString& fileContent);
 
 signals:
 	void addedTorus(const QString &name, int id, const UiTorus *uiTorus);

@@ -36,6 +36,7 @@ public:
 	static QMatrix4x4 createProjection(float width, float heigth, float near = CAM_NEAR, float far = CAM_FAR, float angle = FOV);
 	static QMatrix4x4 createStereoProjection(bool isLeft, float width, float heigth, float e = 0.1f, float near = CAM_NEAR, float far = CAM_FAR, float angle = FOV);
 	static QMatrix4x4 createScaling(float factor);
+	static QMatrix4x4 createScaling(QVector3D factor);
 	static QMatrix4x4 createRotationX(float angle);
 	static QMatrix4x4 createRotationY(float angle);
 	static QMatrix4x4 createRotationZ(float angle);

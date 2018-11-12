@@ -21,6 +21,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
@@ -46,6 +47,8 @@ QT_BEGIN_NAMESPACE
 class Ui_ModelowanieGeometryczne1Class
 {
 public:
+    QAction *actionLoad_Scene;
+    QAction *actionSave_Scene;
     QWidget *centralWidget;
     QGridLayout *gridLayout_2;
     QHBoxLayout *horizontalLayout;
@@ -143,6 +146,7 @@ public:
     QDoubleSpinBox *doubleSpinBox_CursorY;
     QDoubleSpinBox *doubleSpinBox_CursorZ;
     QMenuBar *menuBar;
+    QMenu *menuOptions;
     QStatusBar *statusBar;
     QToolBar *mainToolBar;
     QButtonGroup *buttonGroup;
@@ -154,6 +158,10 @@ public:
         ModelowanieGeometryczne1Class->resize(1143, 914);
         ModelowanieGeometryczne1Class->setMouseTracking(false);
         ModelowanieGeometryczne1Class->setFocusPolicy(Qt::ClickFocus);
+        actionLoad_Scene = new QAction(ModelowanieGeometryczne1Class);
+        actionLoad_Scene->setObjectName(QStringLiteral("actionLoad_Scene"));
+        actionSave_Scene = new QAction(ModelowanieGeometryczne1Class);
+        actionSave_Scene->setObjectName(QStringLiteral("actionSave_Scene"));
         centralWidget = new QWidget(ModelowanieGeometryczne1Class);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setAutoFillBackground(true);
@@ -329,7 +337,7 @@ public:
         toolBox->addItem(page_Torus, QStringLiteral("Torus"));
         page_BezierCurveC0 = new QWidget();
         page_BezierCurveC0->setObjectName(QStringLiteral("page_BezierCurveC0"));
-        page_BezierCurveC0->setGeometry(QRect(0, 0, 91, 118));
+        page_BezierCurveC0->setGeometry(QRect(0, 0, 98, 118));
         verticalLayout_11 = new QVBoxLayout(page_BezierCurveC0);
         verticalLayout_11->setSpacing(0);
         verticalLayout_11->setContentsMargins(11, 11, 11, 11);
@@ -355,7 +363,7 @@ public:
         toolBox->addItem(page_BezierCurveC0, QStringLiteral("Bezier Curve C0"));
         page_BezierCurveC2 = new QWidget();
         page_BezierCurveC2->setObjectName(QStringLiteral("page_BezierCurveC2"));
-        page_BezierCurveC2->setGeometry(QRect(0, 0, 91, 118));
+        page_BezierCurveC2->setGeometry(QRect(0, 0, 98, 118));
         verticalLayout_12 = new QVBoxLayout(page_BezierCurveC2);
         verticalLayout_12->setSpacing(6);
         verticalLayout_12->setContentsMargins(11, 11, 11, 11);
@@ -380,7 +388,7 @@ public:
         toolBox->addItem(page_BezierCurveC2, QStringLiteral("Bezier Curve C2"));
         page_BezierC2Int = new QWidget();
         page_BezierC2Int->setObjectName(QStringLiteral("page_BezierC2Int"));
-        page_BezierC2Int->setGeometry(QRect(0, 0, 91, 118));
+        page_BezierC2Int->setGeometry(QRect(0, 0, 98, 118));
         verticalLayout_10 = new QVBoxLayout(page_BezierC2Int);
         verticalLayout_10->setSpacing(0);
         verticalLayout_10->setContentsMargins(11, 11, 11, 11);
@@ -405,7 +413,7 @@ public:
         toolBox->addItem(page_BezierC2Int, QStringLiteral("Bezier Curve C2 Interpolated"));
         page_bezierSurfaceC0 = new QWidget();
         page_bezierSurfaceC0->setObjectName(QStringLiteral("page_bezierSurfaceC0"));
-        page_bezierSurfaceC0->setGeometry(QRect(0, 0, 95, 151));
+        page_bezierSurfaceC0->setGeometry(QRect(0, 0, 98, 151));
         verticalLayout_13 = new QVBoxLayout(page_bezierSurfaceC0);
         verticalLayout_13->setSpacing(6);
         verticalLayout_13->setContentsMargins(11, 11, 11, 11);
@@ -435,7 +443,7 @@ public:
         toolBox->addItem(page_bezierSurfaceC0, QStringLiteral("Bezier Surface C0"));
         page_bezierSurfaceC2 = new QWidget();
         page_bezierSurfaceC2->setObjectName(QStringLiteral("page_bezierSurfaceC2"));
-        page_bezierSurfaceC2->setGeometry(QRect(0, 0, 95, 151));
+        page_bezierSurfaceC2->setGeometry(QRect(0, 0, 98, 151));
         verticalLayout_14 = new QVBoxLayout(page_bezierSurfaceC2);
         verticalLayout_14->setSpacing(6);
         verticalLayout_14->setContentsMargins(11, 11, 11, 11);
@@ -751,6 +759,8 @@ public:
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 1143, 26));
         menuBar->setDefaultUp(false);
+        menuOptions = new QMenu(menuBar);
+        menuOptions->setObjectName(QStringLiteral("menuOptions"));
         ModelowanieGeometryczne1Class->setMenuBar(menuBar);
         statusBar = new QStatusBar(ModelowanieGeometryczne1Class);
         statusBar->setObjectName(QStringLiteral("statusBar"));
@@ -758,6 +768,10 @@ public:
         mainToolBar = new QToolBar(ModelowanieGeometryczne1Class);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
         ModelowanieGeometryczne1Class->addToolBar(Qt::TopToolBarArea, mainToolBar);
+
+        menuBar->addAction(menuOptions->menuAction());
+        menuOptions->addAction(actionLoad_Scene);
+        menuOptions->addAction(actionSave_Scene);
 
         retranslateUi(ModelowanieGeometryczne1Class);
 
@@ -772,6 +786,8 @@ public:
     void retranslateUi(QMainWindow *ModelowanieGeometryczne1Class)
     {
         ModelowanieGeometryczne1Class->setWindowTitle(QApplication::translate("ModelowanieGeometryczne1Class", "ModelowanieGeometryczne1", Q_NULLPTR));
+        actionLoad_Scene->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Load Scene", Q_NULLPTR));
+        actionSave_Scene->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Save Scene", Q_NULLPTR));
         pushButton_AddObject->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Add", Q_NULLPTR));
         pushButton_DeleteObject->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Delete", Q_NULLPTR));
         myTabWidget->setTabText(myTabWidget->indexOf(tab_Objects), QApplication::translate("ModelowanieGeometryczne1Class", "Objects", Q_NULLPTR));
@@ -808,6 +824,7 @@ public:
         checkBox_pointer->setText(QApplication::translate("ModelowanieGeometryczne1Class", "3d pointer", Q_NULLPTR));
         label_screenCoords->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Screen coords:", Q_NULLPTR));
         label_3dCoords->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Scene coords:", Q_NULLPTR));
+        menuOptions->setTitle(QApplication::translate("ModelowanieGeometryczne1Class", "Options", Q_NULLPTR));
     } // retranslateUi
 
 };
