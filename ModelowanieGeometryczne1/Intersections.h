@@ -231,8 +231,8 @@ namespace Intersections
 				QVector4D uvRange2 = surface2->getRangeUV(result.z(), result.w());
 				if (checkParametrisation(result, uvRange1, uvRange2, surface1->isWrapped(), surface2->isWrapped()) || (result - prevParams).length() < newtonEps)
 				{
-					break;
-					//return false;
+					//break;
+					return false;
 				}
 				if ((result - prevParams).length() < newtonEps)
 				{

@@ -56,6 +56,7 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(this, SIGNAL(mouseClicked(bool)), &m_scene, SLOT(performCursorAction(bool)));
 	connect(this, SIGNAL(escKeyPressed()), &m_scene, SLOT(resetCursor()));
 	connect(this, SIGNAL(loadedFile(const QString&)), &m_scene, SLOT(loadScene(const QString&)));
+	connect(this, SIGNAL(saveFile(const QString&)), &m_scene, SLOT(saveScene(const QString&)));
 
 	connect(ui.radioButton_stereo, SIGNAL(toggled(bool)), this, SLOT(stereo_button_toggled(bool)));
 	connect(ui.radioButton_Idle, SIGNAL(toggled(bool)), this, SLOT(radioBtnIdleToggled(bool)));
@@ -137,6 +138,7 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(&m_scene, SIGNAL(addedTorus(const QString&, int, const UiTorus*)), ui.listWidget_ObjectsList, SLOT(addTorus(const QString&, int)));
 	connect(&m_scene, SIGNAL(addedTorus(const QString&, int, const UiTorus*)), this, SLOT(comboBox_Torus_AddItem(const QString&, int, const UiTorus*)));
 	connect(&m_scene, SIGNAL(addedPoint3D(const QString&, int, const UiPoint3D*)), ui.listWidget_ObjectsList, SLOT(addPoint3D(const QString&, int)));
+	connect(&m_scene, SIGNAL(addedTrimmingCurve(const QString&, int, const UiTrimmingCurve*)), ui.listWidget_ObjectsList, SLOT(addObject(const QString&, int)));
 	connect(&m_scene, SIGNAL(addedPoint3D(const QString&, int, const UiPoint3D*)), this, SLOT(connectPoint3D(const QString&, int, const UiPoint3D*)));
 	connect(&m_scene, SIGNAL(createdBSControlPoint(const QString&, int, const UiPoint3D*)), this, SLOT(connectPoint3D(const QString&, int, const UiPoint3D*)));
 	connect(&m_scene, SIGNAL(editModeBC0(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
@@ -659,5 +661,9 @@ void ModelowanieGeometryczne1::loadScene()
 
 void ModelowanieGeometryczne1::saveScene()
 {
-
+	QString fileName = QFileDialog::getSaveFileName(this,
+        tr("Save Scene"), "",
+        tr("Json file (*.json)"));
+	QString pathName;
+	emit saveFile(fileName);
 }

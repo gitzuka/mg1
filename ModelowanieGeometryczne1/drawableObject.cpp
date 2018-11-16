@@ -69,6 +69,11 @@ QVector3D DrawableObject::getRotation() const
 	return m_rotation.toEulerAngles();
 }
 
+QVector3D DrawableObject::getScale() const
+{
+	return m_scale;
+}
+
 void DrawableObject::rotate(QVector3D eulerAngles)
 {
 	/*QQuaternion q1 = QQuaternion::fromAxisAndAngle(QVector3D(1,0,0), eulerAngles.x());

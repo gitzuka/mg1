@@ -13,7 +13,7 @@ public:
 	void draw(std::vector<QVector4D> &vec) const override;
 	void draw(std::vector<QVector4D> &vec, float3 color) const override;
 	void setModelMatrix(const QMatrix4x4 &matrix) override;
-	QVector2D approximatePointOnSurface(QVector3D pos) const override;
+	QVector2D approximatePointOnSurface(const QVector3D &pos) const override;
 	QVector3D getUDerivative(double u, double v) const override;
 	QVector3D getVDerivative(double u, double v) const override;
 	//BezierPatch getPatchByUV(double u, double v) const override;
@@ -26,6 +26,10 @@ public:
 	void setBigRadius(float);
 	void setMinorSegments(int);
 	void setMajorSegments(int);
+	float getSmallRadius() const;
+	float getBigRadius() const;
+	float getMinorSegments() const;
+	float getMajorSegments() const;
 
 private:
 	float m_smallRadius;

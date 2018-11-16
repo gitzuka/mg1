@@ -9,6 +9,7 @@ Torus::Torus(ObjectType type, QString name) :
 {
 	Torus::createVertices();
 	Torus::generateIndices();
+	m_intersectable = true;
 }
 
 Torus::Torus(float r, float R, int minorSegments, int majorSegments,
@@ -16,6 +17,8 @@ Torus::Torus(float r, float R, int minorSegments, int majorSegments,
 	DrawableObject(type, name, true, true),
 	m_smallRadius(r), m_bigRadius(R), m_minorSegments(minorSegments), m_majorSegments(majorSegments), m_isWrapped(true)
 {
+	Torus::createVertices();
+	Torus::generateIndices();
 	m_intersectable = true;
 }
 
@@ -41,6 +44,26 @@ void Torus::setMajorSegments(int majorSegments)
 {
 	m_majorSegments = majorSegments;
 	createVertices();
+}
+
+float Torus::getSmallRadius() const
+{
+	return m_smallRadius;
+}
+
+float Torus::getBigRadius() const
+{
+	return m_bigRadius;
+}
+
+float Torus::getMinorSegments() const
+{
+	return m_minorSegments;
+}
+
+float Torus::getMajorSegments() const
+{
+	return m_majorSegments;
 }
 
 void Torus::createVertices()
@@ -113,7 +136,7 @@ void Torus::setModelMatrix(const QMatrix4x4 &matrix)
 	m_modelMatrix = matrix;
 }
 
-QVector2D Torus::approximatePointOnSurface(QVector3D pos) const
+QVector2D Torus::approximatePointOnSurface(const QVector3D &pos) const
 {
 	float minDist = std::numeric_limits<float>::infinity();
 	QVector2D uv;

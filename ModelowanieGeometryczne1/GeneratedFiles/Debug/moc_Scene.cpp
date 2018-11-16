@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Scene_t {
-    QByteArrayData data[52];
-    char stringdata0[783];
+    QByteArrayData data[54];
+    char stringdata0[798];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -83,7 +83,9 @@ QT_MOC_LITERAL(47, 716, 12), // "deleteObject"
 QT_MOC_LITERAL(48, 729, 19), // "selectCursorObjects"
 QT_MOC_LITERAL(49, 749, 11), // "QList<int>&"
 QT_MOC_LITERAL(50, 761, 9), // "loadScene"
-QT_MOC_LITERAL(51, 771, 11) // "fileContent"
+QT_MOC_LITERAL(51, 771, 11), // "fileContent"
+QT_MOC_LITERAL(52, 783, 9), // "saveScene"
+QT_MOC_LITERAL(53, 793, 4) // "path"
 
     },
     "Scene\0addedTorus\0\0name\0id\0const UiTorus*\0"
@@ -107,7 +109,7 @@ QT_MOC_LITERAL(51, 771, 11) // "fileContent"
     "multiple\0resetCursor\0createObjectMenu\0"
     "pos\0QList<int>\0deleteObject\0"
     "selectCursorObjects\0QList<int>&\0"
-    "loadScene\0fileContent"
+    "loadScene\0fileContent\0saveScene\0path"
 };
 #undef QT_MOC_LITERAL
 
@@ -117,7 +119,7 @@ static const uint qt_meta_data_Scene[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      24,   14, // methods
+      25,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -125,32 +127,33 @@ static const uint qt_meta_data_Scene[] = {
       15,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    3,  134,    2, 0x06 /* Public */,
-       7,    3,  141,    2, 0x06 /* Public */,
-      10,    3,  148,    2, 0x06 /* Public */,
-      13,    3,  155,    2, 0x06 /* Public */,
-      15,    3,  162,    2, 0x06 /* Public */,
-      18,    3,  169,    2, 0x06 /* Public */,
-      21,    3,  176,    2, 0x06 /* Public */,
-      24,    3,  183,    2, 0x06 /* Public */,
-      27,    0,  190,    2, 0x06 /* Public */,
-      28,    1,  191,    2, 0x06 /* Public */,
-      29,    1,  194,    2, 0x06 /* Public */,
-      30,    1,  197,    2, 0x06 /* Public */,
-      31,    1,  200,    2, 0x06 /* Public */,
-      32,    1,  203,    2, 0x06 /* Public */,
-      33,    3,  206,    2, 0x06 /* Public */,
+       1,    3,  139,    2, 0x06 /* Public */,
+       7,    3,  146,    2, 0x06 /* Public */,
+      10,    3,  153,    2, 0x06 /* Public */,
+      13,    3,  160,    2, 0x06 /* Public */,
+      15,    3,  167,    2, 0x06 /* Public */,
+      18,    3,  174,    2, 0x06 /* Public */,
+      21,    3,  181,    2, 0x06 /* Public */,
+      24,    3,  188,    2, 0x06 /* Public */,
+      27,    0,  195,    2, 0x06 /* Public */,
+      28,    1,  196,    2, 0x06 /* Public */,
+      29,    1,  199,    2, 0x06 /* Public */,
+      30,    1,  202,    2, 0x06 /* Public */,
+      31,    1,  205,    2, 0x06 /* Public */,
+      32,    1,  208,    2, 0x06 /* Public */,
+      33,    3,  211,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      34,    2,  213,    2, 0x0a /* Public */,
-      39,    1,  218,    2, 0x0a /* Public */,
-      41,    1,  221,    2, 0x08 /* Private */,
-      41,    0,  224,    2, 0x28 /* Private | MethodCloned */,
-      43,    0,  225,    2, 0x08 /* Private */,
-      44,    2,  226,    2, 0x08 /* Private */,
-      47,    1,  231,    2, 0x08 /* Private */,
-      48,    1,  234,    2, 0x08 /* Private */,
-      50,    1,  237,    2, 0x08 /* Private */,
+      34,    2,  218,    2, 0x0a /* Public */,
+      39,    1,  223,    2, 0x0a /* Public */,
+      41,    1,  226,    2, 0x08 /* Private */,
+      41,    0,  229,    2, 0x28 /* Private | MethodCloned */,
+      43,    0,  230,    2, 0x08 /* Private */,
+      44,    2,  231,    2, 0x08 /* Private */,
+      47,    1,  236,    2, 0x08 /* Private */,
+      48,    1,  239,    2, 0x08 /* Private */,
+      50,    1,  242,    2, 0x08 /* Private */,
+      52,    1,  245,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 5,    3,    4,    6,
@@ -179,6 +182,7 @@ static const uint qt_meta_data_Scene[] = {
     QMetaType::Void, QMetaType::Int,    4,
     QMetaType::Void, 0x80000000 | 49,   40,
     QMetaType::Void, QMetaType::QString,   51,
+    QMetaType::Void, QMetaType::QString,   53,
 
        0        // eod
 };
@@ -213,6 +217,7 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         case 21: _t->deleteObject((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 22: _t->selectCursorObjects((*reinterpret_cast< QList<int>(*)>(_a[1]))); break;
         case 23: _t->loadScene((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 24: _t->saveScene((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -362,13 +367,13 @@ int Scene::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 24)
+        if (_id < 25)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 24;
+        _id -= 25;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 24)
+        if (_id < 25)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 24;
+        _id -= 25;
     }
     return _id;
 }

@@ -46,7 +46,7 @@ void BezierSurface::setModelMatrix(const QMatrix4x4 &matrix)
 	m_modelMatrix = matrix;
 }
 
-QVector2D BezierSurface::approximatePointOnSurface(QVector3D pos) const
+QVector2D BezierSurface::approximatePointOnSurface(const QVector3D &pos) const
 {
 	float minDist = std::numeric_limits<float>::infinity();
 	QVector2D uv;
@@ -118,7 +118,7 @@ BezierPatch BezierSurface::getPatchByUV(double u, double v) const
 	return bezierPatch;
 }
 
-QVector2D BezierSurface::getPatchUV(BezierPatch patch, double u, double v) const
+QVector2D BezierSurface::getPatchUV(const BezierPatch &patch, double u, double v) const
 {
 	return QVector2D(u - patch.getU(), v - patch.getV());
 }
@@ -239,7 +239,7 @@ void BezierSurface::generateControlPointsIndices()
 	}
 }
 
-QVector3D BezierSurface::getPointOnSurface(BezierPatch patch, double u, double v) const
+QVector3D BezierSurface::getPointOnSurface(const BezierPatch& patch, double u, double v) const
 {
 	QVector3D a = calculateSurfacePoint(v, patch.getPoints().at(0)->getPosition(), patch.getPoints().at(4)->getPosition(), patch.getPoints().at(8)->getPosition(), patch.getPoints().at(12)->getPosition());
 	QVector3D b = calculateSurfacePoint(v, patch.getPoints().at(1)->getPosition(), patch.getPoints().at(5)->getPosition(), patch.getPoints().at(9)->getPosition(), patch.getPoints().at(13)->getPosition());

@@ -12,6 +12,10 @@ BezierSurfaceC0::~BezierSurfaceC0()
 
 QVector3D BezierSurfaceC0::calculateDerivative(double t, QVector3D a, QVector3D b, QVector3D c, QVector3D d) const
 {
+	if (t > 1)
+	{
+		qDebug("c0 t>1");
+	}
 	double tnew = 1 - t;
 	QVector3D d0 = 3 * (b - a);
 	QVector3D d1 = 3 * (c - b);
@@ -159,5 +163,6 @@ QVector3D BezierSurfaceC0::calculateSurfacePoint(float t, QVector3D a, QVector3D
 	b = b * tnew + c * t;
 
 	return QVector3D(a * tnew + b * t);
+	//return QVector3D(a * tnew
 }
 

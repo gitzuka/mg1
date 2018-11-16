@@ -39,6 +39,7 @@ signals:
 	void escKeyPressed();
 	void mouseClicked(bool multiple = false);
 	void loadedFile(const QString &fileContent);
+	void saveFile(const QString &path);
 
 private slots:
 	void pushButton_AddObjectClicked();

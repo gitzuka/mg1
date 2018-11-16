@@ -236,7 +236,7 @@ std::shared_ptr<DrawableObject> Scene::getSceneObject(int id)
 	{
 		sceneObj = m_uiConnectors.find(id)->second.get()->getObject();
 	}
-	catch (std::out_of_range e)
+	catch (std::out_of_range &e)
 	{
 		sceneObj = nullptr;
 	}
@@ -275,46 +275,6 @@ QPair<int, DrawableObject::ObjectType> Scene::createUiConnector(const QString& n
 	DrawableObject::ObjectType type = uiConnector->getObject()->m_type;
 	addUiConnector(std::move(uiConnector));
 	return QPair<int, DrawableObject::ObjectType>(id, type);
-}
-
-void Scene::createUiConnector(const std::shared_ptr<DrawableObject> &object)
-{
-	std::unique_ptr<UiConnector> uiConnector;
-	switch (object->m_type)
-	{
-	case DrawableObject::ObjectType::torus:
-	{
-		uiConnector = std::make_unique<UiTorus>(std::static_pointer_cast<Torus>(object));
-		emit addedTorus(object->getName(), object->getId(), static_cast<const UiTorus*>(uiConnector.get()));
-		break;
-	}
-	case DrawableObject::ObjectType::point3D:
-	{
-		uiConnector = std::make_unique<UiPoint3D>(std::static_pointer_cast<Point3D>(object));
-		emit addedPoint3D(object->getName(), object->getId(), static_cast<const UiPoint3D*>(uiConnector.get()));
-		break;
-	}
-	case DrawableObject::ObjectType::bezierSurfaceC0:
-	{
-		uiConnector = std::make_unique<UiBezierSurfaceC0>(std::static_pointer_cast<BezierSurfaceC0>(object));
-		emit addedBezierSurfaceC0(object->getName(), object->getId(), static_cast<UiBezierSurfaceC0*>(uiConnector.get()));
-		break;
-	}
-	case DrawableObject::ObjectType::bezierSurfaceC2:
-	{
-		uiConnector = std::make_unique<UiBezierSurfaceC2>(std::static_pointer_cast<BezierSurfaceC2>(object));
-		emit addedBezierSurfaceC2(object->getName(), object->getId(), static_cast<UiBezierSurfaceC2*>(uiConnector.get()));
-		break;
-	}
-	/*case DrawableObject::ObjectType::cursor3D: break;
-	case DrawableObject::ObjectType::bezierCurveC0: break;
-	case DrawableObject::ObjectType::bezierCurveC2: break;
-	case DrawableObject::ObjectType::bezierC2Interpolated: break;
-	case DrawableObject::ObjectType::trimmingCurve: break;
-	case DrawableObject::ObjectType::axes: break;*/
-	default:;
-	}
-	addUiConnector(std::move(uiConnector));
 }
 
 void Scene::createObjectMenu(const QPoint &pos, const QList<int> &ids)
@@ -387,46 +347,51 @@ void Scene::selectCursorObjects(QList<int> &ids)
 void Scene::loadScene(const QString& fileContent)
 {
 	std::vector<std::shared_ptr<Point3D>> points = fileManager::getPoints(fileContent);
-	/*for (const auto &point : points)
-	{
-		createUiConnector(point);
-	}*/
-
 	std::vector<std::shared_ptr<Torus>> tori = fileManager::getTori(fileContent);
 	for (const auto &torus : tori)
 	{
-		createUiConnector(torus);
+		auto uiConnector = std::make_unique<UiTorus>(torus);
+		emit addedTorus(torus->getName(), torus->getId(), uiConnector.get()); //static_cast<const UiTorus*>(uiConnector.get()));
 	}
 
 	std::vector<QPair<std::shared_ptr<BezierSurfaceC0>, std::vector<int>>> sC0Ids = fileManager::getSurfacesC0(fileContent);
 	for (auto &surfaceId : sC0Ids)
 	{
 		surfaceId.first->initializeFromPoints(surfaceId.second, points);
-		auto uiConnector = std::make_unique<UiBezierSurfaceC0>(std::static_pointer_cast<BezierSurfaceC0>(surfaceId.first), true);
-		emit addedBezierSurfaceC0(surfaceId.first->getName(), surfaceId.first->getId(), static_cast<UiBezierSurfaceC0*>(uiConnector.get()));
-		addUiConnector(std::move(uiConnector));//createUiConnector(surfaceId.first);
+		createBezierSurfaceC0(surfaceId.first, true);
 	}
 
 	std::vector<QPair<std::shared_ptr<BezierSurfaceC2>, std::vector<int>>> sC2Ids = fileManager::getSurfacesC2(fileContent);
 	for (auto &surfaceId : sC2Ids)
 	{
 		surfaceId.first->initializeFromPoints(surfaceId.second, points);
-		auto uiConnector = std::make_unique<UiBezierSurfaceC2>(std::static_pointer_cast<BezierSurfaceC2>(surfaceId.first), true);
-		emit addedBezierSurfaceC2(surfaceId.first->getName(), surfaceId.first->getId(), static_cast<UiBezierSurfaceC2*>(uiConnector.get()));
-		addUiConnector(std::move(uiConnector));//createUiConnector(surfaceId.first);
+		createBezierSurfaceC2(surfaceId.first, true);
 	}
-	/*fileManager::surfaceC0Ids sC0Ids = fileManager::getSurfacesC0(fileContent);
-	for (const auto &surfaceIds : sC0Ids)
-	{
-		surfaceIds ->initializeFromPoints(sC0Ids.second)
-		createUiConnector(surface);
-	}*/
+}
 
-	/*fileManager::surfaceC2Ids sC2Ids = fileManager::getSurfacesC2(fileContent);
-	for (const auto &surface : sC2Ids.first)
+void Scene::saveScene(const QString& path)
+{
+	fileManager::saveScene(m_uiConnectors, path);
+	/*QFile saveFile(path);
+
+    if (!saveFile.open(QIODevice::WriteOnly)) {
+        qWarning("Couldn't open save file.");
+		return;
+    }
+	std::shared_ptr<BezierSurfaceC0> surf;
+	for (const auto &obj : m_uiConnectors)
 	{
-		createUiConnector(surface);
-	}*/
+		if (obj.second.get()->getObject()->m_type == DrawableObject::ObjectType::bezierSurfaceC0)
+			surf = std::static_pointer_cast<BezierSurfaceC0>(obj.second.get()->getObject());
+	}
+	QJsonArray points;
+	QJsonArray jSurfs;
+	jSurfs.append(fileManager::saveSurfaceC0(surf, points));
+	QJsonObject scene;
+	scene["points"] = points;
+	scene["surfacesC0"] = jSurfs;
+    QJsonDocument saveDoc(scene);
+    saveFile.write(saveDoc.toJson());*/
 }
 
 void Scene::performCursorAction(bool multiple)
@@ -488,14 +453,14 @@ void Scene::draw() const
 
 void Scene::toggleCursor3D(bool isActive)
 {
-	if (isActive)
+	/*if (isActive)
 	{
 		addUiConnector(std::make_unique<UiCursor3D>(m_cursor));
 	}
 	else
 	{
 		m_uiConnectors.erase(m_cursor->getId());
-	}
+	}*/
 	m_isCursor3d = isActive;
 }
 
@@ -563,7 +528,7 @@ UiConnector* Scene::getUiConntector(int id) const
 	{
 		UiConnector *connector = m_uiConnectors.at(id).get();
 	}
-	catch (std::out_of_range e)
+	catch (std::out_of_range &e)
 	{
 		return nullptr;
 	}
@@ -572,8 +537,13 @@ UiConnector* Scene::getUiConntector(int id) const
 
 void Scene::createBezierSurfaceC2(const BezierSurfaceData &data)
 {
+	createBezierSurfaceC2(std::make_shared<BezierSurfaceC2>(BezierSurfaceC2::ObjectType::bezierSurfaceC2, "BezierSurfaceC2", data));
+}
+
+void Scene::createBezierSurfaceC2(const std::shared_ptr<BezierSurfaceC2>& surface, bool loaded)
+{
 	std::unique_ptr<UiBezierSurfaceC2> uiConnector =
-		std::make_unique<UiBezierSurfaceC2>(std::make_shared<BezierSurfaceC2>(BezierSurfaceC2::ObjectType::bezierSurfaceC2, "BezierSurfaceC2", data));
+		std::make_unique<UiBezierSurfaceC2>(surface);
 	for (const auto &point : uiConnector->getBezierSurface()->getPoints())
 	{
 		std::unique_ptr<UiPoint3D> uiPoint3D = std::make_unique<UiPoint3D>(point);
@@ -612,12 +582,18 @@ void Scene::initialize()
 	m_axes = std::make_shared<Axes>(DrawableObject::ObjectType::axes);
 	addUiConnector(std::make_unique<UiAxes>(m_axes));
 	m_cursor = std::make_shared<Cursor3D>(DrawableObject::ObjectType::cursor3D);
+	addUiConnector(std::make_unique<UiCursor3D>(m_cursor));
 }
 
 void Scene::createBezierSurfaceC0(const BezierSurfaceData &data)
 {
+	createBezierSurfaceC0(std::make_shared<BezierSurfaceC0>(BezierSurfaceC0::ObjectType::bezierSurfaceC0, "BezierSurfaceC0", data));
+}
+
+void Scene::createBezierSurfaceC0(const std::shared_ptr<BezierSurfaceC0> &surface, bool loaded)
+{
 	std::unique_ptr<UiBezierSurfaceC0> uiConnector =
-		std::make_unique<UiBezierSurfaceC0>(std::make_shared<BezierSurfaceC0>(BezierSurfaceC0::ObjectType::bezierSurfaceC0, "BezierSurfaceC0", data));
+		std::make_unique<UiBezierSurfaceC0>(surface, loaded);
 	for (const auto &point : uiConnector->getBezierSurface()->getPoints())
 	{
 		std::unique_ptr<UiPoint3D> uiPoint3D = std::make_unique<UiPoint3D>(point);

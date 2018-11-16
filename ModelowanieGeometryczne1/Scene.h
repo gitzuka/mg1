@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include "BezierSurfaceC0.h"
 #include "axes.h"
+#include "uiBezierSurfaceC2.h"
 
 class UiTrimmingCurve;
 class UiBezierCurveC2;
@@ -55,7 +56,8 @@ private:
 	//returns nullptr if object not found
 	std::shared_ptr<DrawableObject> getSceneObject(int id);
 	QPair<int, DrawableObject::ObjectType> createUiConnector(const QString &name);
-	void createUiConnector(const std::shared_ptr<DrawableObject> &object);
+	void createBezierSurfaceC0(const std::shared_ptr<BezierSurfaceC0> &surface, bool loaded = false);
+	void createBezierSurfaceC2(const std::shared_ptr<BezierSurfaceC2> &surface, bool loaded = false);
 
 public slots:
 	void updateControlPoints(std::vector<std::shared_ptr<Point3D>> controlPoints, const std::vector<int> &prevIds);
@@ -67,7 +69,8 @@ private slots:
 	void createObjectMenu(const QPoint &pos, const QList<int> &ids);
 	void deleteObject(int id);
 	void selectCursorObjects(QList<int> &ids);
-	void loadScene(const QString& fileContent);
+	void loadScene(const QString &fileContent);
+	void saveScene(const QString &path);
 
 signals:
 	void addedTorus(const QString &name, int id, const UiTorus *uiTorus);

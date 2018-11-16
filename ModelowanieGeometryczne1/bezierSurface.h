@@ -33,12 +33,12 @@ public:
 	void draw(std::vector<QVector4D> &vec) const override;
 	void draw(std::vector<QVector4D> &vec, float3 color) const override;
 	void setModelMatrix(const QMatrix4x4 &matrix) override;
-	QVector2D approximatePointOnSurface(QVector3D pos) const override;
+	QVector2D approximatePointOnSurface(const QVector3D &pos) const override;
 	QVector3D getUDerivative(double u, double v) const override;
 	QVector3D getVDerivative(double u, double v) const override;
 	QVector3D getPointByUV(double u, double v) const override;
 	BezierPatch getPatchByUV(double u, double v) const;
-	QVector2D getPatchUV(BezierPatch patch, double u, double v) const;
+	QVector2D getPatchUV(const BezierPatch& patch, double u, double v) const;
 	QVector4D getRangeUV(double u, double v) const override;
 	bool isWrapped() const override;
 
@@ -70,7 +70,7 @@ protected:
 	virtual void planeSurfacePatchesPoints() = 0;
 	virtual void cylinderSurfacePatchesPoints() = 0;
 	virtual QVector3D calculateSurfacePoint(float t, QVector3D a, QVector3D b, QVector3D c, QVector3D d) const = 0;
-	QVector3D getPointOnSurface(BezierPatch patch, double u, double v) const;
+	QVector3D getPointOnSurface(const BezierPatch& patch, double u, double v) const;
 	void generateControlPointsIndices();
 	void generateIndices() override;
 	void createVertices() override;

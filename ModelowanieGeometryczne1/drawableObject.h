@@ -31,6 +31,7 @@ public:
 	void setName(const QString &name);
 	QVector3D getPosition() const;
 	QVector3D getRotation() const;
+	QVector3D getScale() const;
 	virtual void rotate(QVector3D eulerAngles);
 	virtual void setPosition(QVector3D pos);
 	virtual void setScale(QVector3D scale);
