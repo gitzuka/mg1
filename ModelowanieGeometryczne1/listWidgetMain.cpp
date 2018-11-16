@@ -140,7 +140,8 @@ void ListWidgetMain::deleteSurfacePoints(const std::vector<int> &pointsIds)
 	while (pointsIds.at(0) != m_undeleteable.at(index2))
 	{
 		++index2;
-	}while (pointsIds.at(0) != m_objectsList.at(index).second)
+	}
+	while (pointsIds.at(0) != m_objectsList.at(index).second)
 	{
 		++index;
 	}

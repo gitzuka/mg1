@@ -74,6 +74,7 @@ protected:
 	void generateControlPointsIndices();
 	void generateIndices() override;
 	void createVertices() override;
+	void clearSurface();
 
 private:
 	void initialize(BezierSurfaceData parameters);

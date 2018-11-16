@@ -8,7 +8,7 @@ UiBezierSurface::UiBezierSurface(std::shared_ptr<BezierSurface> bezierSurface, b
 		updateSurfaceData(m_bezierSurface->m_parameters);
 	}
 	else
-	m_bezierSurface->createVertices();
+		m_bezierSurface->createVertices();
 
 }
 
@@ -61,11 +61,15 @@ void UiBezierSurface::updateScreenSize(float width, float height)
 
 void UiBezierSurface::updateSurfaceData(BezierSurfaceData data)
 {
-	m_bezierSurface->initialize(data);
-	for (auto &point : m_bezierSurface->getPoints())
+	if (!m_bezierSurface->getPoints().size() > 0)
 	{
-		point->setAncestor(m_bezierSurface);
+		m_bezierSurface->initialize(data);
+		for (auto &point : m_bezierSurface->getPoints())
+		{
+			point->setAncestor(m_bezierSurface);
+		}
 	}
+	m_bezierSurface->m_parameters = data;
 	updateSurface();
 }
 

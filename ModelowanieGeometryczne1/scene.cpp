@@ -160,18 +160,35 @@ void Scene::checkIntersections(const QList<int>& ids)
 	std::shared_ptr<IntersectableObject> surface2 = std::dynamic_pointer_cast<IntersectableObject>(getUiConntector(ids.at(1))->getObject());
 	QVector3D testpoint = QVector3D(0.0, 0.f, 0.f);
 	testpoint = m_cursor->getPosition();
-	int id = createDrawableObject("Point3D");
-	getUiConntector(id)->getObject()->setPosition(testpoint);
-	getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
+	//int id = createDrawableObject("Point3D");
+	//getUiConntector(id)->getObject()->setPosition(testpoint);
+	//getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
 	QVector4D uvuv = Intersections::findIntersectionPoint(surface1, surface2, testpoint);
+	QVector2D uv11 = Intersections::findClosestPoint(surface1, testpoint);
+	QVector2D uv22 = Intersections::findClosestPoint(surface2, testpoint);
+	QVector3D point11 = surface1->getPointByUV(uv11.x(), uv11.y());
+	//QVector3D point1 = surface1->getPointByUV(uvuv.x(), uvuv.y());
+	int id = createDrawableObject("Point3D");
+	getUiConntector(id)->getObject()->setPosition(point11);
+	getUiConntector(id)->getObject()->setColor(float3(0, 128, 128));
+	getUiConntector(id)->getObject()->setName("Closest1");
+	QVector3D point22 = surface2->getPointByUV(uv22.x(), uv22.y());
+	//QVector3D point2 = surface2->getPointByUV(uvuv.z(), uvuv.w());
+	id = createDrawableObject("Point3D");
+	getUiConntector(id)->getObject()->setPosition(point22);
+	getUiConntector(id)->getObject()->setColor(float3(0, 128, 128));
+	getUiConntector(id)->getObject()->setName("Closest2");
+
 	QVector3D point1 = surface1->getPointByUV(uvuv.x(), uvuv.y());
 	id = createDrawableObject("Point3D");
 	getUiConntector(id)->getObject()->setPosition(point1);
-	getUiConntector(id)->getObject()->setColor(float3(255, 0, 0));
+	getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
+	getUiConntector(id)->getObject()->setName("Intersection1");
 	QVector3D point2 = surface2->getPointByUV(uvuv.z(), uvuv.w());
 	id = createDrawableObject("Point3D");
 	getUiConntector(id)->getObject()->setPosition(point2);
 	getUiConntector(id)->getObject()->setColor(float3(0, 0, 255));
+	getUiConntector(id)->getObject()->setName("Intersection2");
 
 	std::vector<QVector4D> params = Intersections::getTrimmingCurve(surface1, surface2, testpoint);
 	std::vector<QVector4D> vertices;
@@ -351,7 +368,7 @@ void Scene::loadScene(const QString& fileContent)
 	for (const auto &torus : tori)
 	{
 		auto uiConnector = std::make_unique<UiTorus>(torus);
-		emit addedTorus(torus->getName(), torus->getId(), uiConnector.get()); //static_cast<const UiTorus*>(uiConnector.get()));
+		emit addedTorus(torus->getName(), torus->getId(), uiConnector.get());
 	}
 
 	std::vector<QPair<std::shared_ptr<BezierSurfaceC0>, std::vector<int>>> sC0Ids = fileManager::getSurfacesC0(fileContent);

@@ -127,6 +127,7 @@ QVector4D BezierSurface::getRangeUV(double u, double v) const
 {
 	BezierPatch patch = getPatchByUV(u, v);
 	return QVector4D(patch.getU(), patch.getU() + 1, patch.getV(), patch.getV() + 1);
+	//return QVector4D(0, patch.getU(), 0, patch.getV());
 }
 
 QVector3D BezierSurface::getPointByUV(double u, double v) const
@@ -204,6 +205,7 @@ void BezierSurface::rotate(QVector3D eulerAngles)
 
 void BezierSurface::initialize(BezierSurfaceData parameters)
 {
+	//clearSurface();
 	m_parameters = parameters;
 	if (m_parameters.m_surfaceType == BezierSurfaceData::SurfaceType::plane)
 	{
@@ -403,4 +405,10 @@ void BezierSurface::createVertices()
 	{
 		generateControlPointsIndices();
 	}
+}
+
+void BezierSurface::clearSurface()
+{
+	m_patches.clear();
+	m_points.clear();
 }

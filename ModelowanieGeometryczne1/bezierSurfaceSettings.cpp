@@ -35,6 +35,7 @@ void BezierSurfaceSettings::initialize(BezierSurfaceData::SurfaceType type, cons
 
 void BezierSurfaceSettings::initialize(BezierSurfaceData data)
 {
+	m_data = data;
 	ui.spinBox_patchesX->setEnabled(false);
 	ui.spinBox_patchesY->setEnabled(false); 
 	if (data.m_surfaceType == BezierSurfaceData::SurfaceType::plane)
