@@ -61,7 +61,8 @@ void UiBezierSurface::updateScreenSize(float width, float height)
 
 void UiBezierSurface::updateSurfaceData(BezierSurfaceData data)
 {
-	if (!m_bezierSurface->getPoints().size() > 0)
+	//if (!m_bezierSurface->getPoints().size() > 0)
+	if (m_bezierSurface->getPoints().empty())
 	{
 		m_bezierSurface->initialize(data);
 		for (auto &point : m_bezierSurface->getPoints())

@@ -10,10 +10,6 @@ BezierSurfaceC2::~BezierSurfaceC2()
 
 QVector3D BezierSurfaceC2::calculateDerivative(double t, QVector3D a, QVector3D b, QVector3D c, QVector3D d) const
 {
-	if (t > 1)
-	{
-		qDebug("c2 t>1");
-	}
 	float *coeff = calculateBasis(t, 3);
 	QVector3D d0 = b - a;
 	QVector3D d1 = c - b;

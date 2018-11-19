@@ -13,8 +13,12 @@ public:
 	void setModelMatrix(const QMatrix4x4 &matrix) override;
 
 	void setVertices(std::vector<QVector4D> &vertices);
+	void setParametrization(std::vector<QVector4D> &parametrization);
+	const std::vector<QVector4D>& getParametrization() const;
 
 private:
 	void createVertices() override;
 	void generateIndices() override;
+	float3 swapColors(int i) const;
+	std::vector<QVector4D> m_parametrization;
 };

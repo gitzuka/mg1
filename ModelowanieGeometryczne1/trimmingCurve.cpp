@@ -29,6 +29,7 @@ void TrimmingCurve::draw(std::vector<QVector4D>& vec, float3 color) const
 	{
 		return;
 	}
+	int i = 0;
 	for (std::vector<int>::const_iterator it = m_indices.begin(); it != m_indices.end() - 1; ++it)
 	{
 		if (*it == -1 || *(it + 1) == -1
@@ -37,7 +38,9 @@ void TrimmingCurve::draw(std::vector<QVector4D>& vec, float3 color) const
 		{
 			continue;
 		}
-		drawLine(vec.at(*it), vec.at(*(it + 1)), color);
+		//drawLine(vec.at(*it), vec.at(*(it + 1)), color);
+		drawLine(vec.at(*it), vec.at(*(it + 1)), swapColors(i));
+		++i;
 	}
 }
 
@@ -50,6 +53,16 @@ void TrimmingCurve::setVertices(std::vector<QVector4D>& vertices)
 {
 	m_vertices.swap(vertices);
 	generateIndices();
+}
+
+void TrimmingCurve::setParametrization(std::vector<QVector4D>& parametrization)
+{
+	m_parametrization.swap(parametrization);
+}
+
+const std::vector<QVector4D>& TrimmingCurve::getParametrization() const
+{
+	return m_parametrization;
 }
 
 void TrimmingCurve::createVertices()
@@ -65,4 +78,14 @@ void TrimmingCurve::generateIndices()
 	{
 		m_indices.push_back(i);
 	}
+}
+
+float3 TrimmingCurve::swapColors(int i) const
+{
+	float3 c;
+	if (i%2)
+		c = float3(0, 255, 0);
+	else
+		c = float3(255, 0, 0);
+	return c;
 }

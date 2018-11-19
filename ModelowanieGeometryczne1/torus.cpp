@@ -4,7 +4,7 @@
 #include "utils.h"
 
 Torus::Torus(ObjectType type, QString name) :
-	DrawableObject(type, name, true, true),
+	DrawableObject(type, name, true, true), IntersectableObject(true, true),
 	m_smallRadius(0.10), m_bigRadius(0.30), m_minorSegments(30), m_majorSegments(30), m_isWrapped(true)
 {
 	Torus::createVertices();
@@ -14,7 +14,7 @@ Torus::Torus(ObjectType type, QString name) :
 
 Torus::Torus(float r, float R, int minorSegments, int majorSegments,
 	ObjectType type, QString name) :
-	DrawableObject(type, name, true, true),
+	DrawableObject(type, name, true, true), IntersectableObject(true, true),
 	m_smallRadius(r), m_bigRadius(R), m_minorSegments(minorSegments), m_majorSegments(majorSegments), m_isWrapped(true)
 {
 	Torus::createVertices();
@@ -167,6 +167,7 @@ QVector3D Torus::getUDerivative(double u, double v) const
 	vertex.setX(-m_smallRadius * cos(v) * sin(u));
 	vertex.setY(-m_smallRadius * sin(v) * sin(u));
 	vertex.setZ(m_smallRadius * cos(u));
+	return m_rotation * (vertex + getPosition());
 	return vertex + getPosition();
 }
 
@@ -176,6 +177,8 @@ QVector3D Torus::getVDerivative(double u, double v) const
 	vertex.setX(-sin(v) * (m_smallRadius * cos(u) + m_bigRadius));
 	vertex.setY(cos(v) * (m_smallRadius * cos(u) + m_bigRadius));
 	vertex.setZ(0);
+	return m_rotation * (vertex + getPosition());
+
 	return vertex + getPosition();
 }
 
@@ -185,15 +188,17 @@ QVector3D Torus::getPointByUV(double u, double v) const
 	vertex.setX(cos(v) * (m_bigRadius + m_smallRadius * cos(u)));
 	vertex.setY(sin(v) * (m_bigRadius + m_smallRadius * cos(u)));
 	vertex.setZ(m_smallRadius * sin(u));
+	return m_rotation * (vertex + getPosition());
+
 	return vertex + getPosition();
 }
 
 QVector4D Torus::getRangeUV(double u, double v) const
 {
-	return QVector4D(0, 2 * M_PI, 0, 2 * M_PI);
+	return getRangeUV();
 }
 
-bool Torus::isWrapped() const
+QVector4D Torus::getRangeUV() const
 {
-	return m_isWrapped;
+	return QVector4D(0, 2 * M_PI, 0, 2 * M_PI);
 }

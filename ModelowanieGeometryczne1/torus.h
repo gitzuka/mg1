@@ -20,7 +20,7 @@ public:
 	//QVector2D getPatchUV(BezierPatch patch, double u, double v) const override;
 	QVector3D getPointByUV(double u, double v) const override;
 	QVector4D getRangeUV(double u, double v) const override;
-	bool isWrapped() const override;
+	QVector4D getRangeUV() const override;
 
 	void setSmallRadius(float);
 	void setBigRadius(float);

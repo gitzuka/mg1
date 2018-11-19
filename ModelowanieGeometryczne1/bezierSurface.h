@@ -40,7 +40,7 @@ public:
 	BezierPatch getPatchByUV(double u, double v) const;
 	QVector2D getPatchUV(const BezierPatch& patch, double u, double v) const;
 	QVector4D getRangeUV(double u, double v) const override;
-	bool isWrapped() const override;
+	QVector4D getRangeUV() const override;
 
 	BezierSurfaceData::SurfaceType getSurfaceType() const;
 	const BezierSurfaceData& getSurfaceData() const;
@@ -59,7 +59,6 @@ protected:
 	int m_height;
 	bool m_showBezierGrid;
 	bool m_showControlGrid;
-	bool m_isWrapped;
 	float m_curveFactor;
 	BezierSurfaceData m_parameters;
 	std::vector<BezierPatch> m_patches;

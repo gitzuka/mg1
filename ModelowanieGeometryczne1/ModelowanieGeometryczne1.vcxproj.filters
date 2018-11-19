@@ -338,6 +338,21 @@
     <ClCompile Include="GeneratedFiles\Release\moc_modelowaniegeometryczne1.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="intersectableObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="parametrizationViewer.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="formPV.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_formPV.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_formPV.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="modelowaniegeometryczne1.ui">
@@ -414,6 +429,15 @@
     </CustomBuild>
     <CustomBuild Include="uiAxes.h">
       <Filter>Header Files\UI\UI connectors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="parametrizationViewer.h">
+      <Filter>Header Files\UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="formPV.h">
+      <Filter>Header Files\UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GeneratedFiles\formPV.ui">
+      <Filter>Form Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -507,8 +531,8 @@
     <ClInclude Include="fileManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Json\json.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GeneratedFiles\ui_formPV.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

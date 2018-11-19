@@ -10,7 +10,7 @@
 #include "uiBezierSurfaceC0.h"
 #include "uiBezierSurfaceC2.h"
 #include "bezierSurfaceSettings.h"
-#include "fileManager.h"
+#include "formPV.h"
 
 ModelowanieGeometryczne1::ModelowanieGeometryczne1(QWidget *parent)
 	: QMainWindow(parent), m_activeObjectId(-1)
@@ -146,6 +146,8 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(&m_scene, SIGNAL(editModeBC2Int(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
 	connect(&m_scene, SIGNAL(objectDeactivated(int)), ui.listWidget_ObjectsList, SLOT(removeHighlightActive()));
 	connect(&m_scene, SIGNAL(objectActivated(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
+	connect(&m_scene, SIGNAL(intersectionFound(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, const QString&, const QString&)),
+	        this, SLOT(showParametrizationViewer(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, const QString&, const QString&)));
 }
 
 void ModelowanieGeometryczne1::label_3dCoordsChangeText(float x, float y, float z)
@@ -666,4 +668,13 @@ void ModelowanieGeometryczne1::saveScene()
         tr("Json file (*.json)"));
 	QString pathName;
 	emit saveFile(fileName);
+}
+
+void ModelowanieGeometryczne1::showParametrizationViewer(const std::vector<QVector4D> &parametrization, const QVector4D &uvRange1, const QVector4D &uvRange2, const QString& name1, const QString& name2)
+{
+	FormPV *pv = new FormPV(this);
+	pv->setAttribute(Qt::WA_DeleteOnClose);
+	pv->initialize(name1, name2, uvRange1, uvRange2, parametrization);
+	pv->show();
+
 }

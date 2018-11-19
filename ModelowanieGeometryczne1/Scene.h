@@ -88,4 +88,5 @@ signals:
 	void objectActivated(int id);
 	void objectDeactivated(int id);
 	void createdBSControlPoint(const QString &name, int id, const UiPoint3D *object);
+	void intersectionFound(const std::vector<QVector4D> &parametrization, const QVector4D &uvRange1, const QVector4D &uvRange2, const QString& name1, const QString& name2);
 };

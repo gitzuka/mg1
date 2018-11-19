@@ -130,6 +130,23 @@ QVector4D BezierSurface::getRangeUV(double u, double v) const
 	//return QVector4D(0, patch.getU(), 0, patch.getV());
 }
 
+QVector4D BezierSurface::getRangeUV() const
+{
+	int umin = 1000, vmin = 1000, umax= -1, vmax = -1;
+	for (auto it = m_patches.begin(); it != m_patches.end(); ++it)
+	{
+		if (it->getU() < umin)
+			umin = it->getU();
+		if (it->getV() < vmin)
+			vmin = it->getV();
+		if (it->getU() + 1 > umax)
+			umax = it->getU() + 1;
+		if (it->getV() + 1 > vmax)
+			vmax = it->getV() + 1;
+	}
+	return QVector4D(umin, umax, vmin, vmax);
+}
+
 QVector3D BezierSurface::getPointByUV(double u, double v) const
 {
 	BezierPatch patch = getPatchByUV(u, v);
@@ -174,11 +191,6 @@ void BezierSurface::pointMoved(int id)
 	createVertices();
 }
 
-bool BezierSurface::isWrapped() const
-{
-	return m_isWrapped;
-}
-
 void BezierSurface::setPosition(QVector3D pos)
 {
 	m_pos = pos;
@@ -211,13 +223,12 @@ void BezierSurface::initialize(BezierSurfaceData parameters)
 	{
 		planeSurfacePatchesPoints();
 		planeSurfacePatches();
-		m_isWrapped = false;
 	}
 	else
 	{
 		cylinderSurfacePatchesPoints();
 		cylinderSurfacePatches();
-		m_isWrapped = true;
+		m_uWrapped = true;
 	}
 }
 
