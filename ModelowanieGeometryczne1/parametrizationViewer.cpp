@@ -16,7 +16,8 @@ ParametrizationViewer::~ParametrizationViewer()
 }
 
 
-QPair<bool, bool> ParametrizationViewer::fillPixMap(const std::vector<QVector4D>& parametrization, const QVector4D &uvRange1, const QVector4D &uvRange2)
+QPair<bool, bool> ParametrizationViewer::fillPixMap(const std::vector<QVector4D>& parametrization, const QVector4D &uvRange1, const QVector4D &uvRange2, 
+	std::vector<std::vector<bool>> &boolmap1, std::vector<std::vector<bool>> &boolmap2)
 {
 	int width1 = m_pixelFactor * (uvRange1.y() - uvRange1.x());
 	int height1 = m_pixelFactor * (uvRange1.w() - uvRange1.z());
@@ -60,7 +61,7 @@ QPair<bool, bool> ParametrizationViewer::fillPixMap(const std::vector<QVector4D>
 		startPoint1.setY(startPoint1.y() + 1);
 	}
 	floodFill(map11, startPoint1, m_empty, m_filled);
-	trimmable.first = isTrimmable(map11);
+	trimmable.first = isTrimmable(map11, boolmap1);
 
 	QPixmap pixmap11 = QPixmap::fromImage(map11);
 	m_scene = new QGraphicsScene(this);
@@ -75,7 +76,7 @@ QPair<bool, bool> ParametrizationViewer::fillPixMap(const std::vector<QVector4D>
 		startPoint1.setY(startPoint1.y() + 1);
 	}
 	floodFill(map22, startPoint1, m_empty, m_filled);
-	trimmable.second = isTrimmable(map22);
+	trimmable.second = isTrimmable(map22, boolmap2);
 
 	QPixmap pixmap22 = QPixmap::fromImage(map22);
 	m_scene2 = new QGraphicsScene(this);
@@ -186,22 +187,32 @@ bool ParametrizationViewer::colorMatch(QColor c1, QColor c2) const
 	return (c1 == c2);
 }
 
-bool ParametrizationViewer::isTrimmable(const QImage& img) const
+bool ParametrizationViewer::isTrimmable(const QImage& img, std::vector<std::vector<bool>> &map) const
 {
 	bool empty = false, filled = false, curve = false;
 	for (int i = 0; i < img.width(); ++i)
 	{
+		std::vector<bool> col;
 		for (int j =0; j < img.height(); ++j)
 		{
 			if (img.pixelColor(i,j) == m_empty)
+			{
 				empty = true;
-			if (img.pixelColor(i,j) == m_curve)
+				col.emplace_back(false);
+				continue;
+			}
+			else if (img.pixelColor(i,j) == m_curve)
+			{
 				curve = true;
-			if (img.pixelColor(i,j) == m_filled)
+			}
+			else if (img.pixelColor(i,j) == m_filled)
+			{
 				filled = true;
-			if (filled && curve && empty)
-				return true;
+			}
+			col.emplace_back(true);
+			
 		}
+		map.emplace_back(std::move(col));
 	}
-	return false;
+	return (filled && curve && empty);
 }

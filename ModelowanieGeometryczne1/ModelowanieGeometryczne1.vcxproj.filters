@@ -305,9 +305,6 @@
     <ClCompile Include="bezierSurfaceSettings.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Intersections.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="trimmingCurve.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>

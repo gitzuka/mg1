@@ -146,8 +146,8 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(&m_scene, SIGNAL(editModeBC2Int(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
 	connect(&m_scene, SIGNAL(objectDeactivated(int)), ui.listWidget_ObjectsList, SLOT(removeHighlightActive()));
 	connect(&m_scene, SIGNAL(objectActivated(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
-	connect(&m_scene, SIGNAL(intersectionFound(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, const QString&, const QString&)),
-	        this, SLOT(showParametrizationViewer(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, const QString&, const QString&)));
+	connect(&m_scene, SIGNAL(intersectionFound(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, std::shared_ptr<DrawableObject>, std::shared_ptr<DrawableObject>)),
+	        this, SLOT(showParametrizationViewer(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, std::shared_ptr<DrawableObject>, std::shared_ptr<DrawableObject>)));
 }
 
 void ModelowanieGeometryczne1::label_3dCoordsChangeText(float x, float y, float z)
@@ -672,10 +672,10 @@ void ModelowanieGeometryczne1::saveScene()
 	emit saveFile(fileName);
 }
 
-void ModelowanieGeometryczne1::showParametrizationViewer(const std::vector<QVector4D> &parametrization, const QVector4D &uvRange1, const QVector4D &uvRange2, const QString& name1, const QString& name2)
+void ModelowanieGeometryczne1::showParametrizationViewer(const std::vector<QVector4D> &parametrization, const QVector4D &uvRange1, const QVector4D &uvRange2, std::shared_ptr<DrawableObject> surface1, std::shared_ptr<DrawableObject> surface2)
 {
 	FormPV *pv = new FormPV(this);
 	pv->setAttribute(Qt::WA_DeleteOnClose);
-	pv->initialize(name1, name2, uvRange1, uvRange2, parametrization);
+	pv->initialize(surface1, surface2, uvRange1, uvRange2, parametrization);
 	pv->show();
 }

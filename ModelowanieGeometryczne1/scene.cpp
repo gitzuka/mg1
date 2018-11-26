@@ -215,8 +215,8 @@ void Scene::checkIntersections(const QList<int>& ids)
 		if (curve->getVertices().size() >= 2)
 		{
 			emit intersectionFound(curve->getParametrization(), surface1->getRangeUV(), surface2->getRangeUV(),
-				getUiConntector(ids.at(0))->getObject()->getName(),
-				getUiConntector(ids.at(1))->getObject()->getName());
+				getUiConntector(ids.at(0))->getObject(),
+				getUiConntector(ids.at(1))->getObject());
 		}
 	}
 	/*vertices.reserve(params.size());

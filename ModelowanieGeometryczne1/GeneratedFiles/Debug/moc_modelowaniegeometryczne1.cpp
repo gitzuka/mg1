@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ModelowanieGeometryczne1_t {
-    QByteArrayData data[85];
-    char stringdata0[1546];
+    QByteArrayData data[86];
+    char stringdata0[1584];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -115,8 +115,9 @@ QT_MOC_LITERAL(79, 1477, 22), // "std::vector<QVector4D>"
 QT_MOC_LITERAL(80, 1500, 15), // "parametrization"
 QT_MOC_LITERAL(81, 1516, 8), // "uvRange1"
 QT_MOC_LITERAL(82, 1525, 8), // "uvRange2"
-QT_MOC_LITERAL(83, 1534, 5), // "name1"
-QT_MOC_LITERAL(84, 1540, 5) // "name2"
+QT_MOC_LITERAL(83, 1534, 31), // "std::shared_ptr<DrawableObject>"
+QT_MOC_LITERAL(84, 1566, 8), // "surface1"
+QT_MOC_LITERAL(85, 1575, 8) // "surface2"
 
     },
     "ModelowanieGeometryczne1\0cursor3dItemAcquired\0"
@@ -162,7 +163,8 @@ QT_MOC_LITERAL(84, 1540, 5) // "name2"
     "pushButton_IntersectionsClicked\0"
     "loadScene\0saveScene\0showParametrizationViewer\0"
     "std::vector<QVector4D>\0parametrization\0"
-    "uvRange1\0uvRange2\0name1\0name2"
+    "uvRange1\0uvRange2\0std::shared_ptr<DrawableObject>\0"
+    "surface1\0surface2"
 };
 #undef QT_MOC_LITERAL
 
@@ -279,7 +281,7 @@ static const uint qt_meta_data_ModelowanieGeometryczne1[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 79, QMetaType::QVector4D, QMetaType::QVector4D, QMetaType::QString, QMetaType::QString,   80,   81,   82,   83,   84,
+    QMetaType::Void, 0x80000000 | 79, QMetaType::QVector4D, QMetaType::QVector4D, 0x80000000 | 83, 0x80000000 | 83,   80,   81,   82,   84,   85,
 
        0        // eod
 };
@@ -336,7 +338,7 @@ void ModelowanieGeometryczne1::qt_static_metacall(QObject *_o, QMetaObject::Call
         case 43: _t->pushButton_IntersectionsClicked(); break;
         case 44: _t->loadScene(); break;
         case 45: _t->saveScene(); break;
-        case 46: _t->showParametrizationViewer((*reinterpret_cast< const std::vector<QVector4D>(*)>(_a[1])),(*reinterpret_cast< const QVector4D(*)>(_a[2])),(*reinterpret_cast< const QVector4D(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4])),(*reinterpret_cast< const QString(*)>(_a[5]))); break;
+        case 46: _t->showParametrizationViewer((*reinterpret_cast< const std::vector<QVector4D>(*)>(_a[1])),(*reinterpret_cast< const QVector4D(*)>(_a[2])),(*reinterpret_cast< const QVector4D(*)>(_a[3])),(*reinterpret_cast< std::shared_ptr<DrawableObject>(*)>(_a[4])),(*reinterpret_cast< std::shared_ptr<DrawableObject>(*)>(_a[5]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

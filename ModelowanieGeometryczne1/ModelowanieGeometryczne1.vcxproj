@@ -234,7 +234,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="intersectableObject.cpp" />
-    <ClCompile Include="Intersections.cpp" />
     <ClCompile Include="listWidgetBC0.cpp" />
     <ClCompile Include="listWidgetBC2.cpp" />
     <ClCompile Include="listWidgetBezierSurface.cpp" />

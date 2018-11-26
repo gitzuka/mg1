@@ -82,7 +82,7 @@ private slots:
 	void pushButton_IntersectionsClicked();
 	void loadScene();
 	void saveScene();
-	void showParametrizationViewer(const std::vector<QVector4D> &parametrization, const QVector4D &uvRange1, const QVector4D &uvRange2, const QString& name1, const QString& name2);
+	void showParametrizationViewer(const std::vector<QVector4D> &parametrization, const QVector4D &uvRange1, const QVector4D &uvRange2, std::shared_ptr<DrawableObject> surface1, std::shared_ptr<DrawableObject> surface2);
 };
 
 #endif // MODELOWANIEGEOMETRYCZNE1_H

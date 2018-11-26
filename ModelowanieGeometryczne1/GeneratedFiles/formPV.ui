@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>566</width>
+    <width>567</width>
     <height>400</height>
    </rect>
   </property>
@@ -57,20 +57,6 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>Trimmable:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QLabel" name="label_Trim1">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_13">
            <property name="text">
@@ -85,6 +71,13 @@
            </property>
           </widget>
          </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="QPushButton" name="pushButton_Trim1">
+           <property name="text">
+            <string>PushButton</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -96,24 +89,17 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_9">
-           <property name="text">
-            <string>U:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>V:</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="QLabel" name="label_Name2">
            <property name="text">
             <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>U:</string>
            </property>
           </widget>
          </item>
@@ -124,6 +110,13 @@
            </property>
           </widget>
          </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>V:</string>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="1">
           <widget class="QLabel" name="label_V2">
            <property name="text">
@@ -131,17 +124,10 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_15">
+         <item row="3" column="0" colspan="2">
+          <widget class="QPushButton" name="pushButton_Trim2">
            <property name="text">
-            <string>Trimmable:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QLabel" name="label_Trim2">
-           <property name="text">
-            <string>TextLabel</string>
+            <string>PushButton</string>
            </property>
           </widget>
          </item>

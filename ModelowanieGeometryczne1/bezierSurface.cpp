@@ -1,11 +1,9 @@
 #include "bezierSurface.h"
 #include "utils.h"
 #include "camera.h"
-#include <unordered_set>
-#include <set>
 
 BezierSurface::BezierSurface(ObjectType type, const QString &name, const BezierSurfaceData &parameters) : DrawableObject(type, name, true, true),
-m_width(800), m_height(600), m_showBezierGrid(false), m_showControlGrid(false), m_curveFactor(16), m_parameters(parameters)
+m_width(800), m_height(600), m_showBezierGrid(false), m_showControlGrid(false), m_curveFactor(40), m_parameters(parameters)
 {
 }
 
@@ -57,6 +55,33 @@ QVector2D BezierSurface::approximatePointOnSurface(const QVector3D &pos) const
 			float u = j / 3.0f;
 			float v = i / 3.0f;
 			QVector3D surfacePoint = getPointByUV(u, v);
+			float dist = (pos - surfacePoint).length();
+			if (dist < minDist)
+			{
+				uv = QVector2D(u, v);
+				minDist = dist;
+			}
+		}
+	}
+	return uv;
+}
+
+QVector2D BezierSurface::approximatePointOnSurface(const QVector3D& pos, const QVector2D& uvRef,
+	float distance) const
+{
+	float minDist = std::numeric_limits<float>::infinity();
+	QVector2D uv;
+	for (int i = 0; i < 3 * m_parameters.m_patchesY + 1; ++i)
+	{
+		for (int j = 0; j < 3 * m_parameters.m_patchesX + 1; ++j)
+		{
+			float u = j / 3.0f;
+			float v = i / 3.0f;
+			QVector3D surfacePoint = getPointByUV(u, v);
+			//
+			if ((QVector2D(u, v) - uvRef).length() < distance)
+				continue;
+			//
 			float dist = (pos - surfacePoint).length();
 			if (dist < minDist)
 			{
@@ -151,7 +176,6 @@ void BezierSurface::trimSurface(const std::vector<std::vector<bool>> &draw)
 {
 	m_vertices.clear();
 	m_indices.clear();
-	//int curveFactor = 20;
 	float curveFactor = 1.0f / m_curveFactor;
 	m_vertices.reserve((m_parameters.m_u + 1) * (m_parameters.m_v + 1) + m_points.size());
 	for (int i = 0; i < m_points.size(); ++i)
@@ -172,9 +196,8 @@ void BezierSurface::trimSurface(const std::vector<std::vector<bool>> &draw)
 		}
 	}
 
-	//for (const auto &patch : m_patches)
-//	{
-	int pixelCount = draw.size() / m_parameters.m_u;
+	int pixelCountX = draw.size() / m_parameters.m_patchesX;
+	int pixelCountY = draw.size() / m_parameters.m_patchesY;
 	for (int y = 0; y < m_parameters.m_patchesY; ++y)
 	{
 		for (int x = 0; x < m_parameters.m_patchesX; ++x)
@@ -189,37 +212,39 @@ void BezierSurface::trimSurface(const std::vector<std::vector<bool>> &draw)
 				int ind = 0;
 				for (int j = 0; j < m_curveFactor; ++j)
 				{
-					int uPos = (u * i) * patchCount * pixelCount - 1;
+					int uPos = u * i * pixelCountX + patchCount * pixelCountX - 1;
 					if (uPos < 0)
 						uPos = 0;
-					int vPos = (curveFactor * j) * patchCount * pixelCount - 1;
+					int vPos = curveFactor * j * pixelCountY + patchCount * pixelCountY - 1;
 					if (vPos < 0)
 						vPos = 0;
 					if (!draw[uPos][vPos])
+					{
+						m_indices.push_back(-1);
 						continue;
+					}
 					m_vertices.emplace_back(getPointOnSurface(patch, u * i, curveFactor * j), 1.0f);
 					m_indices.push_back(ind + prevIndex);
-					m_indices.push_back(ind + prevIndex + 1);
 					++ind;
 				}
-				int uPos = (u * i) * patchCount * pixelCount - 1;
+				int uPos = u * i * pixelCountX + patchCount * pixelCountX - 1;
 				if (uPos < 0)
 					uPos = 0;
-				int vPos = patchCount * pixelCount - 1;
+				int vPos = patchCount * pixelCountY + pixelCountY - 1;
 				if (vPos < 0)
 					vPos = 0;
 				if (!draw[uPos][vPos])
+				{
+					m_indices.push_back(-1);
 					continue;
+				}
+				m_indices.push_back(ind + prevIndex);
 				m_vertices.emplace_back(getPointOnSurface(patch, u * i, 1.0f), 1.0f);
 				m_indices.push_back(-1);
 			}
 		}
 	}
-	//}
 
-	//patchCount = 0;
-	//for (const auto &patch : m_patches)
-	//{
 	for (int y = 0; y < m_parameters.m_patchesY; ++y)
 	{
 		for (int x = 0; x < m_parameters.m_patchesX; ++x)
@@ -228,34 +253,39 @@ void BezierSurface::trimSurface(const std::vector<std::vector<bool>> &draw)
 
 			int patchCount = y;
 
-			//++patchCount;
 			for (int i = 0; i <= m_parameters.m_v; ++i)
 			{
 				int prevIndex = m_vertices.size();
 				int ind = 0;
 				for (int j = 0; j < m_curveFactor; ++j)
 				{
-					int uPos = (curveFactor * j) * patchCount * pixelCount - 1;
+					int uPos = curveFactor * j * pixelCountX + patchCount * pixelCountX - 1;
 					if (uPos < 0)
 						uPos = 0;
-					int vPos = (v * i) * patchCount * pixelCount - 1;
+					int vPos = v * i * pixelCountY + patchCount * pixelCountY - 1;
 					if (vPos < 0)
 						vPos = 0;
 					if (!draw[uPos][vPos])
+					{
+						m_indices.push_back(-1);
 						continue;
+					}
 					m_vertices.emplace_back(getPointOnSurface(patch, curveFactor * j, v * i), 1.0f);
 					m_indices.push_back(ind + prevIndex);
-					m_indices.push_back(ind + prevIndex + 1);
 					++ind;
 				}
-				int uPos = patchCount * pixelCount - 1;
+				int uPos = patchCount * pixelCountX + pixelCountX - 1;
 				if (uPos < 0)
 					uPos = 0;
-				int vPos = (v * i) * patchCount * pixelCount - 1;
+				int vPos = v * i * pixelCountY + patchCount * pixelCountY - 1;
 				if (vPos < 0)
 					vPos = 0;
 				if (!draw[uPos][vPos])
+				{
+					m_indices.push_back(-1);
 					continue;
+				}
+				m_indices.push_back(ind + prevIndex);
 				m_vertices.emplace_back(getPointOnSurface(patch, 1.0f, v * i), 1.0f);
 				m_indices.push_back(-1);
 			}
@@ -427,7 +457,7 @@ void BezierSurface::createVertices()
 	m_vertices.reserve((m_parameters.m_u + 1) * (m_parameters.m_v + 1) + m_points.size());
 	for (int i = 0; i < m_points.size(); ++i)
 	{
-		m_vertices.push_back(QVector4D(m_points.at(i)->getPosition(), 1.0f));
+		m_vertices.emplace_back(m_points.at(i)->getPosition(), 1.0f);
 	}
 	float u = 1.0f / m_parameters.m_u;
 	float v = 1.0f / m_parameters.m_v;
@@ -438,7 +468,7 @@ void BezierSurface::createVertices()
 		{
 			for (int j = 0; j <= m_parameters.m_v; ++j)
 			{
-				m_vertices.push_back(QVector4D(getPointOnSurface(patch, u * i, v * j), 1.0f));
+				m_vertices.emplace_back(getPointOnSurface(patch, u * i, v * j), 1.0f);
 			}
 		}
 	}
@@ -451,12 +481,13 @@ void BezierSurface::createVertices()
 			int ind = 0;
 			for (int j = 0; j < m_curveFactor; ++j)
 			{
-				m_vertices.push_back(QVector4D(getPointOnSurface(patch, u * i, curveFactor * j), 1.0f));
+				m_vertices.emplace_back(getPointOnSurface(patch, u * i, curveFactor * j), 1.0f);
 				m_indices.push_back(ind + prevIndex);
-				m_indices.push_back(ind + prevIndex + 1);
+				//m_indices.push_back(ind + prevIndex + 1);
 				++ind;
 			}
-			m_vertices.push_back(QVector4D(getPointOnSurface(patch, u * i, 1.0f), 1.0f));
+			m_indices.push_back(ind + prevIndex);
+			m_vertices.emplace_back(getPointOnSurface(patch, u * i, 1.0f), 1.0f);
 			m_indices.push_back(-1);
 		}
 	}
@@ -468,12 +499,13 @@ void BezierSurface::createVertices()
 			int ind = 0;
 			for (int j = 0; j < m_curveFactor; ++j)
 			{
-				m_vertices.push_back(QVector4D(getPointOnSurface(patch, curveFactor * j, v * i), 1.0f));
+				m_vertices.emplace_back(getPointOnSurface(patch, curveFactor * j, v * i), 1.0f);
 				m_indices.push_back(ind + prevIndex);
-				m_indices.push_back(ind + prevIndex + 1);
+				//m_indices.push_back(ind + prevIndex + 1);
 				++ind;
 			}
-			m_vertices.push_back(QVector4D(getPointOnSurface(patch, 1.0f, v * i), 1.0f));
+			m_indices.push_back(ind + prevIndex);
+			m_vertices.emplace_back(getPointOnSurface(patch, 1.0f, v * i), 1.0f);
 			m_indices.push_back(-1);
 		}
 	}

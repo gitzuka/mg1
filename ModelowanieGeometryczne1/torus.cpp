@@ -151,7 +151,38 @@ QVector2D Torus::approximatePointOnSurface(const QVector3D &pos) const
 		{
 			double u = phiStep * i;
 			double v = thetaStep * j;
-			QVector4D surfacePoint = getPointByUV(u, v);
+
+			QVector3D surfacePoint = getPointByUV(u, v);
+			double dist = (pos - surfacePoint).length();
+			if (dist < minDist)
+			{
+				uv = QVector2D(u, v);
+				minDist = dist;
+			}
+		}
+	}
+	return uv;
+}
+
+QVector2D Torus::approximatePointOnSurface(const QVector3D& pos, const QVector2D& uvRef, float distance) const
+{
+	float minDist = std::numeric_limits<float>::infinity();
+	QVector2D uv;
+
+	double phiStep = 2 * M_PI / m_majorSegments;
+	double thetaStep = 2 * M_PI / m_minorSegments;
+	for (int i = 0; i < m_majorSegments; ++i)
+	{
+		for (int j = 0; j < m_minorSegments; ++j)
+		{
+			double u = phiStep * i;
+			double v = thetaStep * j;
+
+			QVector3D surfacePoint = getPointByUV(u, v);
+			//
+			if ((QVector2D(u, v) - uvRef).length() < distance)
+				continue;
+			//
 			double dist = (pos - surfacePoint).length();
 			if (dist < minDist)
 			{

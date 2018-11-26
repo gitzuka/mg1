@@ -14,6 +14,7 @@ public:
 	void draw(std::vector<QVector4D> &vec, float3 color) const override;
 	void setModelMatrix(const QMatrix4x4 &matrix) override;
 	QVector2D approximatePointOnSurface(const QVector3D &pos) const override;
+	QVector2D approximatePointOnSurface(const QVector3D &worldPosition, const QVector2D &uvRef, float distance) const override;
 	QVector3D getUDerivative(double u, double v) const override;
 	QVector3D getVDerivative(double u, double v) const override;
 	//BezierPatch getPatchByUV(double u, double v) const override;
