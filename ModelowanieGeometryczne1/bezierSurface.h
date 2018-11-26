@@ -42,6 +42,7 @@ public:
 	QVector4D getRangeUV(double u, double v) const override;
 	QVector4D getRangeUV() const override;
 
+	void trimSurface(const std::vector<std::vector<bool>> &draw);
 	BezierSurfaceData::SurfaceType getSurfaceType() const;
 	const BezierSurfaceData& getSurfaceData() const;
 	const std::vector<BezierPatch>& getPatches() const;
@@ -59,7 +60,7 @@ protected:
 	int m_height;
 	bool m_showBezierGrid;
 	bool m_showControlGrid;
-	float m_curveFactor;
+	int m_curveFactor;
 	BezierSurfaceData m_parameters;
 	std::vector<BezierPatch> m_patches;
 	std::vector<std::shared_ptr<Point3D>> m_points;
