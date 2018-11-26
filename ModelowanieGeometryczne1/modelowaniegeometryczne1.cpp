@@ -523,6 +523,8 @@ void ModelowanieGeometryczne1::getBSData(BezierSurfaceData data, const QString &
 
 void ModelowanieGeometryczne1::getObjectDetails(QList<int>& objectsIds)
 {
+	if (objectsIds.empty())
+		return;
 	m_prevActiveObjectId = m_activeObjectId;
 	m_activeObjectId = objectsIds.at(0);
 	auto object = m_scene.getUiConntector(m_activeObjectId);
@@ -676,5 +678,4 @@ void ModelowanieGeometryczne1::showParametrizationViewer(const std::vector<QVect
 	pv->setAttribute(Qt::WA_DeleteOnClose);
 	pv->initialize(name1, name2, uvRange1, uvRange2, parametrization);
 	pv->show();
-
 }

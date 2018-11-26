@@ -106,7 +106,7 @@ namespace fileManager
 			else
 				data.m_surfaceType = BezierSurfaceData::SurfaceType::plane;
 			surfaceId.emplace_back(QPair<std::shared_ptr<BezierSurfaceC2>, std::vector<int>>(
-				std::make_shared<BezierSurfaceC2>(DrawableObject::ObjectType::bezierSurfaceC0, obj["name"].toString(),
+				std::make_shared<BezierSurfaceC2>(DrawableObject::ObjectType::bezierSurfaceC2, obj["name"].toString(),
 					data), pointIds));
 		}
 		return surfaceId;

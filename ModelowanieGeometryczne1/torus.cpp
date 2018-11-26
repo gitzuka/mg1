@@ -80,8 +80,10 @@ void Torus::createVertices()
 			double v = thetaStep * j;
 			QVector4D vertex;
 			vertex.setX(cos(v) * (m_smallRadius * cos(u) + m_bigRadius));
-			vertex.setY(sin(v) * (m_smallRadius * cos(u) + m_bigRadius));
-			vertex.setZ(m_smallRadius * sin(u));
+			/*vertex.setY(sin(v) * (m_smallRadius * cos(u) + m_bigRadius));
+			vertex.setZ(m_smallRadius * sin(u));*/
+			vertex.setY(m_smallRadius * sin(u));
+			vertex.setZ(sin(v) * (m_smallRadius * cos(u) + m_bigRadius));
 			vertex.setW(1);
 			m_vertices.push_back(vertex);
 		}
@@ -165,29 +167,36 @@ QVector3D Torus::getUDerivative(double u, double v) const
 {
 	QVector3D vertex;
 	vertex.setX(-m_smallRadius * cos(v) * sin(u));
-	vertex.setY(-m_smallRadius * sin(v) * sin(u));
-	vertex.setZ(m_smallRadius * cos(u));
-	return m_rotation * (vertex + getPosition());
-	return vertex + getPosition();
+	/*vertex.setY(-m_smallRadius * sin(v) * sin(u));
+	vertex.setZ(m_smallRadius * cos(u));*/
+	vertex.setY(m_smallRadius * cos(u));
+	vertex.setZ(-m_smallRadius * sin(v) * sin(u));
+	return vertex;
+	//return m_rotation * (vertex + getPosition());
+	//return vertex + getPosition();
 }
 
 QVector3D Torus::getVDerivative(double u, double v) const
 {
 	QVector3D vertex;
 	vertex.setX(-sin(v) * (m_smallRadius * cos(u) + m_bigRadius));
-	vertex.setY(cos(v) * (m_smallRadius * cos(u) + m_bigRadius));
-	vertex.setZ(0);
-	return m_rotation * (vertex + getPosition());
-
-	return vertex + getPosition();
+	/*vertex.setY(cos(v) * (m_smallRadius * cos(u) + m_bigRadius));
+	vertex.setZ(0);*/
+	vertex.setY(0);
+	vertex.setZ(cos(v) * (m_smallRadius * cos(u) + m_bigRadius));
+	//return m_rotation * (vertex + getPosition());
+	return vertex;
+	//return vertex + getPosition();
 }
 
 QVector3D Torus::getPointByUV(double u, double v) const
 {
 	QVector3D vertex;
 	vertex.setX(cos(v) * (m_bigRadius + m_smallRadius * cos(u)));
-	vertex.setY(sin(v) * (m_bigRadius + m_smallRadius * cos(u)));
-	vertex.setZ(m_smallRadius * sin(u));
+	/*vertex.setY(sin(v) * (m_bigRadius + m_smallRadius * cos(u)));
+	vertex.setZ(m_smallRadius * sin(u));*/
+	vertex.setY(m_smallRadius * sin(u));
+	vertex.setZ(sin(v) * (m_bigRadius + m_smallRadius * cos(u)));
 	return m_rotation * (vertex + getPosition());
 
 	return vertex + getPosition();

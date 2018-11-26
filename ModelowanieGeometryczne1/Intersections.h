@@ -10,7 +10,7 @@ namespace Intersections
 	using Surface = const std::shared_ptr<IntersectableObject> &;
 	double gradientAlpha = 0.5f;
 	double gradientEps = 0.0000001f;
-	double newtonEps = 0.001f;
+	double newtonEps = 0.0001f;
 	int maxIter = 10000;
 	int maxIterNewton = 1000;
 
@@ -386,14 +386,18 @@ namespace Intersections
 		return trimmed;
 	}
 
-	static bool checkParametrization(QVector4D &params, Surface s1, Surface s2, NewtonWrapTrim &wrapTrim)
+	static bool checkParametrization(QVector4D &params, Surface s1, Surface s2, NewtonWrapTrim &wrapTrim, const QVector4D startParams)
 	{
 		bool wrappedU1 = false;
 		bool wrappedU2 = false;
 		bool wrappedV1 = false;
 		bool wrappedV2 = false;
-		QVector4D uvRange1 = s1->getRangeUV(params.x(), params.y());
-		QVector4D uvRange2 = s2->getRangeUV(params.z(), params.w());
+		QVector4D uvRange1 = s1->getRangeUV();
+		QVector4D uvRange2 = s2->getRangeUV();
+		//QVector4D uvRange1 = s1->getRangeUV(startParams.x(), startParams.y());
+		//QVector4D uvRange2 = s2->getRangeUV(startParams.z(), startParams.w());
+		/*QVector4D uvRange1 = s1->getRangeUV(params.x(), params.y());
+		QVector4D uvRange2 = s2->getRangeUV(params.z(), params.w());*/
 		QVector2D params1 = QVector2D(params.x(), params.y());
 		QVector2D params2 = QVector2D(params.z(), params.w());
 		//if (s1->isUWrapped())
@@ -517,7 +521,8 @@ namespace Intersections
 			}
 			//QVector2D grad = getGradient(surface, point, cursorPos);
 			dk = point - alpha * getGradient(surface, point, cursorPos);
-			QVector4D uvRange = surface->getRangeUV(dk.x(), dk.y());
+			//QVector4D uvRange = surface->getRangeUV(dk.x(), dk.y());
+			QVector4D uvRange = surface->getRangeUV();
 
 			if (dk.x() < uvRange.x() || dk.x() > uvRange.y() || dk.y() < uvRange.z() || dk.y() > uvRange.w())
 			{
@@ -560,8 +565,10 @@ namespace Intersections
 			}
 			QVector4D dk = uvuv - alpha * getGradients(surface1, surface2, uvuv);
 
-			QVector4D uvRange1 = surface1->getRangeUV(dk.x(), dk.y());
-			QVector4D uvRange2 = surface2->getRangeUV(dk.z(), dk.w());
+			/*QVector4D uvRange1 = surface1->getRangeUV(dk.x(), dk.y());
+			QVector4D uvRange2 = surface2->getRangeUV(dk.z(), dk.w());*/
+			QVector4D uvRange1 = surface1->getRangeUV();
+			QVector4D uvRange2 = surface2->getRangeUV();
 			if (checkParametrization2(dk, uvRange1, uvRange2, surface1->isUWrapped(), surface2->isUWrapped()))
 			{
 				uvuv = dk;
@@ -616,7 +623,18 @@ namespace Intersections
 		jacobi.setRow(1, QVector4D(dv1.x(), dv1.y(), dv1.z(), QVector3D::dotProduct(dv1, versor)));
 		jacobi.setRow(2, QVector4D(-du2.x(), -du2.y(), -du2.z(), 0));
 		jacobi.setRow(3, QVector4D(-dv2.x(), -dv2.y(), -dv2.z(), 0));
+		return jacobi;
 		return jacobi.transposed();
+	}
+
+	static QMatrix4x4 calculateJacobi(const QVector3D &du1, const QVector3D &dv1, const QVector3D &du2, const QVector3D &dv2, const QVector3D &versor)
+	{
+		QMatrix4x4 jacobi;
+		jacobi.setRow(0, QVector4D(du1.x(), du1.y(), du1.z(), QVector3D::dotProduct(du1, versor)));
+		jacobi.setRow(1, QVector4D(dv1.x(), dv1.y(), dv1.z(), QVector3D::dotProduct(dv1, versor)));
+		jacobi.setRow(2, QVector4D(-du2.x(), -du2.y(), -du2.z(), 0));
+		jacobi.setRow(3, QVector4D(-dv2.x(), -dv2.y(), -dv2.z(), 0));
+		return jacobi;
 	}
 
 	static QVector4D calculateJacobiFunction(Surface surface1, Surface surface2,
@@ -628,14 +646,141 @@ namespace Intersections
 		return fun;
 	}
 
+	static QVector4D calculateJacobiFunction(Surface surface1, Surface surface2,
+		const QVector3D &versor, const QVector3D &startPoint, const QVector4D &params, double delta)
+	{
+		QVector3D point1 = surface1->getPointByUV(params.x(), params.y());
+		QVector4D fun = QVector4D(point1 - surface2->getPointByUV(params.z(), params.w()), 0);
+		fun.setW(QVector3D::dotProduct(point1 - startPoint, versor) - delta);
+		return fun;
+	}
+
+	static bool findNextPoint2(Surface surface1, Surface surface2,
+		const QVector4D &params, double delta, QVector4D &result, NewtonWrapTrim &paramsLogic)
+	{
+
+		int i = 0;
+		result = params;
+		double dist = std::numeric_limits<double>::infinity();
+		QVector3D point1 = surface1->getPointByUV(result.x(), result.y());
+		QVector3D point2 = surface2->getPointByUV(result.z(), result.w());
+		QVector3D startPoint = point1;
+		while (dist > newtonEps * newtonEps && i < maxIterNewton && abs(delta) > newtonEps)
+		{
+			QVector3D du1 = surface1->getUDerivative(result.x(), result.y());
+			QVector3D dv1 = surface1->getVDerivative(result.x(), result.y());
+			QVector3D du2 = surface2->getUDerivative(result.z(), result.w());
+			QVector3D dv2 = surface2->getVDerivative(result.z(), result.w());
+
+			QVector3D n1 = QVector3D::crossProduct(du1, dv1);
+			QVector3D n2 = QVector3D::crossProduct(du2, dv2);
+			QVector3D versor = QVector3D::crossProduct(n1, n2).normalized();
+			bool invertible;
+			auto jacobiMat = calculateJacobi(du1, dv1, du2, dv2, versor).inverted(&invertible);
+			if (!invertible)
+				qDebug("not invertible");
+			QVector3D vec = point1 - point2;
+			QVector4D jacobiFun = QVector4D(vec, QVector3D::dotProduct(point1 - startPoint, versor) - delta);
+			QVector4D next = result - jacobiFun * jacobiMat;
+
+			result = next;
+			if (checkParametrization(result, surface1, surface2, paramsLogic, params))
+			{
+				if (paramsLogic.wasTrimmed)
+				{
+					return false;
+				}
+				//if (paramsLogic.wasWrapped)
+				//{
+					//return true;
+					//continue;
+					//point1 = surface1->getPointByUV(result.x(), result.y());
+					//point2 = surface2->getPointByUV(result.z(), result.w());
+					//dist = (point1 - point2).lengthSquared();
+					//break;
+				//}
+			}
+			point1 = surface1->getPointByUV(result.x(), result.y());
+			point2 = surface2->getPointByUV(result.z(), result.w());
+			dist = (point1 - point2).lengthSquared();
+			++i;
+			if (i >= maxIterNewton)
+			{
+				//qDebug("newton max iter");
+				delta *= 0.5f;
+				i =0;
+			}
+		}
+
+		return true;
+		return dist > newtonEps * newtonEps;
+
+	}
+
+	//static bool findNextPoint(Surface surface1, Surface surface2,
+	//	const QVector4D &params, double delta, QVector4D &result, NewtonWrapTrim &paramsLogic)
+	//{
+	//	result = params;
+	//	double dist = std::numeric_limits<double>::infinity();
+	//	QVector3D startPoint = surface1->getPointByUV(params.x(), params.y());
+	//	int i = 0;
+	//	while (dist > newtonEps * newtonEps && i++ < maxIterNewton)
+	//	{
+	//		QVector3D du1 = surface1->getUDerivative(result.x(), result.y());
+	//		QVector3D dv1 = surface1->getVDerivative(result.x(), result.y());
+	//		QVector3D du2 = surface2->getUDerivative(result.z(), result.w());
+	//		QVector3D dv2 = surface2->getVDerivative(result.z(), result.w());
+	//		QVector3D n1 = QVector3D::crossProduct(du1, dv1);
+	//		QVector3D n2 = QVector3D::crossProduct(du2, dv2);
+	//		QVector3D versor2 = QVector3D::crossProduct(n1, n2).normalized();
+	//		QVector4D fun = calculateJacobiFunction(surface1, surface2, versor2, startPoint, result, delta);
+	//		QMatrix4x4 jacobi = calculateJacobi(du1, dv1, du2, dv2, versor2).inverted();
+	//		result = result - jacobi * fun;
+	//		QVector4D prevResult = result;
+	//		if (checkParametrization(result, surface1, surface2, paramsLogic))
+	//		{
+	//			if (paramsLogic.wasTrimmed)
+	//			{
+	//				return false;
+	//			}
+	//			if (paramsLogic.wasWrapped)
+	//			{
+	//				//return true;
+	//				//break;
+	//				//dist = (surface1->getPointByUV(result.x(), result.y()) - surface1->getPointByUV(prevResult.x(), prevResult.y())).lengthSquared();
+	//				double distR =
+	//					dist = (surface1->getPointByUV(result.x(), result.y()) - surface2->getPointByUV(result.z(), result.w())).lengthSquared();
+	//				if (dist < newtonEps* newtonEps)
+	//					//if ((result - prevResult).lengthSquared() < newtonEps * newtonEps)
+	//				{
+	//					break;
+	//				}
+	//				//prevParams = result;
+	//				continue;
+	//			}
+	//		}
+	//		//if ((result - prevParams).length() < newtonEps) //delta = roznica pkt w swiecie z result
+	//		//dist = (surface1->getPointByUV(result.x(), result.y()) - surface1->getPointByUV(prevParams.x(), prevParams.y())).lengthSquared();
+	//		dist = (surface1->getPointByUV(result.x(), result.y()) - surface2->getPointByUV(result.z(), result.w())).lengthSquared();
+	//		if (dist < newtonEps* newtonEps) //delta = roznica pkt w swiecie z result
+	//		{
+	//			break;
+	//		}
+	//		//prevParams = result;
+
+	//	}
+	//	return true;
+	//}
+
 	static bool findNextPoint(Surface surface1, Surface surface2,
 		const QVector4D &params, const QVector3D versor, double delta, QVector4D &result, NewtonWrapTrim &paramsLogic)
 	{
-		QVector4D prevParams = params;
+		//QVector4D prevParams = params;
 		result = params;
-		//bool wasWrappd = paramsLogic.wasWrapped;
-		//NewtonWrapTrim paramsLogic;
-		while (abs(delta) > newtonEps)
+		double newtonStep = 0.01f;
+		double dist = std::numeric_limits<double>::infinity();
+		QVector3D startPoint = surface1->getPointByUV(params.x(), params.y());
+		while (abs(dist) > newtonEps) //delta positiveInf
 		{
 			int i = 0;
 			while (i++ < maxIterNewton)
@@ -644,11 +789,31 @@ namespace Intersections
 				{
 					qDebug("newton max iter");
 				}
-				QVector4D fun = calculateJacobiFunction(surface1, surface2, versor, params, prevParams, delta);
-				QMatrix4x4 jacobi = calculateJacobi(surface1, surface2, versor, prevParams).inverted();
-				result = prevParams - jacobi * fun;
+
+				/*if (i == 15)
+				{
+					qDebug("newton max iter");
+				}*/
+
+				QVector3D du1 = surface1->getUDerivative(result.x(), result.y());
+				QVector3D dv1 = surface1->getVDerivative(result.x(), result.y());
+				QVector3D du2 = surface2->getUDerivative(result.z(), result.w());
+				QVector3D dv2 = surface2->getVDerivative(result.z(), result.w());
+				QVector3D n1 = QVector3D::crossProduct(du1, dv1);
+				QVector3D n2 = QVector3D::crossProduct(du2, dv2);
+				QVector3D versor2 = QVector3D::crossProduct(n1, n2).normalized();
+
+
+				//QVector4D fun = calculateJacobiFunction(surface1, surface2, versor2, params, prevParams, newtonStep);
+				//QMatrix4x4 jacobi = calculateJacobi(surface1, surface2, versor2, prevParams).inverted();
+				QVector4D fun = calculateJacobiFunction(surface1, surface2, versor2, startPoint, result, newtonStep);
+
+
+				QMatrix4x4 jacobi = calculateJacobi(du1, dv1, du2, dv2, versor2).inverted();
+				//result = result - jacobi * fun;
+				result = result - fun * jacobi;
 				QVector4D prevResult = result;
-				if (checkParametrization(result, surface1, surface2, paramsLogic))
+				if (checkParametrization(result, surface1, surface2, paramsLogic, params))
 				{
 					if (paramsLogic.wasTrimmed)
 					{
@@ -657,42 +822,32 @@ namespace Intersections
 					if (paramsLogic.wasWrapped)
 					{
 						break;
-						//if (paramsLogic.wrappedSecondTime)
-							//return false;
-						if ((result - prevResult).length() < newtonEps)
+						//dist = (surface1->getPointByUV(result.x(), result.y()) - surface1->getPointByUV(prevResult.x(), prevResult.y())).lengthSquared();
+						//auto v1 = surface1->getPointByUV(result.x(), result.y()) - surface1->getPointByUV(prevResult.x(), prevResult.y());
+						//auto v2 = surface2->getPointByUV(result.z(), result.w()) - surface2->getPointByUV(prevResult.z(), prevResult.w());
+						//dist = (v1 - v2).lengthSquared();
+						dist = (surface1->getPointByUV(result.x(), result.y()) - surface2->getPointByUV(result.z(), result.w())).lengthSquared();
+						if (dist < newtonEps* newtonEps)
+							//if ((result - prevResult).lengthSquared() < newtonEps * newtonEps)
 						{
 							break;
 						}
-						prevParams = result;
+						//prevParams = result;
 						continue;
 					}
 				}
-				//if (surface1->isUWrapped() || surface2->isUWrapped())
-				//{
-				//	prevParams = result;
-				//	if (checkParametrization3(result, uvRange1, uvRange2, surface1->isUWrapped(), surface2->isUWrapped(), wasWrapped1, wasWrapped2))
-				//	{
-				//		//return false;
-				//		//break;
-				//		if ((result - prevParams).length() < newtonEps)
-				//		{
-				//			break;
-				//		}
-				//		continue;
-				//	}
-				//}
-				//else
-				//{
-				//	if (checkParametrization2(result, uvRange1, uvRange2, surface1->isUWrapped(), surface2->isUWrapped()))
-				//	{
-				//		return false;
-				//	}
-				//}
-				if ((result - prevParams).length() < newtonEps)
+				//if ((result - prevParams).length() < newtonEps) //delta = roznica pkt w swiecie z result
+				//dist = (surface1->getPointByUV(result.x(), result.y()) - surface1->getPointByUV(prevParams.x(), prevParams.y())).lengthSquared();
+				//auto v1 = surface1->getPointByUV(result.x(), result.y()) - surface1->getPointByUV(prevResult.x(), prevResult.y());
+				//auto v2 = surface2->getPointByUV(result.z(), result.w()) - surface2->getPointByUV(prevResult.z(), prevResult.w());
+				//dist = (v1 - v2).lengthSquared();
+				dist = (surface1->getPointByUV(result.x(), result.y()) - surface2->getPointByUV(result.z(), result.w())).lengthSquared();
+				if (dist < newtonEps* newtonEps) //delta = roznica pkt w swiecie z result
 				{
 					break;
 				}
-				prevParams = result;
+				//prevParams = result;
+
 			}
 			if (i > maxIterNewton)
 			{
@@ -702,56 +857,16 @@ namespace Intersections
 			break;
 		}
 
-		return delta > newtonEps;
-		//QVector4D prevParams = params;
-		//result = params;
-		//bool wasWrapepd1 = false, wasWrapepd2 = false;
-		//while (abs(delta) > newtonEps)
-		//{
-		//	int i = 0;
-		//	while (i++ < maxIterNewton)
-		//	{
-		//		if (i >= maxIterNewton)
-		//		{
-		//			qDebug("newton max iter");
-		//		}
-		//		//QVector3D versor2 = dir * getTangentVector(surface1, surface2, result);
-		//		QVector4D fun = calculateJacobiFunction(surface1, surface2, versor, params, prevParams, delta);
-		//		QMatrix4x4 jacobi = calculateJacobi(surface1, surface2, versor, prevParams).inverted();
-		//		result = prevParams - jacobi * fun;
-
-		//		QVector4D uvRange1 = surface1->getRangeUV(result.x(), result.y());
-		//		QVector4D uvRange2 = surface2->getRangeUV(result.z(), result.w());
-
-		//		if (checkParametrization2(result, uvRange1, uvRange2, surface1->isWrapped(), surface2->isWrapped()))// || (result - prevParams).length() < newtonEps
-		//		//if (checkParametrization3(result, uvRange1, uvRange2, surface1->isWrapped(), surface2->isWrapped(), wasWrapepd1, wasWrapepd2))
-		//		{
-
-		//			return false;
-		//		}
-		//		if ((result - prevParams).length() < newtonEps)
-		//		{
-		//			break;
-		//		}
-		//		prevParams = result;
-		//	}
-		//	if (i > maxIterNewton)
-		//	{
-		//		delta *= 0.5f;
-		//		continue;
-		//	}
-		//	break;
-		//}
-
 		//return delta > newtonEps;
+		return newtonStep > newtonEps;
 	}
 
 	static bool checkWrap(QVector3D startingPoint, QVector3D currentPoint, int iter)
 	{
-		int borderIter = 5;
+		int borderIter = 10;
 		if (iter >= borderIter)
 		{
-			float eps = 0.005f;
+			float eps = 0.01f;
 			float len = (startingPoint - currentPoint).length();
 			if (len < eps)
 			{
@@ -761,12 +876,16 @@ namespace Intersections
 		return false;
 	}
 
-	static std::vector<QVector4D> getTrimmingCurve(Surface surface1, Surface surface2, const QVector3D &cursorPos)
+	//static std::vector<QVector4D> getTrimmingCurve(Surface surface1, Surface surface2, const QVector3D &cursorPos)
+	static std::vector<std::vector<QVector4D>> getTrimmingCurve(Surface surface1, Surface surface2, const QVector3D &cursorPos)
 	{
-		double delta = 0.01f;
+		double delta = 0.004f;
+		//double delta = std::numeric_limits<double>::infinity();
 		std::vector<QVector4D> vertices;
 		std::vector<std::vector<QVector4D>> curves;
 		QVector4D intersectionPoint = findIntersectionPoint(surface1, surface2, cursorPos);
+		QVector3D sceneIntersectionPoint = surface1->getPointByUV(intersectionPoint.x(), intersectionPoint.y());
+		//QVector3D sceneIntersectionPoint2 = surface2->getPointByUV(intersectionPoint.z(), intersectionPoint.w());
 		QVector4D lastPoint = intersectionPoint;
 		vertices.push_back(intersectionPoint);
 		QVector4D nextPoint;
@@ -777,14 +896,19 @@ namespace Intersections
 		while (i++ < maxIterNewton && dist > newtonEps)
 		{
 			QVector3D versor = dir * getTangentVector(surface1, surface2, lastPoint);
-			if (!findNextPoint(surface1, surface2, lastPoint, versor, delta, nextPoint, paramsLogic))
+			//if (!findNextPoint(surface1, surface2, lastPoint, versor, delta, nextPoint, paramsLogic))
+			if (!findNextPoint2(surface1, surface2, lastPoint, delta, nextPoint, paramsLogic))
 			{
+				i = 0;
+				delta = -delta;
 				if (dir == -1)
 				{
 					curves.emplace_back(vertices);
+					vertices.clear();
 					break;
 				}
 				dir = -1;
+				//vertices.push_back(nextPoint);
 				paramsLogic.wasTrimmed = false;
 				paramsLogic.wasWrapped = false;
 				curves.emplace_back(vertices);
@@ -793,38 +917,33 @@ namespace Intersections
 				continue;
 			}
 			vertices.push_back(nextPoint);
-			if ((surface1->isUWrapped() || surface1->isVWrapped()) && checkWrap(
-				surface1->getPointByUV(intersectionPoint.x(), intersectionPoint.y()),
-				surface1->getPointByUV(nextPoint.x(), nextPoint.y()), i))
+			paramsLogic.wasWrapped = false;
+			if (checkWrap(sceneIntersectionPoint, surface1->getPointByUV(nextPoint.x(), nextPoint.y()), i)) //(surface1->isUWrapped() || surface1->isVWrapped()) && 
+			{
+				vertices.push_back(intersectionPoint);
 				break;
-			if ((surface2->isUWrapped() || surface2->isVWrapped()) && checkWrap(
-				surface2->getPointByUV(intersectionPoint.z(), intersectionPoint.w()),
-				surface2->getPointByUV(nextPoint.z(), nextPoint.w()), i))
+			}
+			if (checkWrap(sceneIntersectionPoint, surface2->getPointByUV(nextPoint.z(), nextPoint.w()), i)) //(surface2->isUWrapped() || surface2->isVWrapped()) && 
+			{
+				vertices.push_back(intersectionPoint);
 				break;
+			}
 			/*if ((surface1->isUWrapped() || surface1->isVWrapped() || surface2->isUWrapped() || surface2->isVWrapped())
 				&& (checkWrap(surface1->getPointByUV(intersectionPoint.x(), intersectionPoint.y()), surface1->getPointByUV(nextPoint.x(), nextPoint.y()), i)
 				|| checkWrap(surface2->getPointByUV(intersectionPoint.z(), intersectionPoint.w()), surface2->getPointByUV(nextPoint.z(), nextPoint.w()), i)))
 				break;*/
-			dist = (lastPoint - nextPoint).length();
+			/*dist = (lastPoint - nextPoint).length();
 			if (dist < newtonEps)
 			{
 				qDebug("distance");
-			}
-			/*if ((nextPoint - intersectionPoint).length() < newtonEps)
-			{
-				qDebug("distance");
-				break;
 			}*/
 			lastPoint = nextPoint;
 		}
-		//
-		//return vertices;
-		//
-		//
+
+		if (!vertices.empty())
+			curves.emplace_back(vertices);
 		float eps = 0.03f;
-		//if (curves.size() < 1)
-		//	return std::vector<QVector4D>();
-		if (curves.size() == 2)
+		/*if (curves.size() == 2)
 		{
 			std::reverse(curves[0].begin(), curves[0].end());
 			vertices = curves[0];
@@ -833,8 +952,7 @@ namespace Intersections
 			{
 				vertices.emplace_back(vertices[0]);
 			}
-		}
-		//
-		return vertices;
+		}*/
+		return curves;
 	}
 }

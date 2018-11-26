@@ -73,8 +73,7 @@ void TrimmingCurve::generateIndices()
 {
 	m_indices.clear();
 	m_indices.reserve(m_vertices.size() + 1);
-	int verticesSize = m_vertices.size();
-	for (int i = 0; i < verticesSize; ++i)
+	for (int i = 0; i < m_vertices.size(); ++i)
 	{
 		m_indices.push_back(i);
 	}

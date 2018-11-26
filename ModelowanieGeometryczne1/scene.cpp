@@ -160,6 +160,14 @@ void Scene::checkIntersections(const QList<int>& ids)
 		return;
 	std::shared_ptr<IntersectableObject> surface1 = std::dynamic_pointer_cast<IntersectableObject>(getUiConntector(ids.at(0))->getObject());
 	std::shared_ptr<IntersectableObject> surface2 = std::dynamic_pointer_cast<IntersectableObject>(getUiConntector(ids.at(1))->getObject());
+
+	QMatrix4x4 m = QMatrix4x4(1, 2, 3, 4,
+		10, 20, 30, 40,
+		100, 200, 300, 400,
+		500, 600, 700, 800);
+	QVector4D v(0, 1, 2, 3);
+	QVector4D post = v * m;
+	QVector4D pre = m * v;
 	//int id = createDrawableObject("Point3D");
 	//getUiConntector(id)->getObject()->setPosition(testpoint);
 	//getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
@@ -190,8 +198,45 @@ void Scene::checkIntersections(const QList<int>& ids)
 	//getUiConntector(id)->getObject()->setColor(float3(0, 0, 255));
 	//getUiConntector(id)->getObject()->setName("Intersection2");
 
-	std::vector<QVector4D> params = Intersections::getTrimmingCurve(surface1, surface2, m_cursor->getPosition());
+	std::vector<std::vector<QVector4D>> curves = Intersections::getTrimmingCurve(surface1, surface2, m_cursor->getPosition());
 	std::vector<QVector4D> vertices;
+	for (const auto c : curves)
+	{
+		vertices.reserve(c.size());
+		for (int i = 0; i < c.size(); ++i)
+		{
+			vertices.emplace_back(surface1->getPointByUV(c.at(i).x(), c.at(i).y()), 1.0f);
+		}
+		int id = createDrawableObject("TrimmingCurve");
+		std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
+		curve->setVertices(vertices);
+		auto params = c;
+		curve->setParametrization(params);
+		if (curve->getVertices().size() >= 2)
+		{
+			emit intersectionFound(curve->getParametrization(), surface1->getRangeUV(), surface2->getRangeUV(),
+				getUiConntector(ids.at(0))->getObject()->getName(),
+				getUiConntector(ids.at(1))->getObject()->getName());
+		}
+	}
+	/*vertices.reserve(params.size());
+	for (int i = 0; i < params.size(); ++i)
+	{
+		vertices.emplace_back(surface1->getPointByUV(params.at(i).x(), params.at(i).y()), 1.0f);
+	}
+	int id = createDrawableObject("TrimmingCurve");
+	std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
+	curve->setVertices(vertices);
+	curve->setParametrization(params);
+	if (curve->getVertices().size() >= 2)
+	{
+		emit intersectionFound(curve->getParametrization(), surface1->getRangeUV(), surface2->getRangeUV(),
+			getUiConntector(ids.at(0))->getObject()->getName(),
+			getUiConntector(ids.at(1))->getObject()->getName());
+	}*/
+
+	//std::vector<QVector4D> params = Intersections::getTrimmingCurve(surface1, surface2, m_cursor->getPosition());
+	/*std::vector<QVector4D> vertices;
 	vertices.reserve(params.size());
 	for (int i = 0; i < params.size(); ++i)
 	{
@@ -204,9 +249,9 @@ void Scene::checkIntersections(const QList<int>& ids)
 	if (curve->getVertices().size() >= 2)
 	{
 		emit intersectionFound(curve->getParametrization(), surface1->getRangeUV(), surface2->getRangeUV(),
-		                       getUiConntector(ids.at(0))->getObject()->getName(),
-		                       getUiConntector(ids.at(1))->getObject()->getName());
-	}
+							   getUiConntector(ids.at(0))->getObject()->getName(),
+							   getUiConntector(ids.at(1))->getObject()->getName());
+	}*/
 }
 
 void Scene::setActiveObject(int id)
@@ -368,10 +413,10 @@ void Scene::saveScene(const QString& path)
 	fileManager::saveScene(m_uiConnectors, path);
 	/*QFile saveFile(path);
 
-    if (!saveFile.open(QIODevice::WriteOnly)) {
-        qWarning("Couldn't open save file.");
+	if (!saveFile.open(QIODevice::WriteOnly)) {
+		qWarning("Couldn't open save file.");
 		return;
-    }
+	}
 	std::shared_ptr<BezierSurfaceC0> surf;
 	for (const auto &obj : m_uiConnectors)
 	{
@@ -384,8 +429,8 @@ void Scene::saveScene(const QString& path)
 	QJsonObject scene;
 	scene["points"] = points;
 	scene["surfacesC0"] = jSurfs;
-    QJsonDocument saveDoc(scene);
-    saveFile.write(saveDoc.toJson());*/
+	QJsonDocument saveDoc(scene);
+	saveFile.write(saveDoc.toJson());*/
 }
 
 void Scene::performCursorAction(bool multiple)

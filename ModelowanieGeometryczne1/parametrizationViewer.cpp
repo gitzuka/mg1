@@ -2,66 +2,87 @@
 #include <QVector4D>
 #include <QImage>
 #include <qpainter.h>
+#include <qqueue.h>
 
-ParametrizationViewer::ParametrizationViewer(QWidget* parent) : QWidget(parent)
+ParametrizationViewer::ParametrizationViewer(QWidget *parent, int pixelFactor, QColor curve, QColor empty, QColor filled) : m_scene(nullptr), m_scene2(nullptr), m_pixelFactor(pixelFactor), m_curve(curve), m_empty(empty),
+	m_filled(filled)
 {
-	// ui->setupUi(this);
 }
+
+ParametrizationViewer::~ParametrizationViewer()
+{
+	delete m_scene;
+	delete m_scene2;
+}
+
 
 QPair<bool, bool> ParametrizationViewer::fillPixMap(const std::vector<QVector4D>& parametrization, const QVector4D &uvRange1, const QVector4D &uvRange2)
 {
-	int pixelFactor = 125;
-	int width1 = pixelFactor * (uvRange1.y() - uvRange1.x());
-	int height1 = pixelFactor * (uvRange1.w() - uvRange1.z());
-	int width2 = pixelFactor * (uvRange2.y() - uvRange2.x());
-	int height2 = pixelFactor * (uvRange2.y() - uvRange2.x());
-
+	int width1 = m_pixelFactor * (uvRange1.y() - uvRange1.x());
+	int height1 = m_pixelFactor * (uvRange1.w() - uvRange1.z());
+	int width2 = m_pixelFactor * (uvRange2.y() - uvRange2.x());
+	int height2 = m_pixelFactor * (uvRange2.y() - uvRange2.x());
+	QPair<bool, bool> trimmable;
 	QImage map1 = QImage(width1, height1, QImage::Format_RGB888);
 	QImage map2 = QImage(width2, height2, QImage::Format_RGB888);
-	QColor curveColor = QColor(Qt::GlobalColor::black);
-	map1.fill(Qt::white);
-	map2.fill(Qt::white);
+	map1.fill(m_empty);
+	map2.fill(m_empty);
 	std::vector<QPoint> pixels;
-	QPolygon pol1, pol2;
+	std::vector<QPoint> pixels2;
 	for (auto it = parametrization.begin(); it != parametrization.end(); ++it)
 	{
-		pol1.append(convertToPixels(it->x(), it->y(), pixelFactor, width1, height1));
-		pol2.append(convertToPixels(it->z(), it->w(), pixelFactor, width2, height2));
-		pixels.emplace_back(convertToPixels(it->x(), it->y(), pixelFactor, width1, height1));
-		//pixels.emplace_back(convertToPixels(it->z(), it->w(), pixelFactor, width2, height2));
-		//map1.setPixelColor(convertToPixels(it->x(), it->y(), pixelFactor, width1, height1), curveColor);
-		//map2.setPixelColor(convertToPixels(it->z(), it->w(), pixelFactor, width2, height2), curveColor);
+		pixels.emplace_back(convertToPixels(it->x(), it->y(), m_pixelFactor, width1, height1));
+		pixels2.emplace_back(convertToPixels(it->z(), it->w(), m_pixelFactor, width2, height2));
 	}
 
 	QPixmap pixmap1 = QPixmap::fromImage(map1);
 	QPixmap pixmap2 = QPixmap::fromImage(map2);
 
-	QPainter p1 (&pixmap1);
-	p1.setPen(Qt::black);
+	QPainter p1(&pixmap1);
+	p1.setPen(m_curve);
 	for (auto it = pixels.begin(); it != pixels.end() - 1; ++it)
 	{
 		p1.drawLine(*it, *(it + 1));
 	}
 
+	QPainter p2(&pixmap2);
+	p2.setPen(m_curve);
+	for (auto it = pixels2.begin(); it != pixels2.end() - 1; ++it)
+	{
+		p2.drawLine(*it, *(it + 1));
+	}
 
+	QPoint startPoint1 = QPoint(0, 0);
+	QImage map11 = pixmap1.toImage();
+	while (map11.pixelColor(startPoint1) == m_curve)
+	{
+		startPoint1.setX(startPoint1.x() + 1);
+		startPoint1.setY(startPoint1.y() + 1);
+	}
+	floodFill(map11, startPoint1, m_empty, m_filled);
+	trimmable.first = isTrimmable(map11);
+
+	QPixmap pixmap11 = QPixmap::fromImage(map11);
 	m_scene = new QGraphicsScene(this);
-	m_scene->addPixmap(pixmap1);
-    m_scene->setSceneRect(pixmap1.rect());
+	m_scene->addPixmap(pixmap11);
+	m_scene->setSceneRect(pixmap11.rect());
 
+	startPoint1 = QPoint(0, 0);
+	QImage map22 = pixmap2.toImage();
+	while (map22.pixelColor(startPoint1) == m_curve)
+	{
+		startPoint1.setX(startPoint1.x() + 1);
+		startPoint1.setY(startPoint1.y() + 1);
+	}
+	floodFill(map22, startPoint1, m_empty, m_filled);
+	trimmable.second = isTrimmable(map22);
+
+	QPixmap pixmap22 = QPixmap::fromImage(map22);
 	m_scene2 = new QGraphicsScene(this);
-	m_scene2->addPixmap(pixmap2);
-    m_scene2->setSceneRect(pixmap2.rect());
+	m_scene2->addPixmap(pixmap22);
+	m_scene2->setSceneRect(pixmap22.rect());
 
-	//QPainterPath path1;
-	//path1.addPolygon(pol1);
-	//m_scene->addPath(path1, QPen(Qt::black));
-	//
-	//QPainterPath path2;
-	//path2.addPolygon(pol2);
-	//m_scene2->addPath(path2, QPen(Qt::black));
-	
-
-	return QPair<bool, bool>();
+	return trimmable;
 }
 
 QGraphicsScene* ParametrizationViewer::getScene()
@@ -86,7 +107,101 @@ QPoint ParametrizationViewer::convertToPixels(float x, float y, int factor, int 
 	return point;
 }
 
-void ParametrizationViewer::floodFill(int x, int y, int oldcolor, int newcolor) const
+void ParametrizationViewer::floodFill(QImage &img, const QPoint &point, QColor oldColor, QColor newColor) const
 {
+	QQueue<QPoint> q;
+	q.enqueue(point);
+	while (q.count() > 0)
+	{
+		QPoint n = q.dequeue();
+		if (!colorMatch(img.pixelColor(n.x(), n.y()), oldColor))
+			continue;
+		QPoint w = n, e = QPoint(n.x() + 1, n.y());
+		while ((w.x() >= 0) && colorMatch(img.pixelColor(w.x(), w.y()), oldColor))
+		{
+			img.setPixelColor(w.x(), w.y(), newColor);
+			if ((w.y() > 0) && colorMatch(img.pixelColor(w.x(), w.y() - 1), oldColor))
+				q.enqueue(QPoint(w.x(), w.y() - 1));
+			if ((w.y() < img.height() - 1) && colorMatch(img.pixelColor(w.x(), w.y() + 1), oldColor))
+				q.enqueue(QPoint(w.x(), w.y() + 1));
+			w.setX(w.x() - 1);
+		}
+		while ((e.x() <= img.width() - 1) && colorMatch(img.pixelColor(e.x(), e.y()), oldColor))
+		{
+			img.setPixelColor(e.x(), e.y(), newColor);
+			if ((e.y() > 0) && colorMatch(img.pixelColor(e.x(), e.y() - 1), oldColor))
+				q.enqueue(QPoint(e.x(), e.y() - 1));
+			if ((e.y() < img.height() - 1) && colorMatch(img.pixelColor(e.x(), e.y() + 1), oldColor))
+				q.enqueue(QPoint(e.x(), e.y() + 1));
+			e.setX(e.x() + 1);
+		}
+	}
 
+
+	/*QQueue<QPoint> q;
+	q.push_back(point);
+	int i = 0;
+	while (!q.empty())
+	{
+		++i;
+		QPoint p = q.takeFirst();
+		img.setPixelColor(point, newColor);
+		QPoint p1 = QPoint(p.x() + 1, p.y());
+		if (isValid(img, p1, oldColor))
+			q.push_back(p1);
+		QPoint p2 = QPoint(p.x() - 1, p.y());
+		if (isValid(img, p2, oldColor))
+			q.push_back(p2);
+		QPoint p3 = QPoint(p.x(), p.y() + 1);
+		if (isValid(img, p3, oldColor))
+			q.push_back(p3);
+		QPoint p4 = QPoint(p.x(), p.y() - 1);
+		if (isValid(img, p4, oldColor))
+			q.push_back(p4);
+	}*/
+
+
+	/*if (img.pixelColor(point) == oldColor)
+	{
+		img.setPixelColor(point, newColor);
+		floodFill(img, x + 1, y, oldColor, newColor);
+		floodFill(img, x, y + 1, oldColor, newColor);
+		floodFill(img, x - 1, y, oldColor, newColor);
+		floodFill(img, x, y - 1, oldColor, newColor);
+	}*/
+}
+
+bool ParametrizationViewer::isValid(QImage &img, const QPoint &point, QColor oldColor) const
+{
+	if (point.x() >= img.width() || point.x() < 0 || point.y() >= img.height() || point.y() < 0)
+		return false;
+	return img.pixelColor(point) == oldColor;
+
+	/*return !(point.x() >= img.width() || point.x() < 0 || point.y() >= img.height() || point.y() < 0) || img.
+		pixelColor(point) != oldColor;*/
+}
+
+bool ParametrizationViewer::colorMatch(QColor c1, QColor c2) const
+{
+	return (c1 == c2);
+}
+
+bool ParametrizationViewer::isTrimmable(const QImage& img) const
+{
+	bool empty = false, filled = false, curve = false;
+	for (int i = 0; i < img.width(); ++i)
+	{
+		for (int j =0; j < img.height(); ++j)
+		{
+			if (img.pixelColor(i,j) == m_empty)
+				empty = true;
+			if (img.pixelColor(i,j) == m_curve)
+				curve = true;
+			if (img.pixelColor(i,j) == m_filled)
+				filled = true;
+			if (filled && curve && empty)
+				return true;
+		}
+	}
+	return false;
 }
