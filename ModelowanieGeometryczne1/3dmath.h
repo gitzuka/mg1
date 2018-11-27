@@ -51,4 +51,11 @@ namespace math3d
 			vec1.y(), vec2.y(),
 			vec1.z(), vec2.z());
 	}
+
+	inline float calculateDistance3D(const QVector3D& vec1, const QVector3D& vec2)
+	{
+		return calculateDistance3D(vec1.x(), vec2.x(),
+			vec1.y(), vec2.y(),
+			vec1.z(), vec2.z());
+	}
 }

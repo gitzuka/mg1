@@ -8,6 +8,8 @@ CurveCubic::CurveCubic(float width, float height, const QVector4D &p1, const QVe
 void CurveCubic::generateCurve(std::vector<QVector4D>& vec)
 {
 	int length = floor(getLength());
+	if (length == 0)
+		length = 1;
 	float step = 1.0 / length;
 	for (int i = 0; i <= length; ++i)
 	{

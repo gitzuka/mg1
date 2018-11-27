@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Scene_t {
-    QByteArrayData data[70];
-    char stringdata0[1048];
+    QByteArrayData data[72];
+    char stringdata0[1092];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -101,7 +101,9 @@ QT_MOC_LITERAL(65, 954, 17), // "newtonStepChanged"
 QT_MOC_LITERAL(66, 972, 3), // "val"
 QT_MOC_LITERAL(67, 976, 27), // "selfIntersectionDistChanged"
 QT_MOC_LITERAL(68, 1004, 21), // "newtonWrapDistChanged"
-QT_MOC_LITERAL(69, 1026, 21) // "newtonWrapIterChanged"
+QT_MOC_LITERAL(69, 1026, 19), // "gradientStepChanged"
+QT_MOC_LITERAL(70, 1046, 23), // "closestPointStepChanged"
+QT_MOC_LITERAL(71, 1070, 21) // "newtonWrapIterChanged"
 
     },
     "Scene\0addedTorus\0\0name\0id\0const UiTorus*\0"
@@ -131,7 +133,8 @@ QT_MOC_LITERAL(69, 1026, 21) // "newtonWrapIterChanged"
     "selectCursorObjects\0QList<int>&\0"
     "loadScene\0fileContent\0saveScene\0path\0"
     "newtonStepChanged\0val\0selfIntersectionDistChanged\0"
-    "newtonWrapDistChanged\0newtonWrapIterChanged"
+    "newtonWrapDistChanged\0gradientStepChanged\0"
+    "closestPointStepChanged\0newtonWrapIterChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -141,7 +144,7 @@ static const uint qt_meta_data_Scene[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      30,   14, // methods
+      32,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -149,38 +152,40 @@ static const uint qt_meta_data_Scene[] = {
       16,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    3,  164,    2, 0x06 /* Public */,
-       7,    3,  171,    2, 0x06 /* Public */,
-      10,    3,  178,    2, 0x06 /* Public */,
-      13,    3,  185,    2, 0x06 /* Public */,
-      15,    3,  192,    2, 0x06 /* Public */,
-      18,    3,  199,    2, 0x06 /* Public */,
-      21,    3,  206,    2, 0x06 /* Public */,
-      24,    3,  213,    2, 0x06 /* Public */,
-      27,    0,  220,    2, 0x06 /* Public */,
-      28,    1,  221,    2, 0x06 /* Public */,
-      29,    1,  224,    2, 0x06 /* Public */,
-      30,    1,  227,    2, 0x06 /* Public */,
-      31,    1,  230,    2, 0x06 /* Public */,
-      32,    1,  233,    2, 0x06 /* Public */,
-      33,    3,  236,    2, 0x06 /* Public */,
-      34,    7,  243,    2, 0x06 /* Public */,
+       1,    3,  174,    2, 0x06 /* Public */,
+       7,    3,  181,    2, 0x06 /* Public */,
+      10,    3,  188,    2, 0x06 /* Public */,
+      13,    3,  195,    2, 0x06 /* Public */,
+      15,    3,  202,    2, 0x06 /* Public */,
+      18,    3,  209,    2, 0x06 /* Public */,
+      21,    3,  216,    2, 0x06 /* Public */,
+      24,    3,  223,    2, 0x06 /* Public */,
+      27,    0,  230,    2, 0x06 /* Public */,
+      28,    1,  231,    2, 0x06 /* Public */,
+      29,    1,  234,    2, 0x06 /* Public */,
+      30,    1,  237,    2, 0x06 /* Public */,
+      31,    1,  240,    2, 0x06 /* Public */,
+      32,    1,  243,    2, 0x06 /* Public */,
+      33,    3,  246,    2, 0x06 /* Public */,
+      34,    7,  253,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      45,    2,  258,    2, 0x0a /* Public */,
-      50,    1,  263,    2, 0x0a /* Public */,
-      52,    1,  266,    2, 0x08 /* Private */,
-      52,    0,  269,    2, 0x28 /* Private | MethodCloned */,
-      54,    0,  270,    2, 0x08 /* Private */,
-      55,    2,  271,    2, 0x08 /* Private */,
-      58,    1,  276,    2, 0x08 /* Private */,
-      59,    1,  279,    2, 0x08 /* Private */,
-      61,    1,  282,    2, 0x08 /* Private */,
-      63,    1,  285,    2, 0x08 /* Private */,
-      65,    1,  288,    2, 0x08 /* Private */,
-      67,    1,  291,    2, 0x08 /* Private */,
-      68,    1,  294,    2, 0x08 /* Private */,
-      69,    1,  297,    2, 0x08 /* Private */,
+      45,    2,  268,    2, 0x0a /* Public */,
+      50,    1,  273,    2, 0x0a /* Public */,
+      52,    1,  276,    2, 0x08 /* Private */,
+      52,    0,  279,    2, 0x28 /* Private | MethodCloned */,
+      54,    0,  280,    2, 0x08 /* Private */,
+      55,    2,  281,    2, 0x08 /* Private */,
+      58,    1,  286,    2, 0x08 /* Private */,
+      59,    1,  289,    2, 0x08 /* Private */,
+      61,    1,  292,    2, 0x08 /* Private */,
+      63,    1,  295,    2, 0x08 /* Private */,
+      65,    1,  298,    2, 0x08 /* Private */,
+      67,    1,  301,    2, 0x08 /* Private */,
+      68,    1,  304,    2, 0x08 /* Private */,
+      69,    1,  307,    2, 0x08 /* Private */,
+      70,    1,  310,    2, 0x08 /* Private */,
+      71,    1,  313,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 5,    3,    4,    6,
@@ -211,6 +216,8 @@ static const uint qt_meta_data_Scene[] = {
     QMetaType::Void, 0x80000000 | 60,   51,
     QMetaType::Void, QMetaType::QString,   62,
     QMetaType::Void, QMetaType::QString,   64,
+    QMetaType::Void, QMetaType::Double,   66,
+    QMetaType::Void, QMetaType::Double,   66,
     QMetaType::Void, QMetaType::Double,   66,
     QMetaType::Void, QMetaType::Double,   66,
     QMetaType::Void, QMetaType::Double,   66,
@@ -254,7 +261,9 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         case 26: _t->newtonStepChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
         case 27: _t->selfIntersectionDistChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
         case 28: _t->newtonWrapDistChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 29: _t->newtonWrapIterChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 29: _t->gradientStepChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 30: _t->closestPointStepChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 31: _t->newtonWrapIterChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -411,13 +420,13 @@ int Scene::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 30)
+        if (_id < 32)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 30;
+        _id -= 32;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 30)
+        if (_id < 32)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 30;
+        _id -= 32;
     }
     return _id;
 }

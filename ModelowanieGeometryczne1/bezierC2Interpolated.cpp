@@ -70,12 +70,12 @@ void BezierC2Interpolated::createVertices()
 	std::vector<QVector3D> cTemp = computeMatrix(upperDiag, middleDiag, lowerDiag, rhsVec);
 	std::vector<QVector3D> c;
 	c.reserve(cTemp.size() + 2);
-	c.push_back(QVector3D(0, 0, 0));
+	c.emplace_back(0, 0, 0);
 	for (int i = 0; i < cTemp.size(); ++i)
 	{
 		c.push_back(cTemp.at(i));
 	}
-	c.push_back(QVector3D(0, 0, 0));
+	c.emplace_back(0, 0, 0);
 
 	std::vector<QVector3D> d = computeDCoeff(c, distances);
 	std::vector<QVector3D> b = computeBCoeff(c, d, distances);
@@ -93,7 +93,7 @@ void BezierC2Interpolated::createVertices()
 	{
 		for (int i = 0; i < m_controlPoints.count(); ++i)
 		{
-			m_vertices.push_back(m_controlPoints.at(i)->getPosition());
+			m_vertices.emplace_back(m_controlPoints.at(i)->getPosition());
 		}
 	}
 }
@@ -196,7 +196,10 @@ void BezierC2Interpolated::initializeMatrixData(std::vector<float>& upperDiag, s
 	for (int i = 0; i < pointsCount - 2; ++i)
 	{
 		middleDiag.push_back(2);
-		rhsVec.push_back(3 * ((m_controlPoints[i + 2]->getPosition() - m_controlPoints[i + 1]->getPosition()) / distances.at(i + 1) - (m_controlPoints[i + 1]->getPosition() - m_controlPoints[i]->getPosition()) / distances.at(i)) / (distances.at(i) + distances.at(i + 1)));
+		rhsVec.push_back(
+			3 * ((m_controlPoints[i + 2]->getPosition() - m_controlPoints[i + 1]->getPosition()) / distances.at(i + 1) -
+				(m_controlPoints[i + 1]->getPosition() - m_controlPoints[i]->getPosition()) / distances.at(i)) / (
+				distances.at(i) + distances.at(i + 1)));
 	}
 }
 

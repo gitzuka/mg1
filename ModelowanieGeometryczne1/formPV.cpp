@@ -1,6 +1,7 @@
 #include "formPV.h"
 #include "drawableObject.h"
 #include "bezierSurface.h"
+#include "torus.h"
 
 FormPV::FormPV(QWidget* parent)
 {
@@ -24,7 +25,9 @@ void FormPV::initialize(std::shared_ptr<DrawableObject> surface1, std::shared_pt
 	ui.label_V2->setText(QString::number(uvRange2.z()) + ", " + QString::number(uvRange2.w()));
 	QPair<bool, bool> trim = ui.parametrizationViewer->fillPixMap(parametrization, uvRange1, uvRange2, m_map1, m_map2, s1Wrap, s2Wrap);
 	ui.pushButton_Trim1->setEnabled(trim.first);
+	ui.pushButton_TrimExt1->setEnabled(trim.first);
 	ui.pushButton_Trim2->setEnabled(trim.second);
+	ui.pushButton_TrimExt2->setEnabled(trim.second);
 	ui.graphicsView->setScene(ui.parametrizationViewer->getScene());
 	ui.graphicsView_2->setScene(ui.parametrizationViewer->getScene2());
 	m_surface1 = surface1;
@@ -37,6 +40,10 @@ void FormPV::buttonTrim1Clicked()
 	{
 		std::static_pointer_cast<BezierSurface>(m_surface1)->trimSurface(m_map1, true);
 	}
+	if (m_surface1->m_type == DrawableObject::ObjectType::torus)
+	{
+		std::static_pointer_cast<Torus>(m_surface1)->trim(m_map1, true);
+	}
 }
 
 void FormPV::buttonTrim2Clicked()
@@ -44,6 +51,10 @@ void FormPV::buttonTrim2Clicked()
 	if (m_surface2->m_type == DrawableObject::ObjectType::bezierSurfaceC0 || m_surface2->m_type == DrawableObject::ObjectType::bezierSurfaceC2)
 	{
 		std::static_pointer_cast<BezierSurface>(m_surface2)->trimSurface(m_map2, true);
+	}
+	else if (m_surface2->m_type == DrawableObject::ObjectType::torus)
+	{
+		std::static_pointer_cast<Torus>(m_surface2)->trim(m_map2, true);
 	}
 }
 
@@ -53,6 +64,10 @@ void FormPV::buttonTrimExt1Clicked()
 	{
 		std::static_pointer_cast<BezierSurface>(m_surface1)->trimSurface(m_map1, false);
 	}
+	if (m_surface1->m_type == DrawableObject::ObjectType::torus)
+	{
+		std::static_pointer_cast<Torus>(m_surface1)->trim(m_map1, false);
+	}
 }
 
 void FormPV::buttonTrimExt2Clicked()
@@ -60,5 +75,9 @@ void FormPV::buttonTrimExt2Clicked()
 	if (m_surface2->m_type == DrawableObject::ObjectType::bezierSurfaceC0 || m_surface2->m_type == DrawableObject::ObjectType::bezierSurfaceC2)
 	{
 		std::static_pointer_cast<BezierSurface>(m_surface2)->trimSurface(m_map2, false);
+	}
+	else if (m_surface2->m_type == DrawableObject::ObjectType::torus)
+	{
+		std::static_pointer_cast<Torus>(m_surface2)->trim(m_map2, false);
 	}
 }

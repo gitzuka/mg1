@@ -16,6 +16,7 @@ Point3D::Point3D(ObjectType type, QString name, QVector4D position, bool enabled
 	DrawableObject(type, name, enabled)
 {
 	m_modelMatrix.setColumn(3, position);
+	m_pos = QVector3D(position);
 	Point3D::createVertices();
 	Point3D::generateIndices();
 	m_color = float3(1, 0, 0);

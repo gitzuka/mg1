@@ -86,6 +86,8 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.doubleSpinBox_newtonStep, SIGNAL(valueChanged(double)), &m_scene, SLOT(newtonStepChanged(double)));
 	connect(ui.doubleSpinBox_newtonWrapDist, SIGNAL(valueChanged(double)), &m_scene, SLOT(newtonWrapDistChanged(double)));
 	connect(ui.doubleSpinBox_selfDist, SIGNAL(valueChanged(double)), &m_scene, SLOT(selfIntersectionDistChanged(double)));
+	connect(ui.doubleSpinBox_2, SIGNAL(valueChanged(double)), &m_scene, SLOT(closestPointStepChanged(double)));
+	connect(ui.doubleSpinBox_intersectionStep, SIGNAL(valueChanged(double)), &m_scene, SLOT(gradientStepChanged(double)));
 	connect(ui.spinBox_wrapIter, SIGNAL(valueChanged(int)), &m_scene, SLOT(newtonWrapIterChanged(int)));
 
 	connect(ui.checkBox_pointer, SIGNAL(stateChanged(int)), ui.myGLWidget, SLOT(checkBox_pointerStateChanged(int)));

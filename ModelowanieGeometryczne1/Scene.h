@@ -51,6 +51,7 @@ private:
 	void createBC2IntMenu(const QPoint &pos, int id);
 	void createPoint3Dmenu(const QPoint &pos, const QList<int> &ids);
 	void createIntersectionMenu(const QPoint &pos, const QList<int> &ids);
+	void createTrimmingCurveMenu(const QPoint &pos, int id);
 	void checkIntersections(const QList<int> &ids);
 	void setActiveObject(int id);
 	//returns nullptr if object not found
@@ -74,6 +75,8 @@ private slots:
 	void newtonStepChanged(double val);
 	void selfIntersectionDistChanged(double val);
 	void newtonWrapDistChanged(double val);
+	void gradientStepChanged(double val);
+	void closestPointStepChanged(double val);
 	void newtonWrapIterChanged(int val);
 
 signals:

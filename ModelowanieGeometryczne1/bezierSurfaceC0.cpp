@@ -34,6 +34,7 @@ void BezierSurfaceC0::initializeFromPoints(const std::vector<int>& ids,
 		for (int j = 0; j < X; ++j)
 		{
 			m_points.emplace_back(points[ids[j * Y + i]]);
+			
 		}
 	}
 	planeSurfacePatches();

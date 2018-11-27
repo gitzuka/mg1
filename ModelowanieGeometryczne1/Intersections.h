@@ -15,6 +15,7 @@ namespace Intersections
 	float wrapDist = 0.01f;
 	float intersectionPointAlpha = 0.01f;
 	float selfIntersectionDist = 0.5f;
+	float closingEps = 0.3f;
 	int maxIter = 10000;
 	int maxIterNewton = 1000;
 	int wrapIter = 10;
@@ -450,8 +451,8 @@ namespace Intersections
 		else
 			changed2 = trimParams(uvRange2, params2);
 		params = QVector4D(params1.x(), params1.y(), params2.x(), params2.y());
-		if (wrapped1 || wrapped2)
-			return false;
+		//if (wrapped1 || wrapped2)
+		//	return false;
 		return (changed1 || changed2);
 	}
 
@@ -657,8 +658,9 @@ namespace Intersections
 			QVector4D uvRange2 = surface2->getRangeUV(dk.z(), dk.w());*/
 			QVector4D uvRange1 = surface1->getRangeUV();
 			QVector4D uvRange2 = surface2->getRangeUV();
-			if (checkParametrization2(dk, uvRange1, uvRange2, surface1->isUWrapped(), surface2->isUWrapped()))
-			//if (checkParametrization(dk, surface1, surface2, wraptrim, dk))
+			//if (checkParametrization2(dk, uvRange1, uvRange2, surface1->isUWrapped(), (surface->isUWrapped() || surface->isVWrapped())))
+			if (checkParametrization2(dk, uvRange1, uvRange2, (surface1->isUWrapped() || surface1->isVWrapped()), (surface2->isUWrapped() || surface2->isVWrapped())))
+				//if (checkParametrization(dk, surface1, surface2, wraptrim, dk))
 			{
 				uvuv = dk;
 				alpha *= 0.5f;
@@ -964,7 +966,8 @@ namespace Intersections
 	}
 
 	//static std::vector<QVector4D> getTrimmingCurve(Surface surface1, Surface surface2, const QVector3D &cursorPos)
-	static std::vector<std::vector<QVector4D>> getTrimmingCurve(Surface surface1, Surface surface2, const QVector3D &cursorPos)
+	static std::vector<QVector4D> getTrimmingCurve(Surface surface1, Surface surface2, const QVector3D &cursorPos)
+		//static std::vector<std::vector<QVector4D>> getTrimmingCurve(Surface surface1, Surface surface2, const QVector3D &cursorPos)
 	{
 		double delta = newtonStep;
 		//double delta = std::numeric_limits<double>::infinity();
@@ -1028,7 +1031,22 @@ namespace Intersections
 
 		if (!vertices.empty())
 			curves.emplace_back(vertices);
-		float eps = 0.03f;
+		if (curves.size() == 2)
+		{
+			vertices = curves[0];
+			std::reverse(vertices.begin(), vertices.end());
+			for (auto it = curves[1].begin(); it != curves[1].end(); ++it)
+			{
+				vertices.emplace_back(*it);
+			}
+			float dist = (surface1->getPointByUV(vertices[0].x(), vertices[0].y()) - surface1->getPointByUV(vertices[vertices.size() - 1].x(), vertices[vertices.size() - 1].x())).length();
+			if (dist < closingEps)
+			{
+				vertices.push_back(vertices[0]);
+			}
+		}
+
+
 		/*if (curves.size() == 2)
 		{
 			std::reverse(curves[0].begin(), curves[0].end());
@@ -1039,10 +1057,11 @@ namespace Intersections
 				vertices.emplace_back(vertices[0]);
 			}
 		}*/
-		return curves;
+		return vertices;
 	}
 
-	static std::vector<std::vector<QVector4D>> getTrimmingCurve(Surface surface, const QVector3D &cursorPos)
+	static std::vector<QVector4D> getTrimmingCurve(Surface surface, const QVector3D &cursorPos)
+		//static std::vector<std::vector<QVector4D>> getTrimmingCurve(Surface surface, const QVector3D &cursorPos)
 	{
 		double delta = newtonStep;
 		std::vector<QVector4D> vertices;
@@ -1100,7 +1119,15 @@ namespace Intersections
 
 		if (!vertices.empty())
 			curves.emplace_back(vertices);
-		float eps = 0.03f;
+		if (curves.size() == 2)
+		{
+			vertices = curves[0];
+			std::reverse(vertices.begin(), vertices.end());
+			for (auto it = curves[1].begin(); it != curves[1].end(); ++it)
+			{
+				vertices.emplace_back(*it);
+			}
+		}
 		/*if (curves.size() == 2)
 		{
 			std::reverse(curves[0].begin(), curves[0].end());
@@ -1111,6 +1138,6 @@ namespace Intersections
 				vertices.emplace_back(vertices[0]);
 			}
 		}*/
-		return curves;
+		return vertices;
 	}
 }

@@ -5,10 +5,10 @@
 
 Torus::Torus(ObjectType type, QString name) :
 	DrawableObject(type, name, true, true), IntersectableObject(true, true),
-	m_smallRadius(0.10), m_bigRadius(0.30), m_minorSegments(30), m_majorSegments(30), m_isWrapped(true)
+	m_smallRadius(0.10), m_bigRadius(0.30), m_minorSegments(3), m_majorSegments(4), m_isWrapped(true)
 {
 	Torus::createVertices();
-	Torus::generateIndices();
+	//Torus::generateIndices();
 	m_intersectable = true;
 }
 
@@ -18,7 +18,7 @@ Torus::Torus(float r, float R, int minorSegments, int majorSegments,
 	m_smallRadius(r), m_bigRadius(R), m_minorSegments(minorSegments), m_majorSegments(majorSegments), m_isWrapped(true)
 {
 	Torus::createVertices();
-	Torus::generateIndices();
+	//Torus::generateIndices();
 	m_intersectable = true;
 }
 
@@ -96,16 +96,16 @@ void Torus::generateIndices()
 	m_indices.clear();
 	for (int i = 0; i < m_majorSegments; ++i)
 	{
-		for (int j = i * m_minorSegments; j < (i + 1)*m_minorSegments; ++j)
+		for (int j = i * m_minorSegments; j < (i + 1) * m_minorSegments; ++j)
 		{
 			m_indices.push_back(j);
 		}
-		m_indices.push_back(i*m_minorSegments);
+		m_indices.push_back(i * m_minorSegments);
 		m_indices.push_back(-1);
 	}
 	for (int i = 0; i < m_minorSegments; ++i)
 	{
-		for (int j = i; j < (m_minorSegments)*m_majorSegments; j += m_minorSegments)
+		for (int j = i; j < (m_minorSegments)* m_majorSegments; j += m_minorSegments)
 		{
 			m_indices.push_back(j);
 		}
@@ -243,31 +243,99 @@ QVector4D Torus::getRangeUV() const
 	return QVector4D(0, 2 * M_PI, 0, 2 * M_PI);
 }
 
-void Torus::trim(const std::vector<std::vector<bool>>& draw, bool interior)
+void Torus::trim(const std::vector<std::vector<bool>>& drawMap, bool interior)
 {
 	m_vertices.clear();
 	m_indices.clear();
+	int pixelCount = drawMap.size() / (2 * M_PI);
+	bool draw;
 	double phiStep = 2 * M_PI / m_majorSegments;
 	double thetaStep = 2 * M_PI / m_minorSegments;
 	m_vertices.reserve(m_majorSegments * m_minorSegments);
-	for (int i = 0; i < m_majorSegments; ++i)
+	for (int i = 0; i < m_majorSegments - 1; ++i)
 	{
 		for (int j = 0; j < m_minorSegments; ++j)
 		{
 			double u = phiStep * i;
 			double v = thetaStep * j;
-			QVector4D vertex(cos(v) * (m_smallRadius * cos(u) + m_bigRadius),
-				m_smallRadius * sin(u),
-				sin(v) * (m_smallRadius * cos(u) + m_bigRadius),
-				1);
+
+			QVector4D vertex;
+			vertex.setX(cos(v) * (m_smallRadius * cos(u) + m_bigRadius));
+			vertex.setY(m_smallRadius * sin(u));
+			vertex.setZ(sin(v) * (m_smallRadius * cos(u) + m_bigRadius));
+			vertex.setW(1);
 			m_vertices.push_back(vertex);
+			int uPos = u * pixelCount;
+			if (uPos < 0)
+				uPos = 0;
+			if (uPos > drawMap.size() - 1)
+				uPos = drawMap.size() - 1;
+			int vPos = v * pixelCount;
+			if (vPos < 0)
+				vPos = 0;
+			if (vPos > drawMap.size() - 1)
+				vPos = drawMap.size() - 1;
+			interior ? draw = !drawMap[uPos][vPos] : draw = drawMap[uPos][vPos];
+			if (draw)
+			{
+				m_indices.push_back(-1);
+				continue;
+			}
+			if (i == 0)
+			{
+				m_indices.push_back(j);
+				if (j == m_minorSegments - 1)
+					m_indices.push_back(0);
+				else
+					m_indices.push_back(j + 1);
+			}
 			m_indices.push_back(i * m_minorSegments + j);
+			m_indices.push_back(i * m_minorSegments + j + m_minorSegments);
+			if (j == m_minorSegments - 1)
+				m_indices.push_back((i + 1) * m_minorSegments);
+			else
+				m_indices.push_back(i * m_minorSegments + j + m_minorSegments + 1);
+			m_indices.push_back(-1);
 		}
-		m_indices.push_back(i * m_minorSegments);
+	}
+	for (int j = 0; j < m_minorSegments; ++j)
+	{
+		double u = phiStep * (m_majorSegments - 1);
+		double v = thetaStep * j;
+
+		QVector4D vertex;
+		vertex.setX(cos(v) * (m_smallRadius * cos(u) + m_bigRadius));
+		vertex.setY(m_smallRadius * sin(u));
+		vertex.setZ(sin(v) * (m_smallRadius * cos(u) + m_bigRadius));
+		vertex.setW(1);
+		m_vertices.push_back(vertex);
+		int uPos = u * pixelCount;
+		if (uPos < 0)
+			uPos = 0;
+		if (uPos > drawMap.size() - 1)
+			uPos = drawMap.size() - 1;
+		int vPos = v * pixelCount;
+		if (vPos < 0)
+			vPos = 0;
+		if (vPos > drawMap.size() - 1)
+			vPos = drawMap.size() - 1;
+		interior ? draw = !drawMap[uPos][vPos] : draw = drawMap[uPos][vPos];
+		if (draw)
+		{
+			m_indices.push_back(-1);
+			continue;
+		}
+		m_indices.push_back(j);
+		m_indices.push_back((m_majorSegments - 1) * m_minorSegments + j);
+		if (j == m_minorSegments - 1)
+			m_indices.push_back((m_majorSegments - 1) * m_minorSegments);
+		else
+			m_indices.push_back((m_majorSegments - 1) * m_minorSegments + j + 1);
+
 		m_indices.push_back(-1);
 	}
 
-	for (int i = 0; i < m_majorSegments; ++i)
+	/*for (int i = 0; i < m_majorSegments; ++i)
 	{
 		for (int j = i * m_minorSegments; j < (i + 1) * m_minorSegments; ++j)
 		{
@@ -284,5 +352,5 @@ void Torus::trim(const std::vector<std::vector<bool>>& draw, bool interior)
 		}
 		m_indices.push_back(i);
 		m_indices.push_back(-1);
-	}
+	}*/
 }

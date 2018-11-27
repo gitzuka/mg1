@@ -10,6 +10,7 @@ public:
 	~BezierC2Interpolated();
 
 	friend class UiBezierC2Interpolated;
+	friend class TrimmingCurve;
 
 	void draw(std::vector<QVector4D> &vec) const override;
 	void draw(std::vector<QVector4D> &vec, float3 color) const override;

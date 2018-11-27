@@ -129,6 +129,10 @@ public:
     QDoubleSpinBox *doubleSpinBox_selfDist;
     QLabel *label_17;
     QSpinBox *spinBox_wrapIter;
+    QLabel *label_18;
+    QDoubleSpinBox *doubleSpinBox_intersectionStep;
+    QLabel *label_19;
+    QDoubleSpinBox *doubleSpinBox_2;
     QSpacerItem *verticalSpacer_2;
     QVBoxLayout *verticalLayout_9;
     QVBoxLayout *verticalLayout_16;
@@ -268,7 +272,7 @@ public:
         toolBox->setObjectName(QStringLiteral("toolBox"));
         page_Torus = new QWidget();
         page_Torus->setObjectName(QStringLiteral("page_Torus"));
-        page_Torus->setGeometry(QRect(0, 0, 98, 176));
+        page_Torus->setGeometry(QRect(0, 0, 296, 471));
         verticalLayout_8 = new QVBoxLayout(page_Torus);
         verticalLayout_8->setSpacing(0);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -605,6 +609,34 @@ public:
 
         formLayout->setWidget(2, QFormLayout::FieldRole, spinBox_wrapIter);
 
+        label_18 = new QLabel(tab_Other);
+        label_18->setObjectName(QStringLiteral("label_18"));
+
+        formLayout->setWidget(4, QFormLayout::LabelRole, label_18);
+
+        doubleSpinBox_intersectionStep = new QDoubleSpinBox(tab_Other);
+        doubleSpinBox_intersectionStep->setObjectName(QStringLiteral("doubleSpinBox_intersectionStep"));
+        doubleSpinBox_intersectionStep->setDecimals(3);
+        doubleSpinBox_intersectionStep->setMaximum(1);
+        doubleSpinBox_intersectionStep->setSingleStep(0.01);
+        doubleSpinBox_intersectionStep->setValue(0.01);
+
+        formLayout->setWidget(4, QFormLayout::FieldRole, doubleSpinBox_intersectionStep);
+
+        label_19 = new QLabel(tab_Other);
+        label_19->setObjectName(QStringLiteral("label_19"));
+
+        formLayout->setWidget(5, QFormLayout::LabelRole, label_19);
+
+        doubleSpinBox_2 = new QDoubleSpinBox(tab_Other);
+        doubleSpinBox_2->setObjectName(QStringLiteral("doubleSpinBox_2"));
+        doubleSpinBox_2->setDecimals(3);
+        doubleSpinBox_2->setMaximum(1);
+        doubleSpinBox_2->setSingleStep(0.01);
+        doubleSpinBox_2->setValue(0.5);
+
+        formLayout->setWidget(5, QFormLayout::FieldRole, doubleSpinBox_2);
+
 
         verticalLayout_5->addLayout(formLayout);
 
@@ -878,6 +910,8 @@ public:
         label_14->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Newton wrap dist", Q_NULLPTR));
         label_16->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Self intersection dist", Q_NULLPTR));
         label_17->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Newton wrap iterations", Q_NULLPTR));
+        label_18->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Intersection step", Q_NULLPTR));
+        label_19->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Closes point step", Q_NULLPTR));
         myTabWidget->setTabText(myTabWidget->indexOf(tab_Other), QApplication::translate("ModelowanieGeometryczne1Class", "Other features", Q_NULLPTR));
         label_7->setText(QApplication::translate("ModelowanieGeometryczne1Class", "X", Q_NULLPTR));
         label_8->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Z", Q_NULLPTR));
