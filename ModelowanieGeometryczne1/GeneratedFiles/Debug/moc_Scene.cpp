@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Scene_t {
-    QByteArrayData data[62];
-    char stringdata0[923];
+    QByteArrayData data[70];
+    char stringdata0[1048];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -74,26 +74,34 @@ QT_MOC_LITERAL(38, 588, 8), // "uvRange2"
 QT_MOC_LITERAL(39, 597, 31), // "std::shared_ptr<DrawableObject>"
 QT_MOC_LITERAL(40, 629, 8), // "surface1"
 QT_MOC_LITERAL(41, 638, 8), // "surface2"
-QT_MOC_LITERAL(42, 647, 19), // "updateControlPoints"
-QT_MOC_LITERAL(43, 667, 38), // "std::vector<std::shared_ptr<P..."
-QT_MOC_LITERAL(44, 706, 13), // "controlPoints"
-QT_MOC_LITERAL(45, 720, 16), // "std::vector<int>"
-QT_MOC_LITERAL(46, 737, 7), // "prevIds"
-QT_MOC_LITERAL(47, 745, 18), // "removeUiConnectors"
-QT_MOC_LITERAL(48, 764, 3), // "ids"
-QT_MOC_LITERAL(49, 768, 19), // "performCursorAction"
-QT_MOC_LITERAL(50, 788, 8), // "multiple"
-QT_MOC_LITERAL(51, 797, 11), // "resetCursor"
-QT_MOC_LITERAL(52, 809, 16), // "createObjectMenu"
-QT_MOC_LITERAL(53, 826, 3), // "pos"
-QT_MOC_LITERAL(54, 830, 10), // "QList<int>"
-QT_MOC_LITERAL(55, 841, 12), // "deleteObject"
-QT_MOC_LITERAL(56, 854, 19), // "selectCursorObjects"
-QT_MOC_LITERAL(57, 874, 11), // "QList<int>&"
-QT_MOC_LITERAL(58, 886, 9), // "loadScene"
-QT_MOC_LITERAL(59, 896, 11), // "fileContent"
-QT_MOC_LITERAL(60, 908, 9), // "saveScene"
-QT_MOC_LITERAL(61, 918, 4) // "path"
+QT_MOC_LITERAL(42, 647, 16), // "QPair<bool,bool>"
+QT_MOC_LITERAL(43, 664, 6), // "s1Wrap"
+QT_MOC_LITERAL(44, 671, 6), // "s2Wrap"
+QT_MOC_LITERAL(45, 678, 19), // "updateControlPoints"
+QT_MOC_LITERAL(46, 698, 38), // "std::vector<std::shared_ptr<P..."
+QT_MOC_LITERAL(47, 737, 13), // "controlPoints"
+QT_MOC_LITERAL(48, 751, 16), // "std::vector<int>"
+QT_MOC_LITERAL(49, 768, 7), // "prevIds"
+QT_MOC_LITERAL(50, 776, 18), // "removeUiConnectors"
+QT_MOC_LITERAL(51, 795, 3), // "ids"
+QT_MOC_LITERAL(52, 799, 19), // "performCursorAction"
+QT_MOC_LITERAL(53, 819, 8), // "multiple"
+QT_MOC_LITERAL(54, 828, 11), // "resetCursor"
+QT_MOC_LITERAL(55, 840, 16), // "createObjectMenu"
+QT_MOC_LITERAL(56, 857, 3), // "pos"
+QT_MOC_LITERAL(57, 861, 10), // "QList<int>"
+QT_MOC_LITERAL(58, 872, 12), // "deleteObject"
+QT_MOC_LITERAL(59, 885, 19), // "selectCursorObjects"
+QT_MOC_LITERAL(60, 905, 11), // "QList<int>&"
+QT_MOC_LITERAL(61, 917, 9), // "loadScene"
+QT_MOC_LITERAL(62, 927, 11), // "fileContent"
+QT_MOC_LITERAL(63, 939, 9), // "saveScene"
+QT_MOC_LITERAL(64, 949, 4), // "path"
+QT_MOC_LITERAL(65, 954, 17), // "newtonStepChanged"
+QT_MOC_LITERAL(66, 972, 3), // "val"
+QT_MOC_LITERAL(67, 976, 27), // "selfIntersectionDistChanged"
+QT_MOC_LITERAL(68, 1004, 21), // "newtonWrapDistChanged"
+QT_MOC_LITERAL(69, 1026, 21) // "newtonWrapIterChanged"
 
     },
     "Scene\0addedTorus\0\0name\0id\0const UiTorus*\0"
@@ -113,14 +121,17 @@ QT_MOC_LITERAL(61, 918, 4) // "path"
     "intersectionFound\0std::vector<QVector4D>\0"
     "parametrization\0uvRange1\0uvRange2\0"
     "std::shared_ptr<DrawableObject>\0"
-    "surface1\0surface2\0updateControlPoints\0"
+    "surface1\0surface2\0QPair<bool,bool>\0"
+    "s1Wrap\0s2Wrap\0updateControlPoints\0"
     "std::vector<std::shared_ptr<Point3D> >\0"
     "controlPoints\0std::vector<int>\0prevIds\0"
     "removeUiConnectors\0ids\0performCursorAction\0"
     "multiple\0resetCursor\0createObjectMenu\0"
     "pos\0QList<int>\0deleteObject\0"
     "selectCursorObjects\0QList<int>&\0"
-    "loadScene\0fileContent\0saveScene\0path"
+    "loadScene\0fileContent\0saveScene\0path\0"
+    "newtonStepChanged\0val\0selfIntersectionDistChanged\0"
+    "newtonWrapDistChanged\0newtonWrapIterChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -130,7 +141,7 @@ static const uint qt_meta_data_Scene[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      26,   14, // methods
+      30,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -138,34 +149,38 @@ static const uint qt_meta_data_Scene[] = {
       16,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    3,  144,    2, 0x06 /* Public */,
-       7,    3,  151,    2, 0x06 /* Public */,
-      10,    3,  158,    2, 0x06 /* Public */,
-      13,    3,  165,    2, 0x06 /* Public */,
-      15,    3,  172,    2, 0x06 /* Public */,
-      18,    3,  179,    2, 0x06 /* Public */,
-      21,    3,  186,    2, 0x06 /* Public */,
-      24,    3,  193,    2, 0x06 /* Public */,
-      27,    0,  200,    2, 0x06 /* Public */,
-      28,    1,  201,    2, 0x06 /* Public */,
-      29,    1,  204,    2, 0x06 /* Public */,
-      30,    1,  207,    2, 0x06 /* Public */,
-      31,    1,  210,    2, 0x06 /* Public */,
-      32,    1,  213,    2, 0x06 /* Public */,
-      33,    3,  216,    2, 0x06 /* Public */,
-      34,    5,  223,    2, 0x06 /* Public */,
+       1,    3,  164,    2, 0x06 /* Public */,
+       7,    3,  171,    2, 0x06 /* Public */,
+      10,    3,  178,    2, 0x06 /* Public */,
+      13,    3,  185,    2, 0x06 /* Public */,
+      15,    3,  192,    2, 0x06 /* Public */,
+      18,    3,  199,    2, 0x06 /* Public */,
+      21,    3,  206,    2, 0x06 /* Public */,
+      24,    3,  213,    2, 0x06 /* Public */,
+      27,    0,  220,    2, 0x06 /* Public */,
+      28,    1,  221,    2, 0x06 /* Public */,
+      29,    1,  224,    2, 0x06 /* Public */,
+      30,    1,  227,    2, 0x06 /* Public */,
+      31,    1,  230,    2, 0x06 /* Public */,
+      32,    1,  233,    2, 0x06 /* Public */,
+      33,    3,  236,    2, 0x06 /* Public */,
+      34,    7,  243,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      42,    2,  234,    2, 0x0a /* Public */,
-      47,    1,  239,    2, 0x0a /* Public */,
-      49,    1,  242,    2, 0x08 /* Private */,
-      49,    0,  245,    2, 0x28 /* Private | MethodCloned */,
-      51,    0,  246,    2, 0x08 /* Private */,
-      52,    2,  247,    2, 0x08 /* Private */,
-      55,    1,  252,    2, 0x08 /* Private */,
-      56,    1,  255,    2, 0x08 /* Private */,
-      58,    1,  258,    2, 0x08 /* Private */,
-      60,    1,  261,    2, 0x08 /* Private */,
+      45,    2,  258,    2, 0x0a /* Public */,
+      50,    1,  263,    2, 0x0a /* Public */,
+      52,    1,  266,    2, 0x08 /* Private */,
+      52,    0,  269,    2, 0x28 /* Private | MethodCloned */,
+      54,    0,  270,    2, 0x08 /* Private */,
+      55,    2,  271,    2, 0x08 /* Private */,
+      58,    1,  276,    2, 0x08 /* Private */,
+      59,    1,  279,    2, 0x08 /* Private */,
+      61,    1,  282,    2, 0x08 /* Private */,
+      63,    1,  285,    2, 0x08 /* Private */,
+      65,    1,  288,    2, 0x08 /* Private */,
+      67,    1,  291,    2, 0x08 /* Private */,
+      68,    1,  294,    2, 0x08 /* Private */,
+      69,    1,  297,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 5,    3,    4,    6,
@@ -183,19 +198,23 @@ static const uint qt_meta_data_Scene[] = {
     QMetaType::Void, QMetaType::Int,    4,
     QMetaType::Void, QMetaType::Int,    4,
     QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 22,    3,    4,   23,
-    QMetaType::Void, 0x80000000 | 35, QMetaType::QVector4D, QMetaType::QVector4D, 0x80000000 | 39, 0x80000000 | 39,   36,   37,   38,   40,   41,
+    QMetaType::Void, 0x80000000 | 35, QMetaType::QVector4D, QMetaType::QVector4D, 0x80000000 | 39, 0x80000000 | 39, 0x80000000 | 42, 0x80000000 | 42,   36,   37,   38,   40,   41,   43,   44,
 
  // slots: parameters
-    QMetaType::Void, 0x80000000 | 43, 0x80000000 | 45,   44,   46,
-    QMetaType::Void, 0x80000000 | 45,   48,
-    QMetaType::Void, QMetaType::Bool,   50,
+    QMetaType::Void, 0x80000000 | 46, 0x80000000 | 48,   47,   49,
+    QMetaType::Void, 0x80000000 | 48,   51,
+    QMetaType::Void, QMetaType::Bool,   53,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QPoint, 0x80000000 | 54,   53,   48,
+    QMetaType::Void, QMetaType::QPoint, 0x80000000 | 57,   56,   51,
     QMetaType::Void, QMetaType::Int,    4,
-    QMetaType::Void, 0x80000000 | 57,   48,
-    QMetaType::Void, QMetaType::QString,   59,
-    QMetaType::Void, QMetaType::QString,   61,
+    QMetaType::Void, 0x80000000 | 60,   51,
+    QMetaType::Void, QMetaType::QString,   62,
+    QMetaType::Void, QMetaType::QString,   64,
+    QMetaType::Void, QMetaType::Double,   66,
+    QMetaType::Void, QMetaType::Double,   66,
+    QMetaType::Void, QMetaType::Double,   66,
+    QMetaType::Void, QMetaType::Int,   66,
 
        0        // eod
 };
@@ -221,7 +240,7 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         case 12: _t->objectActivated((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 13: _t->objectDeactivated((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 14: _t->createdBSControlPoint((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const UiPoint3D*(*)>(_a[3]))); break;
-        case 15: _t->intersectionFound((*reinterpret_cast< const std::vector<QVector4D>(*)>(_a[1])),(*reinterpret_cast< const QVector4D(*)>(_a[2])),(*reinterpret_cast< const QVector4D(*)>(_a[3])),(*reinterpret_cast< std::shared_ptr<DrawableObject>(*)>(_a[4])),(*reinterpret_cast< std::shared_ptr<DrawableObject>(*)>(_a[5]))); break;
+        case 15: _t->intersectionFound((*reinterpret_cast< const std::vector<QVector4D>(*)>(_a[1])),(*reinterpret_cast< const QVector4D(*)>(_a[2])),(*reinterpret_cast< const QVector4D(*)>(_a[3])),(*reinterpret_cast< std::shared_ptr<DrawableObject>(*)>(_a[4])),(*reinterpret_cast< std::shared_ptr<DrawableObject>(*)>(_a[5])),(*reinterpret_cast< QPair<bool,bool>(*)>(_a[6])),(*reinterpret_cast< QPair<bool,bool>(*)>(_a[7]))); break;
         case 16: _t->updateControlPoints((*reinterpret_cast< std::vector<std::shared_ptr<Point3D> >(*)>(_a[1])),(*reinterpret_cast< const std::vector<int>(*)>(_a[2]))); break;
         case 17: _t->removeUiConnectors((*reinterpret_cast< const std::vector<int>(*)>(_a[1]))); break;
         case 18: _t->performCursorAction((*reinterpret_cast< bool(*)>(_a[1]))); break;
@@ -232,6 +251,10 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         case 23: _t->selectCursorObjects((*reinterpret_cast< QList<int>(*)>(_a[1]))); break;
         case 24: _t->loadScene((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 25: _t->saveScene((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 26: _t->newtonStepChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 27: _t->selfIntersectionDistChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 28: _t->newtonWrapDistChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 29: _t->newtonWrapIterChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -354,7 +377,7 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
             }
         }
         {
-            typedef void (Scene::*_t)(const std::vector<QVector4D> & , const QVector4D & , const QVector4D & , std::shared_ptr<DrawableObject> , std::shared_ptr<DrawableObject> );
+            typedef void (Scene::*_t)(const std::vector<QVector4D> & , const QVector4D & , const QVector4D & , std::shared_ptr<DrawableObject> , std::shared_ptr<DrawableObject> , QPair<bool,bool> , QPair<bool,bool> );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Scene::intersectionFound)) {
                 *result = 15;
                 return;
@@ -388,13 +411,13 @@ int Scene::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 26)
+        if (_id < 30)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 26;
+        _id -= 30;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 26)
+        if (_id < 30)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 26;
+        _id -= 30;
     }
     return _id;
 }
@@ -504,9 +527,9 @@ void Scene::createdBSControlPoint(const QString & _t1, int _t2, const UiPoint3D 
 }
 
 // SIGNAL 15
-void Scene::intersectionFound(const std::vector<QVector4D> & _t1, const QVector4D & _t2, const QVector4D & _t3, std::shared_ptr<DrawableObject> _t4, std::shared_ptr<DrawableObject> _t5)
+void Scene::intersectionFound(const std::vector<QVector4D> & _t1, const QVector4D & _t2, const QVector4D & _t3, std::shared_ptr<DrawableObject> _t4, std::shared_ptr<DrawableObject> _t5, QPair<bool,bool> _t6, QPair<bool,bool> _t7)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)), const_cast<void*>(reinterpret_cast<const void*>(&_t5)) };
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)), const_cast<void*>(reinterpret_cast<const void*>(&_t5)), const_cast<void*>(reinterpret_cast<const void*>(&_t6)), const_cast<void*>(reinterpret_cast<const void*>(&_t7)) };
     QMetaObject::activate(this, &staticMetaObject, 15, _a);
 }
 QT_WARNING_POP

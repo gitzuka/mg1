@@ -23,6 +23,7 @@ public:
 	QVector4D getRangeUV(double u, double v) const override;
 	QVector4D getRangeUV() const override;
 
+	void trim(const std::vector<std::vector<bool>> &draw, bool interior);
 	void setSmallRadius(float);
 	void setBigRadius(float);
 	void setMinorSegments(int);

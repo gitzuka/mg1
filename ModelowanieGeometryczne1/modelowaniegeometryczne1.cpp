@@ -11,6 +11,7 @@
 #include "uiBezierSurfaceC2.h"
 #include "bezierSurfaceSettings.h"
 #include "formPV.h"
+#include "scene.h"
 
 ModelowanieGeometryczne1::ModelowanieGeometryczne1(QWidget *parent)
 	: QMainWindow(parent), m_activeObjectId(-1)
@@ -82,9 +83,12 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.doubleSpinBox_CursorX, SIGNAL(valueChanged(double)), this, SLOT(updateMyGLWidget()));
 	connect(ui.doubleSpinBox_CursorY, SIGNAL(valueChanged(double)), this, SLOT(updateMyGLWidget()));
 	connect(ui.doubleSpinBox_CursorZ, SIGNAL(valueChanged(double)), this, SLOT(updateMyGLWidget()));
+	connect(ui.doubleSpinBox_newtonStep, SIGNAL(valueChanged(double)), &m_scene, SLOT(newtonStepChanged(double)));
+	connect(ui.doubleSpinBox_newtonWrapDist, SIGNAL(valueChanged(double)), &m_scene, SLOT(newtonWrapDistChanged(double)));
+	connect(ui.doubleSpinBox_selfDist, SIGNAL(valueChanged(double)), &m_scene, SLOT(selfIntersectionDistChanged(double)));
+	connect(ui.spinBox_wrapIter, SIGNAL(valueChanged(int)), &m_scene, SLOT(newtonWrapIterChanged(int)));
 
 	connect(ui.checkBox_pointer, SIGNAL(stateChanged(int)), ui.myGLWidget, SLOT(checkBox_pointerStateChanged(int)));
-	connect(ui.pushButton_Intersections, SIGNAL(clicked()), this, SLOT(pushButton_IntersectionsClicked()));
 	connect(ui.pushButton_AddObject, SIGNAL(clicked()), this, SLOT(pushButton_AddObjectClicked()));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.listWidget_ObjectsList, SLOT(removeItem()));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.myGLWidget, SLOT(updateGL()));
@@ -146,8 +150,11 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(&m_scene, SIGNAL(editModeBC2Int(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
 	connect(&m_scene, SIGNAL(objectDeactivated(int)), ui.listWidget_ObjectsList, SLOT(removeHighlightActive()));
 	connect(&m_scene, SIGNAL(objectActivated(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
-	connect(&m_scene, SIGNAL(intersectionFound(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, std::shared_ptr<DrawableObject>, std::shared_ptr<DrawableObject>)),
-	        this, SLOT(showParametrizationViewer(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, std::shared_ptr<DrawableObject>, std::shared_ptr<DrawableObject>)));
+	connect(&m_scene,
+	        SIGNAL(intersectionFound(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, std::shared_ptr<
+		        DrawableObject>, std::shared_ptr<DrawableObject>, QPair<bool, bool>, QPair<bool, bool>)), this,
+	        SLOT(showParametrizationViewer(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, std::
+		        shared_ptr<DrawableObject>, std::shared_ptr<DrawableObject>, QPair<bool, bool>, QPair<bool, bool>)));
 }
 
 void ModelowanieGeometryczne1::label_3dCoordsChangeText(float x, float y, float z)
@@ -625,23 +632,6 @@ void ModelowanieGeometryczne1::doubleSpinbox_CursorZValueChanged(double val)
 	m_scene.m_cursor->setPosition(QVector3D(ui.doubleSpinBox_CursorX->value(), ui.doubleSpinBox_CursorY->value(), ui.doubleSpinBox_CursorZ->value()));
 }
 
-void ModelowanieGeometryczne1::pushButton_IntersectionsClicked()
-{/*
-	std::shared_ptr<BezierSurface> surface = std::static_pointer_cast<BezierSurface>(m_scene.getUiConntector(1)->getObject());
-	QVector3D testpoint = QVector3D(0.4f, 0.4f, -0.4f);
-	int id = m_scene.createDrawableObject("Point3D");
-	m_scene.getUiConntector(id)->getObject()->setPosition(testpoint);
-	m_scene.getUiConntector(id)->getObject()->setName("testpoint");
-	m_scene.getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
-	QVector2D d = Intersections::findClosestPoint(surface, testpoint);
-	QVector3D curorPos = m_scene.m_cursor->getPosition();
-	QVector3D point = surface->getPointByUV(d.x(), d.y());
-	id = m_scene.createDrawableObject("Point3D");
-	m_scene.getUiConntector(id)->getObject()->setPosition(point);
-	m_scene.getUiConntector(id)->getObject()->setName("IntersectionPoint");
-	m_scene.getUiConntector(id)->getObject()->setColor(float3(255,0,0));*/
-}
-
 void ModelowanieGeometryczne1::loadScene()
 {
 	QString filename = QFileDialog::getOpenFileName(this,
@@ -666,16 +656,19 @@ void ModelowanieGeometryczne1::loadScene()
 void ModelowanieGeometryczne1::saveScene()
 {
 	QString fileName = QFileDialog::getSaveFileName(this,
-        tr("Save Scene"), "",
-        tr("Json file (*.json)"));
+		tr("Save Scene"), "",
+		tr("Json file (*.json)"));
 	QString pathName;
 	emit saveFile(fileName);
 }
 
-void ModelowanieGeometryczne1::showParametrizationViewer(const std::vector<QVector4D> &parametrization, const QVector4D &uvRange1, const QVector4D &uvRange2, std::shared_ptr<DrawableObject> surface1, std::shared_ptr<DrawableObject> surface2)
+void ModelowanieGeometryczne1::showParametrizationViewer(const std::vector<QVector4D>& parametrization,
+	const QVector4D& uvRange1, const QVector4D& uvRange2,
+	std::shared_ptr<DrawableObject> surface1,
+	std::shared_ptr<DrawableObject> surface2, QPair<bool, bool> s1Wrap, QPair<bool, bool> s2Wrap)
 {
 	FormPV *pv = new FormPV(this);
 	pv->setAttribute(Qt::WA_DeleteOnClose);
-	pv->initialize(surface1, surface2, uvRange1, uvRange2, parametrization);
+	pv->initialize(surface1, surface2, uvRange1, uvRange2, parametrization, s1Wrap, s2Wrap);
 	pv->show();
 }

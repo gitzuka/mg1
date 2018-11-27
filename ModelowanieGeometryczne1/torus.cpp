@@ -242,3 +242,47 @@ QVector4D Torus::getRangeUV() const
 {
 	return QVector4D(0, 2 * M_PI, 0, 2 * M_PI);
 }
+
+void Torus::trim(const std::vector<std::vector<bool>>& draw, bool interior)
+{
+	m_vertices.clear();
+	m_indices.clear();
+	double phiStep = 2 * M_PI / m_majorSegments;
+	double thetaStep = 2 * M_PI / m_minorSegments;
+	m_vertices.reserve(m_majorSegments * m_minorSegments);
+	for (int i = 0; i < m_majorSegments; ++i)
+	{
+		for (int j = 0; j < m_minorSegments; ++j)
+		{
+			double u = phiStep * i;
+			double v = thetaStep * j;
+			QVector4D vertex(cos(v) * (m_smallRadius * cos(u) + m_bigRadius),
+				m_smallRadius * sin(u),
+				sin(v) * (m_smallRadius * cos(u) + m_bigRadius),
+				1);
+			m_vertices.push_back(vertex);
+			m_indices.push_back(i * m_minorSegments + j);
+		}
+		m_indices.push_back(i * m_minorSegments);
+		m_indices.push_back(-1);
+	}
+
+	for (int i = 0; i < m_majorSegments; ++i)
+	{
+		for (int j = i * m_minorSegments; j < (i + 1) * m_minorSegments; ++j)
+		{
+			m_indices.push_back(j);
+		}
+		m_indices.push_back(i*m_minorSegments);
+		m_indices.push_back(-1);
+	}
+	for (int i = 0; i < m_minorSegments; ++i)
+	{
+		for (int j = i; j < (m_minorSegments)*m_majorSegments; j += m_minorSegments)
+		{
+			m_indices.push_back(j);
+		}
+		m_indices.push_back(i);
+		m_indices.push_back(-1);
+	}
+}

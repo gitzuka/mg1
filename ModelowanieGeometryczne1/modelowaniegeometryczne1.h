@@ -3,10 +3,10 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_modelowaniegeometryczne1.h"
-#include "scene.h"
 
 class UiPoint3D;
 class UiTorus;
+class Scene;
 
 class ModelowanieGeometryczne1 : public QMainWindow
 {
@@ -79,10 +79,12 @@ private slots:
 	void doubleSpinbox_CursorXValueChanged(double val);
 	void doubleSpinbox_CursorYValueChanged(double val);
 	void doubleSpinbox_CursorZValueChanged(double val);
-	void pushButton_IntersectionsClicked();
 	void loadScene();
 	void saveScene();
-	void showParametrizationViewer(const std::vector<QVector4D> &parametrization, const QVector4D &uvRange1, const QVector4D &uvRange2, std::shared_ptr<DrawableObject> surface1, std::shared_ptr<DrawableObject> surface2);
+	void showParametrizationViewer(const std::vector<QVector4D>& parametrization, const QVector4D& uvRange1,
+	                               const QVector4D& uvRange2, std::shared_ptr<DrawableObject> surface1,
+	                               std::shared_ptr<DrawableObject> surface2, QPair<bool, bool> s1Wrap,
+	                               QPair<bool, bool> s2Wrap);
 };
 
 #endif // MODELOWANIEGEOMETRYCZNE1_H

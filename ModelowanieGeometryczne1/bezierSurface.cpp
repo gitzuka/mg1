@@ -172,10 +172,11 @@ QVector4D BezierSurface::getRangeUV() const
 	return QVector4D(umin, umax, vmin, vmax);
 }
 
-void BezierSurface::trimSurface(const std::vector<std::vector<bool>> &draw)
+void BezierSurface::trimSurface(const std::vector<std::vector<bool>> &drawMap, bool interior)
 {
 	m_vertices.clear();
 	m_indices.clear();
+	bool draw;
 	float curveFactor = 1.0f / m_curveFactor;
 	m_vertices.reserve((m_parameters.m_u + 1) * (m_parameters.m_v + 1) + m_points.size());
 	for (int i = 0; i < m_points.size(); ++i)
@@ -196,8 +197,8 @@ void BezierSurface::trimSurface(const std::vector<std::vector<bool>> &draw)
 		}
 	}
 
-	int pixelCountX = draw.size() / m_parameters.m_patchesX;
-	int pixelCountY = draw.size() / m_parameters.m_patchesY;
+	int pixelCountX = drawMap.size() / m_parameters.m_patchesX;
+	int pixelCountY = drawMap.size() / m_parameters.m_patchesY;
 	for (int y = 0; y < m_parameters.m_patchesY; ++y)
 	{
 		for (int x = 0; x < m_parameters.m_patchesX; ++x)
@@ -218,7 +219,8 @@ void BezierSurface::trimSurface(const std::vector<std::vector<bool>> &draw)
 					int vPos = curveFactor * j * pixelCountY + patchCount * pixelCountY - 1;
 					if (vPos < 0)
 						vPos = 0;
-					if (!draw[uPos][vPos])
+					interior ? draw = !drawMap[uPos][vPos] : draw = drawMap[uPos][vPos];
+					if (draw)
 					{
 						m_indices.push_back(-1);
 						continue;
@@ -233,7 +235,8 @@ void BezierSurface::trimSurface(const std::vector<std::vector<bool>> &draw)
 				int vPos = patchCount * pixelCountY + pixelCountY - 1;
 				if (vPos < 0)
 					vPos = 0;
-				if (!draw[uPos][vPos])
+				interior ? draw = !drawMap[uPos][vPos] : draw = drawMap[uPos][vPos];
+				if (draw)
 				{
 					m_indices.push_back(-1);
 					continue;
@@ -265,7 +268,8 @@ void BezierSurface::trimSurface(const std::vector<std::vector<bool>> &draw)
 					int vPos = v * i * pixelCountY + patchCount * pixelCountY - 1;
 					if (vPos < 0)
 						vPos = 0;
-					if (!draw[uPos][vPos])
+					interior ? draw = !drawMap[uPos][vPos] : draw = drawMap[uPos][vPos];
+					if (draw)
 					{
 						m_indices.push_back(-1);
 						continue;
@@ -280,7 +284,8 @@ void BezierSurface::trimSurface(const std::vector<std::vector<bool>> &draw)
 				int vPos = v * i * pixelCountY + patchCount * pixelCountY - 1;
 				if (vPos < 0)
 					vPos = 0;
-				if (!draw[uPos][vPos])
+				interior ? draw = !drawMap[uPos][vPos] : draw = drawMap[uPos][vPos];
+				if (draw)
 				{
 					m_indices.push_back(-1);
 					continue;

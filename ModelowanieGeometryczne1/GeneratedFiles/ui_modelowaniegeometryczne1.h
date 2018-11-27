@@ -16,6 +16,7 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
@@ -119,7 +120,15 @@ public:
     QRadioButton *radioButton_Translate;
     QRadioButton *radioButton_Add;
     QRadioButton *radioButton_Delete;
-    QPushButton *pushButton_Intersections;
+    QFormLayout *formLayout;
+    QLabel *label_15;
+    QLabel *label_14;
+    QLabel *label_16;
+    QDoubleSpinBox *doubleSpinBox_newtonStep;
+    QDoubleSpinBox *doubleSpinBox_newtonWrapDist;
+    QDoubleSpinBox *doubleSpinBox_selfDist;
+    QLabel *label_17;
+    QSpinBox *spinBox_wrapIter;
     QSpacerItem *verticalSpacer_2;
     QVBoxLayout *verticalLayout_9;
     QVBoxLayout *verticalLayout_16;
@@ -259,7 +268,7 @@ public:
         toolBox->setObjectName(QStringLiteral("toolBox"));
         page_Torus = new QWidget();
         page_Torus->setObjectName(QStringLiteral("page_Torus"));
-        page_Torus->setGeometry(QRect(0, 0, 296, 471));
+        page_Torus->setGeometry(QRect(0, 0, 98, 176));
         verticalLayout_8 = new QVBoxLayout(page_Torus);
         verticalLayout_8->setSpacing(0);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -540,10 +549,64 @@ public:
 
         verticalLayout_5->addWidget(radioButton_Delete);
 
-        pushButton_Intersections = new QPushButton(tab_Other);
-        pushButton_Intersections->setObjectName(QStringLiteral("pushButton_Intersections"));
+        formLayout = new QFormLayout();
+        formLayout->setSpacing(6);
+        formLayout->setObjectName(QStringLiteral("formLayout"));
+        label_15 = new QLabel(tab_Other);
+        label_15->setObjectName(QStringLiteral("label_15"));
 
-        verticalLayout_5->addWidget(pushButton_Intersections);
+        formLayout->setWidget(0, QFormLayout::LabelRole, label_15);
+
+        label_14 = new QLabel(tab_Other);
+        label_14->setObjectName(QStringLiteral("label_14"));
+
+        formLayout->setWidget(1, QFormLayout::LabelRole, label_14);
+
+        label_16 = new QLabel(tab_Other);
+        label_16->setObjectName(QStringLiteral("label_16"));
+
+        formLayout->setWidget(3, QFormLayout::LabelRole, label_16);
+
+        doubleSpinBox_newtonStep = new QDoubleSpinBox(tab_Other);
+        doubleSpinBox_newtonStep->setObjectName(QStringLiteral("doubleSpinBox_newtonStep"));
+        doubleSpinBox_newtonStep->setDecimals(3);
+        doubleSpinBox_newtonStep->setMaximum(1);
+        doubleSpinBox_newtonStep->setSingleStep(0.001);
+        doubleSpinBox_newtonStep->setValue(0.004);
+
+        formLayout->setWidget(0, QFormLayout::FieldRole, doubleSpinBox_newtonStep);
+
+        doubleSpinBox_newtonWrapDist = new QDoubleSpinBox(tab_Other);
+        doubleSpinBox_newtonWrapDist->setObjectName(QStringLiteral("doubleSpinBox_newtonWrapDist"));
+        doubleSpinBox_newtonWrapDist->setDecimals(3);
+        doubleSpinBox_newtonWrapDist->setMaximum(1);
+        doubleSpinBox_newtonWrapDist->setSingleStep(0.01);
+        doubleSpinBox_newtonWrapDist->setValue(0.01);
+
+        formLayout->setWidget(1, QFormLayout::FieldRole, doubleSpinBox_newtonWrapDist);
+
+        doubleSpinBox_selfDist = new QDoubleSpinBox(tab_Other);
+        doubleSpinBox_selfDist->setObjectName(QStringLiteral("doubleSpinBox_selfDist"));
+        doubleSpinBox_selfDist->setMaximum(1);
+        doubleSpinBox_selfDist->setSingleStep(0.1);
+        doubleSpinBox_selfDist->setValue(0.5);
+
+        formLayout->setWidget(3, QFormLayout::FieldRole, doubleSpinBox_selfDist);
+
+        label_17 = new QLabel(tab_Other);
+        label_17->setObjectName(QStringLiteral("label_17"));
+
+        formLayout->setWidget(2, QFormLayout::LabelRole, label_17);
+
+        spinBox_wrapIter = new QSpinBox(tab_Other);
+        spinBox_wrapIter->setObjectName(QStringLiteral("spinBox_wrapIter"));
+        spinBox_wrapIter->setMinimum(1);
+        spinBox_wrapIter->setValue(10);
+
+        formLayout->setWidget(2, QFormLayout::FieldRole, spinBox_wrapIter);
+
+
+        verticalLayout_5->addLayout(formLayout);
 
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -811,7 +874,10 @@ public:
         radioButton_Translate->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Translate", Q_NULLPTR));
         radioButton_Add->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Add", Q_NULLPTR));
         radioButton_Delete->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Delete", Q_NULLPTR));
-        pushButton_Intersections->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Find intersections", Q_NULLPTR));
+        label_15->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Newton step", Q_NULLPTR));
+        label_14->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Newton wrap dist", Q_NULLPTR));
+        label_16->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Self intersection dist", Q_NULLPTR));
+        label_17->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Newton wrap iterations", Q_NULLPTR));
         myTabWidget->setTabText(myTabWidget->indexOf(tab_Other), QApplication::translate("ModelowanieGeometryczne1Class", "Other features", Q_NULLPTR));
         label_7->setText(QApplication::translate("ModelowanieGeometryczne1Class", "X", Q_NULLPTR));
         label_8->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Z", Q_NULLPTR));

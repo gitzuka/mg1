@@ -43,7 +43,7 @@ public:
 	QVector4D getRangeUV(double u, double v) const override;
 	QVector4D getRangeUV() const override;
 
-	void trimSurface(const std::vector<std::vector<bool>> &draw);
+	void trimSurface(const std::vector<std::vector<bool>> &draw, bool interior);
 	BezierSurfaceData::SurfaceType getSurfaceType() const;
 	const BezierSurfaceData& getSurfaceData() const;
 	const std::vector<BezierPatch>& getPatches() const;

@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ModelowanieGeometryczne1_t {
-    QByteArrayData data[86];
-    char stringdata0[1584];
+    QByteArrayData data[88];
+    char stringdata0[1583];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -107,17 +107,19 @@ QT_MOC_LITERAL(71, 1266, 30), // "doubleSpinbox_RotZValueChanged"
 QT_MOC_LITERAL(72, 1297, 33), // "doubleSpinbox_CursorXValueCha..."
 QT_MOC_LITERAL(73, 1331, 33), // "doubleSpinbox_CursorYValueCha..."
 QT_MOC_LITERAL(74, 1365, 33), // "doubleSpinbox_CursorZValueCha..."
-QT_MOC_LITERAL(75, 1399, 31), // "pushButton_IntersectionsClicked"
-QT_MOC_LITERAL(76, 1431, 9), // "loadScene"
-QT_MOC_LITERAL(77, 1441, 9), // "saveScene"
-QT_MOC_LITERAL(78, 1451, 25), // "showParametrizationViewer"
-QT_MOC_LITERAL(79, 1477, 22), // "std::vector<QVector4D>"
-QT_MOC_LITERAL(80, 1500, 15), // "parametrization"
-QT_MOC_LITERAL(81, 1516, 8), // "uvRange1"
-QT_MOC_LITERAL(82, 1525, 8), // "uvRange2"
-QT_MOC_LITERAL(83, 1534, 31), // "std::shared_ptr<DrawableObject>"
-QT_MOC_LITERAL(84, 1566, 8), // "surface1"
-QT_MOC_LITERAL(85, 1575, 8) // "surface2"
+QT_MOC_LITERAL(75, 1399, 9), // "loadScene"
+QT_MOC_LITERAL(76, 1409, 9), // "saveScene"
+QT_MOC_LITERAL(77, 1419, 25), // "showParametrizationViewer"
+QT_MOC_LITERAL(78, 1445, 22), // "std::vector<QVector4D>"
+QT_MOC_LITERAL(79, 1468, 15), // "parametrization"
+QT_MOC_LITERAL(80, 1484, 8), // "uvRange1"
+QT_MOC_LITERAL(81, 1493, 8), // "uvRange2"
+QT_MOC_LITERAL(82, 1502, 31), // "std::shared_ptr<DrawableObject>"
+QT_MOC_LITERAL(83, 1534, 8), // "surface1"
+QT_MOC_LITERAL(84, 1543, 8), // "surface2"
+QT_MOC_LITERAL(85, 1552, 16), // "QPair<bool,bool>"
+QT_MOC_LITERAL(86, 1569, 6), // "s1Wrap"
+QT_MOC_LITERAL(87, 1576, 6) // "s2Wrap"
 
     },
     "ModelowanieGeometryczne1\0cursor3dItemAcquired\0"
@@ -160,11 +162,11 @@ QT_MOC_LITERAL(85, 1575, 8) // "surface2"
     "doubleSpinbox_CursorXValueChanged\0"
     "doubleSpinbox_CursorYValueChanged\0"
     "doubleSpinbox_CursorZValueChanged\0"
-    "pushButton_IntersectionsClicked\0"
     "loadScene\0saveScene\0showParametrizationViewer\0"
     "std::vector<QVector4D>\0parametrization\0"
     "uvRange1\0uvRange2\0std::shared_ptr<DrawableObject>\0"
-    "surface1\0surface2"
+    "surface1\0surface2\0QPair<bool,bool>\0"
+    "s1Wrap\0s2Wrap"
 };
 #undef QT_MOC_LITERAL
 
@@ -174,7 +176,7 @@ static const uint qt_meta_data_ModelowanieGeometryczne1[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      47,   14, // methods
+      46,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -182,55 +184,54 @@ static const uint qt_meta_data_ModelowanieGeometryczne1[] = {
        6,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  249,    2, 0x06 /* Public */,
-       3,    0,  252,    2, 0x06 /* Public */,
-       4,    1,  253,    2, 0x06 /* Public */,
-       4,    0,  256,    2, 0x26 /* Public | MethodCloned */,
-       6,    1,  257,    2, 0x06 /* Public */,
-       8,    1,  260,    2, 0x06 /* Public */,
+       1,    1,  244,    2, 0x06 /* Public */,
+       3,    0,  247,    2, 0x06 /* Public */,
+       4,    1,  248,    2, 0x06 /* Public */,
+       4,    0,  251,    2, 0x26 /* Public | MethodCloned */,
+       6,    1,  252,    2, 0x06 /* Public */,
+       8,    1,  255,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      10,    0,  263,    2, 0x08 /* Private */,
-      11,    0,  264,    2, 0x08 /* Private */,
-      12,    0,  265,    2, 0x08 /* Private */,
-      13,    1,  266,    2, 0x08 /* Private */,
-      16,    3,  269,    2, 0x08 /* Private */,
-      21,    3,  276,    2, 0x08 /* Private */,
-      24,    3,  283,    2, 0x08 /* Private */,
-      27,    3,  290,    2, 0x08 /* Private */,
-      30,    3,  297,    2, 0x08 /* Private */,
-      33,    3,  304,    2, 0x08 /* Private */,
-      36,    3,  311,    2, 0x08 /* Private */,
-      39,    1,  318,    2, 0x08 /* Private */,
-      41,    1,  321,    2, 0x08 /* Private */,
-      42,    1,  324,    2, 0x08 /* Private */,
-      43,    0,  327,    2, 0x08 /* Private */,
-      44,    2,  328,    2, 0x08 /* Private */,
-      47,    2,  333,    2, 0x08 /* Private */,
-      48,    2,  338,    2, 0x08 /* Private */,
-      49,    2,  343,    2, 0x08 /* Private */,
-      50,    2,  348,    2, 0x08 /* Private */,
-      51,    1,  353,    2, 0x08 /* Private */,
-      53,    1,  356,    2, 0x08 /* Private */,
-      54,    1,  359,    2, 0x08 /* Private */,
-      55,    1,  362,    2, 0x08 /* Private */,
-      56,    1,  365,    2, 0x08 /* Private */,
-      58,    1,  368,    2, 0x08 /* Private */,
-      59,    2,  371,    2, 0x08 /* Private */,
-      62,    1,  376,    2, 0x08 /* Private */,
-      65,    1,  379,    2, 0x08 /* Private */,
-      67,    1,  382,    2, 0x08 /* Private */,
-      68,    1,  385,    2, 0x08 /* Private */,
-      69,    1,  388,    2, 0x08 /* Private */,
-      70,    1,  391,    2, 0x08 /* Private */,
-      71,    1,  394,    2, 0x08 /* Private */,
-      72,    1,  397,    2, 0x08 /* Private */,
-      73,    1,  400,    2, 0x08 /* Private */,
-      74,    1,  403,    2, 0x08 /* Private */,
-      75,    0,  406,    2, 0x08 /* Private */,
-      76,    0,  407,    2, 0x08 /* Private */,
-      77,    0,  408,    2, 0x08 /* Private */,
-      78,    5,  409,    2, 0x08 /* Private */,
+      10,    0,  258,    2, 0x08 /* Private */,
+      11,    0,  259,    2, 0x08 /* Private */,
+      12,    0,  260,    2, 0x08 /* Private */,
+      13,    1,  261,    2, 0x08 /* Private */,
+      16,    3,  264,    2, 0x08 /* Private */,
+      21,    3,  271,    2, 0x08 /* Private */,
+      24,    3,  278,    2, 0x08 /* Private */,
+      27,    3,  285,    2, 0x08 /* Private */,
+      30,    3,  292,    2, 0x08 /* Private */,
+      33,    3,  299,    2, 0x08 /* Private */,
+      36,    3,  306,    2, 0x08 /* Private */,
+      39,    1,  313,    2, 0x08 /* Private */,
+      41,    1,  316,    2, 0x08 /* Private */,
+      42,    1,  319,    2, 0x08 /* Private */,
+      43,    0,  322,    2, 0x08 /* Private */,
+      44,    2,  323,    2, 0x08 /* Private */,
+      47,    2,  328,    2, 0x08 /* Private */,
+      48,    2,  333,    2, 0x08 /* Private */,
+      49,    2,  338,    2, 0x08 /* Private */,
+      50,    2,  343,    2, 0x08 /* Private */,
+      51,    1,  348,    2, 0x08 /* Private */,
+      53,    1,  351,    2, 0x08 /* Private */,
+      54,    1,  354,    2, 0x08 /* Private */,
+      55,    1,  357,    2, 0x08 /* Private */,
+      56,    1,  360,    2, 0x08 /* Private */,
+      58,    1,  363,    2, 0x08 /* Private */,
+      59,    2,  366,    2, 0x08 /* Private */,
+      62,    1,  371,    2, 0x08 /* Private */,
+      65,    1,  374,    2, 0x08 /* Private */,
+      67,    1,  377,    2, 0x08 /* Private */,
+      68,    1,  380,    2, 0x08 /* Private */,
+      69,    1,  383,    2, 0x08 /* Private */,
+      70,    1,  386,    2, 0x08 /* Private */,
+      71,    1,  389,    2, 0x08 /* Private */,
+      72,    1,  392,    2, 0x08 /* Private */,
+      73,    1,  395,    2, 0x08 /* Private */,
+      74,    1,  398,    2, 0x08 /* Private */,
+      75,    0,  401,    2, 0x08 /* Private */,
+      76,    0,  402,    2, 0x08 /* Private */,
+      77,    7,  403,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    2,
@@ -280,8 +281,7 @@ static const uint qt_meta_data_ModelowanieGeometryczne1[] = {
     QMetaType::Void, QMetaType::Double,   66,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 79, QMetaType::QVector4D, QMetaType::QVector4D, 0x80000000 | 83, 0x80000000 | 83,   80,   81,   82,   84,   85,
+    QMetaType::Void, 0x80000000 | 78, QMetaType::QVector4D, QMetaType::QVector4D, 0x80000000 | 82, 0x80000000 | 82, 0x80000000 | 85, 0x80000000 | 85,   79,   80,   81,   83,   84,   86,   87,
 
        0        // eod
 };
@@ -335,10 +335,9 @@ void ModelowanieGeometryczne1::qt_static_metacall(QObject *_o, QMetaObject::Call
         case 40: _t->doubleSpinbox_CursorXValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
         case 41: _t->doubleSpinbox_CursorYValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
         case 42: _t->doubleSpinbox_CursorZValueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 43: _t->pushButton_IntersectionsClicked(); break;
-        case 44: _t->loadScene(); break;
-        case 45: _t->saveScene(); break;
-        case 46: _t->showParametrizationViewer((*reinterpret_cast< const std::vector<QVector4D>(*)>(_a[1])),(*reinterpret_cast< const QVector4D(*)>(_a[2])),(*reinterpret_cast< const QVector4D(*)>(_a[3])),(*reinterpret_cast< std::shared_ptr<DrawableObject>(*)>(_a[4])),(*reinterpret_cast< std::shared_ptr<DrawableObject>(*)>(_a[5]))); break;
+        case 43: _t->loadScene(); break;
+        case 44: _t->saveScene(); break;
+        case 45: _t->showParametrizationViewer((*reinterpret_cast< const std::vector<QVector4D>(*)>(_a[1])),(*reinterpret_cast< const QVector4D(*)>(_a[2])),(*reinterpret_cast< const QVector4D(*)>(_a[3])),(*reinterpret_cast< std::shared_ptr<DrawableObject>(*)>(_a[4])),(*reinterpret_cast< std::shared_ptr<DrawableObject>(*)>(_a[5])),(*reinterpret_cast< QPair<bool,bool>(*)>(_a[6])),(*reinterpret_cast< QPair<bool,bool>(*)>(_a[7]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -407,13 +406,13 @@ int ModelowanieGeometryczne1::qt_metacall(QMetaObject::Call _c, int _id, void **
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 47)
+        if (_id < 46)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 47;
+        _id -= 46;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 47)
+        if (_id < 46)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 47;
+        _id -= 46;
     }
     return _id;
 }
