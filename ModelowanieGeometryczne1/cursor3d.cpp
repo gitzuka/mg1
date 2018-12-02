@@ -253,6 +253,27 @@ void Cursor3D::updatePosition(float x, float y, int width, int height, const Cam
 	}
 }
 
+void Cursor3D::translateObjects(const QVector3D& pos, const QVector3D& translate)
+{
+	if (m_activeObjects.size() == 1)
+	{
+		m_activeObjects.begin()->second->setPosition(pos);
+		if (m_activeObjects.begin()->second->m_type == DrawableObject::ObjectType::point3D)
+		{
+			std::static_pointer_cast<Point3D>(m_activeObjects.begin()->second)->notifyAncestorsPositionChanged();
+		}
+		return;
+	}
+	for (auto obj : m_activeObjects)
+	{
+		obj.second->translate(translate);
+		if (obj.second->m_type == DrawableObject::ObjectType::point3D)
+		{
+			std::static_pointer_cast<Point3D>(obj.second)->notifyAncestorsPositionChanged();
+		}
+	}
+}
+
 //void Cursor3D::updatePosition(float x, float y, int width, int height, const Camera &camera)
 //{
 //	m_posX = x / (width * 0.5f) - 1.0f;

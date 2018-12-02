@@ -27,6 +27,8 @@ private:
 	void buttonTrim2Clicked();
 	void buttonTrimExt1Clicked();
 	void buttonTrimExt2Clicked();
+	void buttonNoTrim1();
+	void buttonNoTrim2();
 };
 
 #endif

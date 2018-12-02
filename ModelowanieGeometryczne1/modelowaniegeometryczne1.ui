@@ -165,6 +165,13 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox_HidePoints">
+              <property name="text">
+               <string>Hide points</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="tab_Parameters">
@@ -217,8 +224,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>296</width>
-                   <height>471</height>
+                   <width>98</width>
+                   <height>176</height>
                   </rect>
                  </property>
                  <attribute name="label">

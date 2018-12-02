@@ -5,7 +5,7 @@
 
 Torus::Torus(ObjectType type, QString name) :
 	DrawableObject(type, name, true, true), IntersectableObject(true, true),
-	m_smallRadius(0.10), m_bigRadius(0.30), m_minorSegments(3), m_majorSegments(4), m_isWrapped(true)
+	m_smallRadius(0.10), m_bigRadius(0.30), m_minorSegments(30), m_majorSegments(30), m_isWrapped(true)
 {
 	Torus::createVertices();
 	//Torus::generateIndices();
@@ -64,6 +64,11 @@ float Torus::getMinorSegments() const
 float Torus::getMajorSegments() const
 {
 	return m_majorSegments;
+}
+
+void Torus::undoTrimming()
+{
+	createVertices();
 }
 
 void Torus::createVertices()

@@ -78,6 +78,7 @@ private slots:
 	void gradientStepChanged(double val);
 	void closestPointStepChanged(double val);
 	void newtonWrapIterChanged(int val);
+	void translateObjects(const QVector3D &pos, const QVector3D &translate);
 
 signals:
 	void addedTorus(const QString &name, int id, const UiTorus *uiTorus);

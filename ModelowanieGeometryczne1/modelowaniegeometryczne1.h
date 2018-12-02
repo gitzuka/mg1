@@ -40,6 +40,7 @@ signals:
 	void mouseClicked(bool multiple = false);
 	void loadedFile(const QString &fileContent);
 	void saveFile(const QString &path);
+	void posChanged(const QVector3D &pos, const QVector3D &translate);
 
 private slots:
 	void pushButton_AddObjectClicked();

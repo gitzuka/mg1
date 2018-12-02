@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ListWidgetMain_t {
-    QByteArrayData data[33];
-    char stringdata0[451];
+    QByteArrayData data[35];
+    char stringdata0[472];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -64,7 +64,9 @@ QT_MOC_LITERAL(28, 396, 6), // "points"
 QT_MOC_LITERAL(29, 403, 15), // "itemTextChanged"
 QT_MOC_LITERAL(30, 419, 16), // "QListWidgetItem*"
 QT_MOC_LITERAL(31, 436, 4), // "item"
-QT_MOC_LITERAL(32, 441, 9) // "itemClick"
+QT_MOC_LITERAL(32, 441, 9), // "itemClick"
+QT_MOC_LITERAL(33, 451, 14), // "hideShowPoints"
+QT_MOC_LITERAL(34, 466, 5) // "state"
 
     },
     "ListWidgetMain\0rightClick\0\0pos\0"
@@ -79,7 +81,7 @@ QT_MOC_LITERAL(32, 441, 9) // "itemClick"
     "std::vector<int>\0pointsIds\0addPoints\0"
     "std::vector<std::shared_ptr<Point3D> >\0"
     "points\0itemTextChanged\0QListWidgetItem*\0"
-    "item\0itemClick"
+    "item\0itemClick\0hideShowPoints\0state"
 };
 #undef QT_MOC_LITERAL
 
@@ -89,7 +91,7 @@ static const uint qt_meta_data_ListWidgetMain[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      18,   14, // methods
+      19,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -97,26 +99,27 @@ static const uint qt_meta_data_ListWidgetMain[] = {
        4,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    2,  104,    2, 0x06 /* Public */,
-       6,    2,  109,    2, 0x06 /* Public */,
-       9,    1,  114,    2, 0x06 /* Public */,
-      10,    1,  117,    2, 0x06 /* Public */,
+       1,    2,  109,    2, 0x06 /* Public */,
+       6,    2,  114,    2, 0x06 /* Public */,
+       9,    1,  119,    2, 0x06 /* Public */,
+      10,    1,  122,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      13,    2,  120,    2, 0x0a /* Public */,
-      14,    2,  125,    2, 0x0a /* Public */,
-      15,    2,  130,    2, 0x0a /* Public */,
-      16,    2,  135,    2, 0x0a /* Public */,
-      17,    2,  140,    2, 0x0a /* Public */,
-      18,    2,  145,    2, 0x0a /* Public */,
-      19,    0,  150,    2, 0x0a /* Public */,
-      20,    1,  151,    2, 0x0a /* Public */,
-      21,    1,  154,    2, 0x0a /* Public */,
-      22,    0,  157,    2, 0x0a /* Public */,
-      23,    1,  158,    2, 0x0a /* Public */,
-      26,    1,  161,    2, 0x0a /* Public */,
-      29,    1,  164,    2, 0x08 /* Private */,
-      32,    1,  167,    2, 0x08 /* Private */,
+      13,    2,  125,    2, 0x0a /* Public */,
+      14,    2,  130,    2, 0x0a /* Public */,
+      15,    2,  135,    2, 0x0a /* Public */,
+      16,    2,  140,    2, 0x0a /* Public */,
+      17,    2,  145,    2, 0x0a /* Public */,
+      18,    2,  150,    2, 0x0a /* Public */,
+      19,    0,  155,    2, 0x0a /* Public */,
+      20,    1,  156,    2, 0x0a /* Public */,
+      21,    1,  159,    2, 0x0a /* Public */,
+      22,    0,  162,    2, 0x0a /* Public */,
+      23,    1,  163,    2, 0x0a /* Public */,
+      26,    1,  166,    2, 0x0a /* Public */,
+      29,    1,  169,    2, 0x08 /* Private */,
+      32,    1,  172,    2, 0x08 /* Private */,
+      33,    1,  175,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QPoint, 0x80000000 | 4,    3,    5,
@@ -139,6 +142,7 @@ static const uint qt_meta_data_ListWidgetMain[] = {
     QMetaType::Void, 0x80000000 | 27,   28,
     QMetaType::Void, 0x80000000 | 30,   31,
     QMetaType::Void, 0x80000000 | 30,   31,
+    QMetaType::Void, QMetaType::Int,   34,
 
        0        // eod
 };
@@ -167,6 +171,7 @@ void ListWidgetMain::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 15: _t->addPoints((*reinterpret_cast< const std::vector<std::shared_ptr<Point3D> >(*)>(_a[1]))); break;
         case 16: _t->itemTextChanged((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
         case 17: _t->itemClick((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 18: _t->hideShowPoints((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -239,13 +244,13 @@ int ListWidgetMain::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 18)
+        if (_id < 19)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 18;
+        _id -= 19;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 18)
+        if (_id < 19)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 18;
+        _id -= 19;
     }
     return _id;
 }

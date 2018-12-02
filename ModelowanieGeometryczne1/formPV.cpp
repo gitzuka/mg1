@@ -10,6 +10,8 @@ FormPV::FormPV(QWidget* parent)
 	connect(ui.pushButton_Trim2, SIGNAL(clicked()), this, SLOT(buttonTrim2Clicked()));
 	connect(ui.pushButton_TrimExt1, SIGNAL(clicked()), this, SLOT(buttonTrimExt1Clicked()));
 	connect(ui.pushButton_TrimExt2, SIGNAL(clicked()), this, SLOT(buttonTrimExt2Clicked()));
+	connect(ui.pushButton_noTrim1, SIGNAL(clicked()), this, SLOT(buttonNoTrim1()));
+	connect(ui.pushButton_2, SIGNAL(clicked()), this, SLOT(buttonNoTrim2()));
 }
 
 void FormPV::initialize(std::shared_ptr<DrawableObject> surface1, std::shared_ptr<DrawableObject> surface2,
@@ -79,5 +81,29 @@ void FormPV::buttonTrimExt2Clicked()
 	else if (m_surface2->m_type == DrawableObject::ObjectType::torus)
 	{
 		std::static_pointer_cast<Torus>(m_surface2)->trim(m_map2, false);
+	}
+}
+
+void FormPV::buttonNoTrim1()
+{
+	if (m_surface1->m_type == DrawableObject::ObjectType::bezierSurfaceC0 || m_surface1->m_type == DrawableObject::ObjectType::bezierSurfaceC2)
+	{
+		std::static_pointer_cast<BezierSurface>(m_surface1)->undoTrimming();
+	}
+	else if (m_surface1->m_type == DrawableObject::ObjectType::torus)
+	{
+		std::static_pointer_cast<Torus>(m_surface1)->undoTrimming();
+	}
+}
+
+void FormPV::buttonNoTrim2()
+{
+	if (m_surface2->m_type == DrawableObject::ObjectType::bezierSurfaceC0 || m_surface2->m_type == DrawableObject::ObjectType::bezierSurfaceC2)
+	{
+		std::static_pointer_cast<BezierSurface>(m_surface2)->undoTrimming();
+	}
+	else if (m_surface2->m_type == DrawableObject::ObjectType::torus)
+	{
+		std::static_pointer_cast<Torus>(m_surface2)->undoTrimming();
 	}
 }

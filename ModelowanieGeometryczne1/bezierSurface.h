@@ -52,6 +52,7 @@ public:
 	void pointMoved(int id);
 	void setPosition(QVector3D pos) override;
 	void rotate(QVector3D eulerAngles) override;
+	void undoTrimming();
 	virtual void initializeFromPoints(const std::vector<int> &ids, const std::vector<std::shared_ptr<Point3D>> &points) = 0;
 
 protected:

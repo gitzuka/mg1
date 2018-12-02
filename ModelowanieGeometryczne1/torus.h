@@ -32,6 +32,7 @@ public:
 	float getBigRadius() const;
 	float getMinorSegments() const;
 	float getMajorSegments() const;
+	void undoTrimming();
 
 private:
 	float m_smallRadius;

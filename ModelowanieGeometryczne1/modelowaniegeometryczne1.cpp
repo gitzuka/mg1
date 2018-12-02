@@ -58,6 +58,7 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(this, SIGNAL(escKeyPressed()), &m_scene, SLOT(resetCursor()));
 	connect(this, SIGNAL(loadedFile(const QString&)), &m_scene, SLOT(loadScene(const QString&)));
 	connect(this, SIGNAL(saveFile(const QString&)), &m_scene, SLOT(saveScene(const QString&)));
+	connect(this, SIGNAL(posChanged(const QVector3D &, const QVector3D &)), &m_scene, SLOT(translateObjects(const QVector3D &, const QVector3D &)));
 
 	connect(ui.radioButton_stereo, SIGNAL(toggled(bool)), this, SLOT(stereo_button_toggled(bool)));
 	connect(ui.radioButton_Idle, SIGNAL(toggled(bool)), this, SLOT(radioBtnIdleToggled(bool)));
@@ -89,10 +90,12 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.doubleSpinBox_2, SIGNAL(valueChanged(double)), &m_scene, SLOT(closestPointStepChanged(double)));
 	connect(ui.doubleSpinBox_intersectionStep, SIGNAL(valueChanged(double)), &m_scene, SLOT(gradientStepChanged(double)));
 	connect(ui.spinBox_wrapIter, SIGNAL(valueChanged(int)), &m_scene, SLOT(newtonWrapIterChanged(int)));
+	
 
 	connect(ui.checkBox_pointer, SIGNAL(stateChanged(int)), ui.myGLWidget, SLOT(checkBox_pointerStateChanged(int)));
 	connect(ui.pushButton_AddObject, SIGNAL(clicked()), this, SLOT(pushButton_AddObjectClicked()));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.listWidget_ObjectsList, SLOT(removeItem()));
+	connect(ui.checkBox_HidePoints, SIGNAL(stateChanged(int)), ui.listWidget_ObjectsList, SLOT(hideShowPoints(int)));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.myGLWidget, SLOT(updateGL()));
 	connect(ui.comboBox_BezierCurveC0, SIGNAL(itemRemoved()), ui.listWidget_BC0Parameters, SLOT(clear()));
 	connect(ui.comboBox_BC2, SIGNAL(itemRemoved()), ui.listWidget_BC2, SLOT(clear()));
@@ -560,6 +563,10 @@ void ModelowanieGeometryczne1::doubleSpinbox_PosXValueChanged(double val)
 	{
 		return;
 	}
+	//float step = 0.01f;
+	//QVector3D pos(val, ui.doubleSpinBox_PosY->value(), ui.doubleSpinBox_PosZ->value());
+	//QVector3D translate(step, ui.doubleSpinBox_PosY->value(), ui.doubleSpinBox_PosZ->value());
+	//emit posChanged(pos, translate);
 	object->getObject()->setPosition(QVector3D(val, ui.doubleSpinBox_PosY->value(), ui.doubleSpinBox_PosZ->value()));
 	updateMyGLWidget();
 }
@@ -571,6 +578,10 @@ void ModelowanieGeometryczne1::doubleSpinbox_PosYValueChanged(double val)
 	{
 		return;
 	}
+	//float step = 0.01f;
+	//QVector3D pos(val, ui.doubleSpinBox_PosY->value(), ui.doubleSpinBox_PosZ->value());
+	//QVector3D translate(ui.doubleSpinBox_PosX->value(), step, ui.doubleSpinBox_PosZ->value());
+	//emit posChanged(pos, translate);
 	object->getObject()->setPosition(QVector3D(ui.doubleSpinBox_PosX->value(), val, ui.doubleSpinBox_PosZ->value()));
 	updateMyGLWidget();
 }
@@ -582,6 +593,10 @@ void ModelowanieGeometryczne1::doubleSpinbox_PosZValueChanged(double val)
 	{
 		return;
 	}
+	//float step = 0.01f;
+	//QVector3D pos(val, ui.doubleSpinBox_PosY->value(), ui.doubleSpinBox_PosZ->value());
+	//QVector3D translate(ui.doubleSpinBox_PosX->value(), ui.doubleSpinBox_PosY->value(), val);
+	//emit posChanged(pos, translate);
 	object->getObject()->setPosition(QVector3D(ui.doubleSpinBox_PosX->value(), ui.doubleSpinBox_PosY->value(), val));
 	updateMyGLWidget();
 }

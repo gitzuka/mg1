@@ -65,6 +65,7 @@ public:
     QPushButton *pushButton_AddObject;
     QPushButton *pushButton_DeleteObject;
     QComboBox *comboBox_DrawableObjects;
+    QCheckBox *checkBox_HidePoints;
     QWidget *tab_Parameters;
     QVBoxLayout *verticalLayout_3;
     QVBoxLayout *verticalLayout_2;
@@ -256,6 +257,11 @@ public:
 
         verticalLayout_4->addWidget(comboBox_DrawableObjects);
 
+        checkBox_HidePoints = new QCheckBox(tab_Objects);
+        checkBox_HidePoints->setObjectName(QStringLiteral("checkBox_HidePoints"));
+
+        verticalLayout_4->addWidget(checkBox_HidePoints);
+
         myTabWidget->addTab(tab_Objects, QString());
         tab_Parameters = new QWidget();
         tab_Parameters->setObjectName(QStringLiteral("tab_Parameters"));
@@ -272,7 +278,7 @@ public:
         toolBox->setObjectName(QStringLiteral("toolBox"));
         page_Torus = new QWidget();
         page_Torus->setObjectName(QStringLiteral("page_Torus"));
-        page_Torus->setGeometry(QRect(0, 0, 296, 471));
+        page_Torus->setGeometry(QRect(0, 0, 98, 176));
         verticalLayout_8 = new QVBoxLayout(page_Torus);
         verticalLayout_8->setSpacing(0);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -885,6 +891,7 @@ public:
         actionSave_Scene->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Save Scene", Q_NULLPTR));
         pushButton_AddObject->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Add", Q_NULLPTR));
         pushButton_DeleteObject->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Delete", Q_NULLPTR));
+        checkBox_HidePoints->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Hide points", Q_NULLPTR));
         myTabWidget->setTabText(myTabWidget->indexOf(tab_Objects), QApplication::translate("ModelowanieGeometryczne1Class", "Objects", Q_NULLPTR));
         label_4->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Small radius", Q_NULLPTR));
         label_3->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Big radius", Q_NULLPTR));

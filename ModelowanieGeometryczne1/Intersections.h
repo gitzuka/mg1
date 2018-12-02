@@ -624,7 +624,7 @@ namespace Intersections
 				uvuv = dk;
 				break;
 			}
-			if (l < 0)
+			if (l < 0 || l >= currL)
 			{
 				alpha *= 0.5f;
 				continue;
@@ -673,8 +673,9 @@ namespace Intersections
 				uvuv = dk;
 				break;
 			}
-			if (l < 0)
+			if (l < 0 || l >= currL)
 			{
+				//uvuv = dk;
 				alpha *= 0.5f;
 				continue;
 			}
@@ -714,7 +715,6 @@ namespace Intersections
 		jacobi.setRow(2, QVector4D(-du2.x(), -du2.y(), -du2.z(), 0));
 		jacobi.setRow(3, QVector4D(-dv2.x(), -dv2.y(), -dv2.z(), 0));
 		return jacobi;
-		return jacobi.transposed();
 	}
 
 	static QMatrix4x4 calculateJacobi(const QVector3D &du1, const QVector3D &dv1, const QVector3D &du2, const QVector3D &dv2, const QVector3D &versor)
@@ -879,11 +879,6 @@ namespace Intersections
 				{
 					qDebug("newton max iter");
 				}
-
-				/*if (i == 15)
-				{
-					qDebug("newton max iter");
-				}*/
 
 				QVector3D du1 = surface1->getUDerivative(result.x(), result.y());
 				QVector3D dv1 = surface1->getVDerivative(result.x(), result.y());

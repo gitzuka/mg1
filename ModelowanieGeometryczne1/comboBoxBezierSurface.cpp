@@ -41,9 +41,11 @@ void ComboBoxBezierSurface::deleteItem(int objectId)
 			if (i == this->currentIndex())
 			{
 				emit itemRemoved();
+				//m_prevSurfaceId = m_bezierSurfacesIds.at(objectId);
 			}
-			this->removeItem(this->currentIndex());
 			m_bezierSurfacesIds.removeAt(i);
+			this->removeItem(this->currentIndex());
+			
 			if (m_bezierSurfacesIds.count() == 0)
 			{
 				emit allItemsRemoved();

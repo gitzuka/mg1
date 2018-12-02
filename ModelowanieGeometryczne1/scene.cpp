@@ -252,6 +252,13 @@ void Scene::checkIntersections(const QList<int>& ids)
 	{
 		vertices.emplace_back(QVector4D(surface1->getPointByUV(p.x(), p.y()), 1.0f));
 	}
+	//
+	std::vector<QVector4D> vertices2;
+	for (const auto p : params)
+	{
+		vertices2.emplace_back(QVector4D(surface2->getPointByUV(p.z(), p.w()), 1.0f));
+	}
+	//
 	int id = createDrawableObject("TrimmingCurve");
 	std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
 	curve->setVertices(vertices);
@@ -264,6 +271,21 @@ void Scene::checkIntersections(const QList<int>& ids)
 			QPair<bool, bool>(surface1->isUWrapped(), surface1->isVWrapped()),
 			QPair<bool, bool>(surface2->isUWrapped(), surface2->isVWrapped()));
 	}
+
+	
+	id = createDrawableObject("TrimmingCurve");
+	std::shared_ptr<TrimmingCurve> curve2 = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
+	curve2->setColor(0, 255, 0);
+	curve2->setVertices(vertices2);
+	//curve2->setParametrization(params);
+	/*if (curve->getVertices().size() >= 2)
+	{
+		emit intersectionFound(curve->getParametrization(), surface1->getRangeUV(), surface2->getRangeUV(),
+			getUiConntector(ids.at(0))->getObject(),
+			getUiConntector(ids.at(1))->getObject(),
+			QPair<bool, bool>(surface1->isUWrapped(), surface1->isVWrapped()),
+			QPair<bool, bool>(surface2->isUWrapped(), surface2->isVWrapped()));
+	}*/
 	//std::vector<std::vector<QVector4D>> curves = Intersections::getTrimmingCurve(surface1, surface2, m_cursor->getPosition());
 	/*std::vector<QVector4D> vertices;
 	for (const auto c : curves)
@@ -522,6 +544,12 @@ void Scene::closestPointStepChanged(double val)
 void Scene::newtonWrapIterChanged(int val)
 {
 	Intersections::wrapIter = val;
+}
+
+void Scene::translateObjects(const QVector3D& pos, const QVector3D& translate)
+{
+	m_cursor->translateObjects(pos, translate);
+
 }
 
 void Scene::performCursorAction(bool multiple)

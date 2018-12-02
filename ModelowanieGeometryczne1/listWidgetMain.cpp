@@ -86,9 +86,9 @@ void ListWidgetMain::removeItem()
 	{
 		return;
 	}
-	for (int i =0; i<m_undeleteable.count(); ++i)
+	for (int i = 0; i < m_undeletable.count(); ++i)
 	{
-		if (m_objectsList.at(currentRow()).second == m_undeleteable.at(i))
+		if (m_objectsList.at(currentRow()).second == m_undeletable.at(i))
 		{
 			return;
 		}
@@ -137,7 +137,7 @@ void ListWidgetMain::removeHighlightActive()
 void ListWidgetMain::deleteSurfacePoints(const std::vector<int> &pointsIds)
 {
 	int index = 0, index2 = 0;
-	while (pointsIds.at(0) != m_undeleteable.at(index2))
+	while (pointsIds.at(0) != m_undeletable.at(index2))
 	{
 		++index2;
 	}
@@ -147,7 +147,8 @@ void ListWidgetMain::deleteSurfacePoints(const std::vector<int> &pointsIds)
 	}
 	for (int i = 0; i < pointsIds.size(); ++i)
 	{
-		m_undeleteable.removeAt(index2);
+		m_undeletable.removeAt(index2);
+		m_poinsList.removeAt(index2);
 		m_objectsList.removeAt(index);
 		QListWidgetItem *item = takeItem(index);
 		this->removeItemWidget(item);
@@ -159,9 +160,10 @@ void ListWidgetMain::addPoints(const std::vector<std::shared_ptr<Point3D>> &poin
 {
 	for (const auto &point : points)
 	{
-		m_undeleteable.append(point->getId());
+		m_undeletable.append(point->getId());
 		addItem(point->getName());
 		m_objectsList.append(qMakePair(this->item(this->count() - 1), point->getId()));
+		m_poinsList.append(qMakePair(this->item(this->count() - 1), point->getId()));
 		this->item(this->count() - 1)->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 	}
 }
@@ -175,6 +177,15 @@ void ListWidgetMain::itemClick(QListWidgetItem *item)
 	int id = m_objectsList.at(this->currentRow()).second;
 	updatePointsList(id);
 	emit itemSelected(m_selectedObjectsIds);
+}
+
+void ListWidgetMain::hideShowPoints(int state)
+{
+	for (auto point : m_poinsList)
+	{
+		point.first->setHidden(state);
+	}
+
 }
 
 void ListWidgetMain::itemTextChanged(QListWidgetItem* item)

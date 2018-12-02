@@ -16,7 +16,8 @@ public:
 private:
 	QList<QPair<QListWidgetItem*, int>> m_objectsList;
 	QList<int> m_selectedObjectsIds;
-	QList<int> m_undeleteable;
+	QList<QPair<QListWidgetItem*, int>> m_poinsList;
+	QList<int> m_undeletable;
 	QListWidgetItem *m_activeItem;
 
 	void mousePressEvent(QMouseEvent *event) override;
@@ -46,6 +47,7 @@ public slots:
 private slots:
 	void itemTextChanged(QListWidgetItem *item);
 	void itemClick(QListWidgetItem *item);
+	void hideShowPoints(int state);
 };
 
 #endif // LISTWIDGETOBJECTS_H

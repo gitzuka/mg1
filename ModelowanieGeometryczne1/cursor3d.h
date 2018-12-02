@@ -24,6 +24,7 @@ public:
 	
 	//void updatePosition(float posX, float posY, float posZ, const Camera &camera);
 	void updatePosition(float x, float y, int width, int height, const Camera &camera, bool z);
+	void translateObjects(const QVector3D &pos, const QVector3D &translate);
 	void clearAllObjects();
 	Mode getMode() const;
 	void changeMode(Mode mode);

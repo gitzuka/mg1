@@ -4,8 +4,10 @@
 #include <qpainter.h>
 #include <qqueue.h>
 
-ParametrizationViewer::ParametrizationViewer(QWidget *parent, int pixelFactor, QColor curve, QColor empty, QColor filled) : m_scene(nullptr), m_scene2(nullptr), m_pixelFactor(pixelFactor), m_curve(curve), m_empty(empty),
-m_filled(filled)
+ParametrizationViewer::ParametrizationViewer(QWidget* parent, int pixelFactor, QColor curve, QColor empty, QColor filled) 
+	: m_scene(nullptr), m_scene2(nullptr),
+	m_pixelFactor(pixelFactor), m_curve(curve),
+	m_empty(empty), m_filled(filled)
 {
 }
 
@@ -15,14 +17,13 @@ ParametrizationViewer::~ParametrizationViewer()
 	delete m_scene2;
 }
 
-
 QPair<bool, bool> ParametrizationViewer::fillPixMap(const std::vector<QVector4D>& parametrization, const QVector4D &uvRange1, const QVector4D &uvRange2,
 	std::vector<std::vector<bool>> &boolmap1, std::vector<std::vector<bool>> &boolmap2, QPair<bool, bool> s1Wrap, QPair<bool, bool> s2Wrap)
 {
 	int width1 = m_pixelFactor * (uvRange1.y() - uvRange1.x());
 	int height1 = m_pixelFactor * (uvRange1.w() - uvRange1.z());
 	int width2 = m_pixelFactor * (uvRange2.y() - uvRange2.x());
-	int height2 = m_pixelFactor * (uvRange2.y() - uvRange2.x());
+	int height2 = m_pixelFactor * (uvRange2.w() - uvRange2.z());
 	QPair<bool, bool> trimmable;
 	QImage map1 = QImage(width1, height1, QImage::Format_RGB888);
 	QImage map2 = QImage(width2, height2, QImage::Format_RGB888);
