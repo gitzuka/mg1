@@ -16,6 +16,9 @@ public:
 	ModelowanieGeometryczne1(QWidget *parent = 0);
 	~ModelowanieGeometryczne1();
 
+protected:
+	void keyPressEvent(QKeyEvent  *event);
+
 private:
 	Scene m_scene;
 	Ui::ModelowanieGeometryczne1Class ui;
@@ -38,9 +41,11 @@ signals:
 	void cursor3dItemAcquired(int);
 	void escKeyPressed();
 	void mouseClicked(bool multiple = false);
+	void rightClicked(const QPoint& pos, int width, int height, bool add);
 	void loadedFile(const QString &fileContent);
 	void saveFile(const QString &path);
-	void posChanged(const QVector3D &pos, const QVector3D &translate);
+	//void posChanged(const QVector3D &pos, const QVector3D &translate);
+	void translate(const QVector3D &pos);
 
 private slots:
 	void pushButton_AddObjectClicked();
@@ -82,6 +87,7 @@ private slots:
 	void doubleSpinbox_CursorZValueChanged(double val);
 	void loadScene();
 	void saveScene();
+	void intersectionError();
 	void showParametrizationViewer(const std::vector<QVector4D>& parametrization, const QVector4D& uvRange1,
 	                               const QVector4D& uvRange2, std::shared_ptr<DrawableObject> surface1,
 	                               std::shared_ptr<DrawableObject> surface2, QPair<bool, bool> s1Wrap,

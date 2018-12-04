@@ -36,6 +36,7 @@ void BezierSurfaceC2::initializeFromPoints(const std::vector<int>& ids,
 	planeSurfacePatches();
 	if (m_parameters.m_surfaceType == BezierSurfaceData::SurfaceType::cylinder)
 	{
+		m_uWrapped = true;
 		m_points.clear();
 		for (int i = 0; i < Y; ++i)
 		{

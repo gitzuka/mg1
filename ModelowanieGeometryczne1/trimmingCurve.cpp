@@ -42,7 +42,6 @@ void TrimmingCurve::draw(std::vector<QVector4D>& vec, float3 color) const
 			continue;
 		}
 		drawLine(vec.at(*it), vec.at(*(it + 1)), color);
-		//drawLine(vec.at(*it), vec.at(*(it + 1)), swapColors(i));
 		++i;
 	}
 }
@@ -70,10 +69,9 @@ const std::vector<QVector4D>& TrimmingCurve::getParametrization() const
 
 void TrimmingCurve::upgradeToInterpolating()
 {
-	BezierC2Interpolated curve(DrawableObject::ObjectType::bezierC2Interpolated, "interpolated");
+	BezierC2Interpolated curve(ObjectType::bezierC2Interpolated, "interpolated");
 	std::vector<QVector4D> controlPoints;
 	controlPoints.swap(m_vertices);
-	//m_vertices.clear();
 	m_indices.clear();
 	std::vector<float> upperDiag;
 	std::vector<float> middleDiag;

@@ -23,7 +23,7 @@ public:
 	void setColor(float r, float g, float b);
 	void setColor(float3 color);
 	void drawLine(const QVector4D &p1, const QVector4D &p2, float3 color) const;
-	void translate(const QVector4D &vec);
+	virtual void translate(const QVector4D &vec);
 	int getId() const;
 	const std::vector<QVector4D>& getVertices() const;
 	const QString& getName() const;

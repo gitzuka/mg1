@@ -78,7 +78,9 @@ private slots:
 	void gradientStepChanged(double val);
 	void closestPointStepChanged(double val);
 	void newtonWrapIterChanged(int val);
-	void translateObjects(const QVector3D &pos, const QVector3D &translate);
+	//void translateObjects(const QVector3D &pos, const QVector3D &translate);
+	void translateObjects(const QVector3D &pos);
+	void findClosestPoint(const QPoint &pos, int width, int height, bool add);
 
 signals:
 	void addedTorus(const QString &name, int id, const UiTorus *uiTorus);
@@ -96,6 +98,7 @@ signals:
 	void objectActivated(int id);
 	void objectDeactivated(int id);
 	void createdBSControlPoint(const QString &name, int id, const UiPoint3D *object);
+	void intersectionNotFound();
 	void intersectionFound(const std::vector<QVector4D>& parametrization, const QVector4D& uvRange1,
 	                       const QVector4D& uvRange2, std::shared_ptr<DrawableObject> surface1,
 	                       std::shared_ptr<DrawableObject> surface2, QPair<bool, bool> s1Wrap, QPair<bool, bool> s2Wrap);

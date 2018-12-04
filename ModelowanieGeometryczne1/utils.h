@@ -4,11 +4,13 @@
 #define L_EYE_R 1.0f
 #define PROJECTION_R 20
 #define TARGETING_DISTANCE 0.1f
+#define TARGETING_DISTANCE2D 25.0f
 #define CAM_NEAR 0.01f
 #define CAM_FAR 50.0f
 #define FOV 60.0f
 #define SPEED 0.08f
 #define MOUSE_SENSITIVITY 0.005f
 #define TRANSLATION_STEP 0.5f
+#define TRANSLATION 0.1f
 
 //float stereoscopyParam;

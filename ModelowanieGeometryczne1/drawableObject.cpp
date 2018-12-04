@@ -31,6 +31,7 @@ void DrawableObject::drawLine(const QVector4D &p1, const QVector4D &p2, float3 c
 
 void DrawableObject::translate(const QVector4D& vec)
 {
+	m_pos += vec.toVector3D();
 	m_modelMatrix.translate(vec.toVector3D());
 }
 

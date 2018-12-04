@@ -191,6 +191,17 @@ void Cursor3D::markObject(std::unordered_map<int, std::unique_ptr<UiConnector>>&
 	}
 }
 
+void Cursor3D::markObject(std::shared_ptr<DrawableObject> sceneObject, bool multiple)
+{
+	if (!multiple && m_activeObjects.size() >= 1)
+	{
+		clearAllObjects();
+		return;
+
+	}
+	addToActive(sceneObject);
+}
+
 //void Cursor3D::updatePosition(float posX, float posY, float posZ, const Camera &camera)
 //{
 //	m_worldCoords = QVector3D(posX - camera.m_viewMatrix.row(0).w(),
@@ -245,7 +256,7 @@ void Cursor3D::updatePosition(float x, float y, int width, int height, const Cam
 		{
 			activeObject.second->translate(prevPos);
 			//activeObject.second->setModelMatrix(m_modelMatrix);
-			if (activeObject.second->m_type == DrawableObject::ObjectType::point3D)
+			if (activeObject.second->m_type == ObjectType::point3D)
 			{
 				std::static_pointer_cast<Point3D>(activeObject.second)->notifyAncestorsPositionChanged();
 			}
@@ -253,26 +264,39 @@ void Cursor3D::updatePosition(float x, float y, int width, int height, const Cam
 	}
 }
 
-void Cursor3D::translateObjects(const QVector3D& pos, const QVector3D& translate)
+void Cursor3D::translateObjects(const QVector3D& pos)
 {
-	if (m_activeObjects.size() == 1)
-	{
-		m_activeObjects.begin()->second->setPosition(pos);
-		if (m_activeObjects.begin()->second->m_type == DrawableObject::ObjectType::point3D)
-		{
-			std::static_pointer_cast<Point3D>(m_activeObjects.begin()->second)->notifyAncestorsPositionChanged();
-		}
-		return;
-	}
 	for (auto obj : m_activeObjects)
 	{
-		obj.second->translate(translate);
-		if (obj.second->m_type == DrawableObject::ObjectType::point3D)
+		obj.second->translate(pos);
+		if (obj.second->m_type == ObjectType::point3D)
 		{
 			std::static_pointer_cast<Point3D>(obj.second)->notifyAncestorsPositionChanged();
 		}
 	}
 }
+
+//void Cursor3D::translateObjects(const QVector3D& pos, const QVector3D& translate)
+//{
+//
+//	if (m_activeObjects.size() == 1)
+//	{
+//		m_activeObjects.begin()->second->setPosition(pos);
+//		if (m_activeObjects.begin()->second->m_type == DrawableObject::ObjectType::point3D)
+//		{
+//			std::static_pointer_cast<Point3D>(m_activeObjects.begin()->second)->notifyAncestorsPositionChanged();
+//		}
+//		return;
+//	}
+//	for (auto obj : m_activeObjects)
+//	{
+//		obj.second->translate(translate);
+//		if (obj.second->m_type == DrawableObject::ObjectType::point3D)
+//		{
+//			std::static_pointer_cast<Point3D>(obj.second)->notifyAncestorsPositionChanged();
+//		}
+//	}
+//}
 
 //void Cursor3D::updatePosition(float x, float y, int width, int height, const Camera &camera)
 //{
@@ -398,6 +422,13 @@ Cursor3D::Mode Cursor3D::getMode() const
 void Cursor3D::changeMode(Mode mode)
 {
 	m_mode = mode;
+}
+
+QVector3D Cursor3D::moveToObject()
+{
+	if (!m_activeObjects.empty())
+		setPosition(m_activeObjects.begin()->second->getPosition());
+	return getPosition();
 }
 
 void Cursor3D::performAction(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects, bool multiple)

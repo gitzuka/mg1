@@ -30,6 +30,69 @@ ModelowanieGeometryczne1::~ModelowanieGeometryczne1()
 	delete model;
 }
 
+void ModelowanieGeometryczne1::keyPressEvent(QKeyEvent* event)
+{
+	switch (event->key())
+	{
+	case Qt::Key_1:
+	{
+		ui.radioButton_Idle->setChecked(true);
+		break;
+	}
+	case Qt::Key_2:
+	{
+		ui.radioButton_Translate->setChecked(true);
+		break;
+	}
+	case Qt::Key_3:
+	{
+		ui.radioButton_Add->setChecked(true);
+		break;
+	}
+	case Qt::Key_4:
+	{
+		ui.radioButton_Delete->setChecked(true);
+		break;
+	}
+	case Qt::UpArrow:
+	{
+		emit translate(QVector3D(0, TRANSLATION, 0));
+		break;
+	}
+	case Qt::Key_PageUp:
+	{
+		emit translate(QVector3D(0, 0, TRANSLATION));
+		break;
+	}
+	case Qt::Key_PageDown:
+	{
+		emit translate(QVector3D(0, 0, -TRANSLATION));
+		break;
+	}
+	case Qt::DownArrow:
+	{
+		emit translate(QVector3D(0, -TRANSLATION, 0));
+		break;
+	}
+	case Qt::RightArrow:
+	{
+		emit translate(QVector3D(TRANSLATION, 0, 0));
+		break;
+	}
+	case Qt::LeftArrow:
+	{
+		emit translate(QVector3D(-TRANSLATION, 0, 0));
+		break;
+	}
+	case 'C':
+	{
+		ui.checkBox_pointer->setChecked(!ui.checkBox_pointer->isChecked());
+		break;
+	}
+	}
+	ui.myGLWidget->updateGL();
+}
+
 void ModelowanieGeometryczne1::connectSignals()
 {
 	connect(ui.doubleSpinBox_e, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinbox_eValueChanged(double)));
@@ -58,7 +121,9 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(this, SIGNAL(escKeyPressed()), &m_scene, SLOT(resetCursor()));
 	connect(this, SIGNAL(loadedFile(const QString&)), &m_scene, SLOT(loadScene(const QString&)));
 	connect(this, SIGNAL(saveFile(const QString&)), &m_scene, SLOT(saveScene(const QString&)));
-	connect(this, SIGNAL(posChanged(const QVector3D &, const QVector3D &)), &m_scene, SLOT(translateObjects(const QVector3D &, const QVector3D &)));
+	//connect(this, SIGNAL(posChanged(const QVector3D &, const QVector3D &)), &m_scene, SLOT(translateObjects(const QVector3D &, const QVector3D &)));
+	connect(this, SIGNAL(translate(const QVector3D &)), &m_scene, SLOT(translateObjects(const QVector3D &)));
+	connect(this, SIGNAL(rightClicked(const QPoint&, int, int, bool)), &m_scene, SLOT(findClosestPoint(const QPoint&, int, int, bool)));
 
 	connect(ui.radioButton_stereo, SIGNAL(toggled(bool)), this, SLOT(stereo_button_toggled(bool)));
 	connect(ui.radioButton_Idle, SIGNAL(toggled(bool)), this, SLOT(radioBtnIdleToggled(bool)));
@@ -90,7 +155,7 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(ui.doubleSpinBox_2, SIGNAL(valueChanged(double)), &m_scene, SLOT(closestPointStepChanged(double)));
 	connect(ui.doubleSpinBox_intersectionStep, SIGNAL(valueChanged(double)), &m_scene, SLOT(gradientStepChanged(double)));
 	connect(ui.spinBox_wrapIter, SIGNAL(valueChanged(int)), &m_scene, SLOT(newtonWrapIterChanged(int)));
-	
+
 
 	connect(ui.checkBox_pointer, SIGNAL(stateChanged(int)), ui.myGLWidget, SLOT(checkBox_pointerStateChanged(int)));
 	connect(ui.pushButton_AddObject, SIGNAL(clicked()), this, SLOT(pushButton_AddObjectClicked()));
@@ -155,11 +220,12 @@ void ModelowanieGeometryczne1::connectSignals()
 	connect(&m_scene, SIGNAL(editModeBC2Int(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
 	connect(&m_scene, SIGNAL(objectDeactivated(int)), ui.listWidget_ObjectsList, SLOT(removeHighlightActive()));
 	connect(&m_scene, SIGNAL(objectActivated(int)), ui.listWidget_ObjectsList, SLOT(highlightActiveItem(int)));
+	connect(&m_scene, SIGNAL(intersectionNotFound()), this, SLOT(intersectionError()));
 	connect(&m_scene,
-	        SIGNAL(intersectionFound(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, std::shared_ptr<
-		        DrawableObject>, std::shared_ptr<DrawableObject>, QPair<bool, bool>, QPair<bool, bool>)), this,
-	        SLOT(showParametrizationViewer(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, std::
-		        shared_ptr<DrawableObject>, std::shared_ptr<DrawableObject>, QPair<bool, bool>, QPair<bool, bool>)));
+		SIGNAL(intersectionFound(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, std::shared_ptr<
+			DrawableObject>, std::shared_ptr<DrawableObject>, QPair<bool, bool>, QPair<bool, bool>)), this,
+		SLOT(showParametrizationViewer(const std::vector<QVector4D>&, const QVector4D&, const QVector4D&, std::
+			shared_ptr<DrawableObject>, std::shared_ptr<DrawableObject>, QPair<bool, bool>, QPair<bool, bool>)));
 }
 
 void ModelowanieGeometryczne1::label_3dCoordsChangeText(float x, float y, float z)
@@ -330,6 +396,45 @@ void ModelowanieGeometryczne1::myGLWidgetKeyPressed(QKeyEvent *event)
 		ui.radioButton_Delete->setChecked(true);
 		break;
 	}
+	case Qt::Key_Up:
+	{
+		emit translate(QVector3D(0, TRANSLATION, 0));
+		break;
+	}
+	case Qt::Key_PageUp:
+	{
+		emit translate(QVector3D(0, 0, TRANSLATION));
+		break;
+	}
+	case Qt::Key_PageDown:
+	{
+		emit translate(QVector3D(0, 0, -TRANSLATION));
+		break;
+	}
+	case Qt::Key_Down:
+	{
+		emit translate(QVector3D(0, -TRANSLATION, 0));
+		break;
+	}
+	case Qt::Key_Right:
+	{
+		emit translate(QVector3D(TRANSLATION, 0, 0));
+		break;
+	}
+	case Qt::Key_Left:
+	{
+		emit translate(QVector3D(-TRANSLATION, 0, 0));
+		break;
+	}
+	case Qt::Key_Space:
+	{
+		QVector3D pos = m_scene.m_cursor->moveToObject();
+		label_3dCoordsChangeText(pos.x(), pos.y(), pos.z());
+		ui.doubleSpinBox_CursorX->setValue(pos.x());
+		ui.doubleSpinBox_CursorY->setValue(pos.y());
+		ui.doubleSpinBox_CursorZ->setValue(pos.z());
+		break;
+	}
 	case 'X':
 	{
 		m_scene.showAxes('X');
@@ -345,6 +450,11 @@ void ModelowanieGeometryczne1::myGLWidgetKeyPressed(QKeyEvent *event)
 		m_scene.showAxes('Z');
 		break;
 	}
+	case 'C':
+	{
+		ui.checkBox_pointer->setChecked(!ui.checkBox_pointer->isChecked());
+		break;
+	}
 	}
 }
 
@@ -352,6 +462,7 @@ void ModelowanieGeometryczne1::myGLWidgetMouseMoved(QMouseEvent *event)
 {
 	float dx = event->x() - m_scene.m_camera.m_mousePos.x();
 	float dy = event->y() - m_scene.m_camera.m_mousePos.y();
+	QVector4D pos;
 	if (event->buttons() & Qt::MiddleButton)
 	{
 		m_scene.m_camera.mouseMoved(dx, dy);
@@ -359,10 +470,14 @@ void ModelowanieGeometryczne1::myGLWidgetMouseMoved(QMouseEvent *event)
 	if (m_scene.m_isCursor3d)
 	{
 		m_scene.updateCursorPosition(event->x(), event->y(), ui.myGLWidget->getWidth(), ui.myGLWidget->getHeight(), QGuiApplication::keyboardModifiers() & Qt::ControlModifier);
+		pos = m_scene.m_cursor->getPosition();
+		ui.doubleSpinBox_CursorX->setValue(pos.x());
+		ui.doubleSpinBox_CursorY->setValue(pos.y());
+		ui.doubleSpinBox_CursorZ->setValue(pos.z());
 	}
 	m_scene.m_camera.m_mousePos = event->pos();
-	QVector4D c = m_scene.m_cursor->getPosition();
-	label_3dCoordsChangeText(c.x(), c.y(), c.z());
+		pos = m_scene.m_cursor->getPosition();
+	label_3dCoordsChangeText(pos.x(), pos.y(), pos.z());
 }
 
 void ModelowanieGeometryczne1::myGLWidgetMousePressed(QMouseEvent *event)
@@ -384,6 +499,10 @@ void ModelowanieGeometryczne1::myGLWidgetMousePressed(QMouseEvent *event)
 		{
 			emit cursor3dItemAcquired(id);
 		}*/
+	}
+	else if (event->button() == Qt::RightButton)
+	{
+		emit rightClicked(event->pos(), ui.myGLWidget->getWidth(), ui.myGLWidget->getHeight(), QGuiApplication::keyboardModifiers() & Qt::ControlModifier);
 	}
 	ui.myGLWidget->updateGL();
 }
@@ -637,16 +756,19 @@ void ModelowanieGeometryczne1::doubleSpinbox_RotZValueChanged(double val)
 void ModelowanieGeometryczne1::doubleSpinbox_CursorXValueChanged(double val)
 {
 	m_scene.m_cursor->setPosition(QVector3D(ui.doubleSpinBox_CursorX->value(), ui.doubleSpinBox_CursorY->value(), ui.doubleSpinBox_CursorZ->value()));
+	label_3dCoordsChangeText(ui.doubleSpinBox_CursorX->value(), ui.doubleSpinBox_CursorY->value(), ui.doubleSpinBox_CursorZ->value());
 }
 
 void ModelowanieGeometryczne1::doubleSpinbox_CursorYValueChanged(double val)
 {
 	m_scene.m_cursor->setPosition(QVector3D(ui.doubleSpinBox_CursorX->value(), ui.doubleSpinBox_CursorY->value(), ui.doubleSpinBox_CursorZ->value()));
+	label_3dCoordsChangeText(ui.doubleSpinBox_CursorX->value(), ui.doubleSpinBox_CursorY->value(), ui.doubleSpinBox_CursorZ->value());
 }
 
 void ModelowanieGeometryczne1::doubleSpinbox_CursorZValueChanged(double val)
 {
 	m_scene.m_cursor->setPosition(QVector3D(ui.doubleSpinBox_CursorX->value(), ui.doubleSpinBox_CursorY->value(), ui.doubleSpinBox_CursorZ->value()));
+	label_3dCoordsChangeText(ui.doubleSpinBox_CursorX->value(), ui.doubleSpinBox_CursorY->value(), ui.doubleSpinBox_CursorZ->value());
 }
 
 void ModelowanieGeometryczne1::loadScene()
@@ -677,6 +799,13 @@ void ModelowanieGeometryczne1::saveScene()
 		tr("Json file (*.json)"));
 	QString pathName;
 	emit saveFile(fileName);
+}
+
+void ModelowanieGeometryczne1::intersectionError()
+{
+	QMessageBox msgBox;
+	msgBox.setText("Intersection not found");
+	msgBox.exec();
 }
 
 void ModelowanieGeometryczne1::showParametrizationViewer(const std::vector<QVector4D>& parametrization,

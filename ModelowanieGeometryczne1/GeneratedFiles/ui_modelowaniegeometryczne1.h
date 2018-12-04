@@ -171,7 +171,7 @@ public:
             ModelowanieGeometryczne1Class->setObjectName(QStringLiteral("ModelowanieGeometryczne1Class"));
         ModelowanieGeometryczne1Class->resize(1143, 914);
         ModelowanieGeometryczne1Class->setMouseTracking(false);
-        ModelowanieGeometryczne1Class->setFocusPolicy(Qt::ClickFocus);
+        ModelowanieGeometryczne1Class->setFocusPolicy(Qt::StrongFocus);
         actionLoad_Scene = new QAction(ModelowanieGeometryczne1Class);
         actionLoad_Scene->setObjectName(QStringLiteral("actionLoad_Scene"));
         actionSave_Scene = new QAction(ModelowanieGeometryczne1Class);

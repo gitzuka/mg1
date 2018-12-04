@@ -17,6 +17,7 @@
 #include "uiAxes.h"
 #include "fileManager.h"
 #include "Intersections.h"
+#include "3dmath.h"
 
 Scene::Scene() : m_stereoscopy(false), m_isCursor3d(false)
 {
@@ -174,6 +175,11 @@ void Scene::checkIntersections(const QList<int>& ids)
 		std::shared_ptr<IntersectableObject> surface = std::dynamic_pointer_cast<IntersectableObject>(getUiConntector(ids.at(0))->getObject());
 		//std::vector<std::vector<QVector4D>> curves = Intersections::getTrimmingCurve(surface, m_cursor->getPosition());
 		std::vector<QVector4D> params = Intersections::getTrimmingCurve(surface, m_cursor->getPosition());
+		if (params.empty())
+		{
+			emit intersectionNotFound();
+			return;
+		}
 		std::vector<QVector4D> vertices;
 		for (const auto p : params)
 		{
@@ -213,51 +219,30 @@ void Scene::checkIntersections(const QList<int>& ids)
 		}*/
 	}
 
-	//int id = createDrawableObject("Point3D");
-	//getUiConntector(id)->getObject()->setPosition(testpoint);
-	//getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
-	//QVector4D uvuv = Intersections::findIntersectionPoint(surface1, surface2, testpoint);
-	//QVector2D uv11 = Intersections::findClosestPoint(surface1, testpoint);
-	//QVector2D uv22 = Intersections::findClosestPoint(surface2, testpoint);
-	//QVector3D point11 = surface1->getPointByUV(uv11.x(), uv11.y());
-	//QVector3D point1 = surface1->getPointByUV(uvuv.x(), uvuv.y());
-	//int id = createDrawableObject("Point3D");
-	//getUiConntector(id)->getObject()->setPosition(point11);
-	//getUiConntector(id)->getObject()->setColor(float3(0, 128, 128));
-	//getUiConntector(id)->getObject()->setName("Closest1");
-	//QVector3D point22 = surface2->getPointByUV(uv22.x(), uv22.y());
-	////QVector3D point2 = surface2->getPointByUV(uvuv.z(), uvuv.w());
-	//id = createDrawableObject("Point3D");
-	//getUiConntector(id)->getObject()->setPosition(point22);
-	//getUiConntector(id)->getObject()->setColor(float3(0, 128, 128));
-	//getUiConntector(id)->getObject()->setName("Closest2");
 
-	//QVector3D point1 = surface1->getPointByUV(uvuv.x(), uvuv.y());
-	//id = createDrawableObject("Point3D");
-	//getUiConntector(id)->getObject()->setPosition(point1);
-	//getUiConntector(id)->getObject()->setColor(float3(0, 255, 0));
-	//getUiConntector(id)->getObject()->setName("Intersection1");
-	//QVector3D point2 = surface2->getPointByUV(uvuv.z(), uvuv.w());
-	//id = createDrawableObject("Point3D");
-	//getUiConntector(id)->getObject()->setPosition(point2);
-	//getUiConntector(id)->getObject()->setColor(float3(0, 0, 255));
-	//getUiConntector(id)->getObject()->setName("Intersection2");
 	if (ids.count() != 2)
+	{
 		return;
+	}
 	std::shared_ptr<IntersectableObject> surface1 = std::dynamic_pointer_cast<IntersectableObject>(getUiConntector(ids.at(0))->getObject());
 	std::shared_ptr<IntersectableObject> surface2 = std::dynamic_pointer_cast<IntersectableObject>(getUiConntector(ids.at(1))->getObject());
 	std::vector<QVector4D> params = Intersections::getTrimmingCurve(surface1, surface2, m_cursor->getPosition());
+	if (params.empty())
+	{
+		emit intersectionNotFound();
+		return;
+	}
 	std::vector<QVector4D> vertices;
 	for (const auto p : params)
 	{
 		vertices.emplace_back(QVector4D(surface1->getPointByUV(p.x(), p.y()), 1.0f));
 	}
 	//
-	std::vector<QVector4D> vertices2;
+	/*std::vector<QVector4D> vertices2;
 	for (const auto p : params)
 	{
 		vertices2.emplace_back(QVector4D(surface2->getPointByUV(p.z(), p.w()), 1.0f));
-	}
+	}*/
 	//
 	int id = createDrawableObject("TrimmingCurve");
 	std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
@@ -272,64 +257,12 @@ void Scene::checkIntersections(const QList<int>& ids)
 			QPair<bool, bool>(surface2->isUWrapped(), surface2->isVWrapped()));
 	}
 
-	
-	id = createDrawableObject("TrimmingCurve");
+
+	/*id = createDrawableObject("TrimmingCurve");
 	std::shared_ptr<TrimmingCurve> curve2 = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
 	curve2->setColor(0, 255, 0);
-	curve2->setVertices(vertices2);
+	curve2->setVertices(vertices2);*/
 	//curve2->setParametrization(params);
-	/*if (curve->getVertices().size() >= 2)
-	{
-		emit intersectionFound(curve->getParametrization(), surface1->getRangeUV(), surface2->getRangeUV(),
-			getUiConntector(ids.at(0))->getObject(),
-			getUiConntector(ids.at(1))->getObject(),
-			QPair<bool, bool>(surface1->isUWrapped(), surface1->isVWrapped()),
-			QPair<bool, bool>(surface2->isUWrapped(), surface2->isVWrapped()));
-	}*/
-	//std::vector<std::vector<QVector4D>> curves = Intersections::getTrimmingCurve(surface1, surface2, m_cursor->getPosition());
-	/*std::vector<QVector4D> vertices;
-	for (const auto c : curves)
-	{
-		vertices.reserve(c.size());
-		for (int i = 0; i < c.size(); ++i)
-		{
-			vertices.emplace_back(surface1->getPointByUV(c.at(i).x(), c.at(i).y()), 1.0f);
-		}
-
-	}*/
-	/*vertices.reserve(params.size());
-	for (int i = 0; i < params.size(); ++i)
-	{
-		vertices.emplace_back(surface1->getPointByUV(params.at(i).x(), params.at(i).y()), 1.0f);
-	}
-	int id = createDrawableObject("TrimmingCurve");
-	std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
-	curve->setVertices(vertices);
-	curve->setParametrization(params);
-	if (curve->getVertices().size() >= 2)
-	{
-		emit intersectionFound(curve->getParametrization(), surface1->getRangeUV(), surface2->getRangeUV(),
-			getUiConntector(ids.at(0))->getObject()->getName(),
-			getUiConntector(ids.at(1))->getObject()->getName());
-	}*/
-
-	//std::vector<QVector4D> params = Intersections::getTrimmingCurve(surface1, surface2, m_cursor->getPosition());
-	/*std::vector<QVector4D> vertices;
-	vertices.reserve(params.size());
-	for (int i = 0; i < params.size(); ++i)
-	{
-		vertices.emplace_back(surface1->getPointByUV(params.at(i).x(), params.at(i).y()), 1.0f);
-	}
-	int id = createDrawableObject("TrimmingCurve");
-	std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
-	curve->setVertices(vertices);
-	curve->setParametrization(params);
-	if (curve->getVertices().size() >= 2)
-	{
-		emit intersectionFound(curve->getParametrization(), surface1->getRangeUV(), surface2->getRangeUV(),
-							   getUiConntector(ids.at(0))->getObject()->getName(),
-							   getUiConntector(ids.at(1))->getObject()->getName());
-	}*/
 }
 
 void Scene::setActiveObject(int id)
@@ -453,7 +386,8 @@ void Scene::removeUiConnectors(const std::vector<int> &ids)
 
 void Scene::selectCursorObjects(QList<int> &ids)
 {
-	if (m_isCursor3d && m_cursor->getMode() == Cursor3D::Mode::Idle)
+	//if (m_isCursor3d && m_cursor->getMode() == Cursor3D::Mode::Idle)
+	if (m_cursor->getMode() == Cursor3D::Mode::Idle)
 	{
 		m_cursor->clearAllObjects();
 		for (int i = 0; i < ids.count(); ++i)
@@ -546,10 +480,48 @@ void Scene::newtonWrapIterChanged(int val)
 	Intersections::wrapIter = val;
 }
 
-void Scene::translateObjects(const QVector3D& pos, const QVector3D& translate)
+void Scene::translateObjects(const QVector3D& pos)
 {
-	m_cursor->translateObjects(pos, translate);
+		//QMatrix4x4 PV = m_camera.m_projectionMatrix * m_camera.m_viewMatrix;
 
+	//QVector3D position =  PV * pos;
+	m_cursor->translateObjects(pos);
+}
+
+//void Scene::translateObjects(const QVector3D& pos, const QVector3D& translate)
+//{
+//	m_cursor->translateObjects(pos, translate);
+//
+//}
+
+void Scene::findClosestPoint(const QPoint& pos, int width, int height, bool add)
+{
+	width *= 0.5f;
+	height *= 0.5f;
+	float minDist = std::numeric_limits<float>::max();
+	QMatrix4x4 PV = m_camera.m_projectionMatrix * m_camera.m_viewMatrix;
+	int id = -1;
+	for (const auto &obj : m_uiConnectors)
+	{
+		if (obj.second->getObject()->m_type == DrawableObject::ObjectType::point3D)
+		{
+			QVector3D position = PV * obj.second->getObject()->getPosition();
+			if (position.x() < -1 || position.x() > 1 || position.y() < -1 || position.y() > 1 || position.z() > 1 || position.z() < CAM_NEAR)
+				continue;
+			float posX = (position.x() + 1) * width;
+			float posY = (-position.y() + 1) * height;
+			float dist = math3d::calculateDistance2D((position.x() + 1) * width, pos.x(), (-position.y() + 1) * height, pos.y());
+			if (dist < minDist && dist <= TARGETING_DISTANCE2D)
+			{
+				id = obj.first;
+				minDist = dist;
+			}
+		}
+	}
+	if (id != -1)
+	{
+		m_cursor->markObject(getUiConntector(id)->getObject(), add);
+	}
 }
 
 void Scene::performCursorAction(bool multiple)
@@ -711,7 +683,8 @@ void Scene::createBezierSurfaceC2(const std::shared_ptr<BezierSurfaceC2>& surfac
 	}
 	int id = uiConnector->getObject()->getId();
 	addUiConnector(std::move(uiConnector));
-	emit addedBezierSurfaceC2("BezierSurfaceC2", id, static_cast<UiBezierSurfaceC2*>(getUiConntector(id)));
+	//emit addedBezierSurfaceC2("BezierSurfaceC2", id, static_cast<UiBezierSurfaceC2*>(getUiConntector(id)));
+	emit addedBezierSurfaceC2(getUiConntector(id)->getObject()->getName(), id, static_cast<UiBezierSurfaceC2*>(getUiConntector(id)));
 }
 
 void Scene::showAxes(char axis) const
@@ -762,5 +735,6 @@ void Scene::createBezierSurfaceC0(const std::shared_ptr<BezierSurfaceC0> &surfac
 	}
 	int id = uiConnector->getObject()->getId();
 	addUiConnector(std::move(uiConnector));
-	emit addedBezierSurfaceC0("BezierSurfaceC0", id, static_cast<UiBezierSurfaceC0*>(getUiConntector(id)));
+	//emit addedBezierSurfaceC0("BezierSurfaceC0", id, static_cast<UiBezierSurfaceC0*>(getUiConntector(id)));
+	emit addedBezierSurfaceC0(getUiConntector(id)->getObject()->getName(), id, static_cast<UiBezierSurfaceC0*>(getUiConntector(id)));
 }

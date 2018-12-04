@@ -442,17 +442,23 @@ namespace Intersections
 		bool changed1 = false, changed2 = false;
 		QVector2D params1 = QVector2D(params.x(), params.y());
 		QVector2D params2 = QVector2D(params.z(), params.w());
-		if (wrapped1)
+		/*if (wrapped1)
 			wrapParams(uvRange1, params1);
 		else
 			changed1 = trimParams(uvRange1, params1);
 		if (wrapped2)
 			wrapParams(uvRange2, params2);
 		else
+			changed2 = trimParams(uvRange2, params2);*/
+		if (wrapped1)
+			changed1 = wrapParams(uvRange1, params1);
+		else
+			changed1 = trimParams(uvRange1, params1);
+		if (wrapped2)
+			changed2 = wrapParams(uvRange2, params2);
+		else
 			changed2 = trimParams(uvRange2, params2);
 		params = QVector4D(params1.x(), params1.y(), params2.x(), params2.y());
-		//if (wrapped1 || wrapped2)
-		//	return false;
 		return (changed1 || changed2);
 	}
 
@@ -745,10 +751,9 @@ namespace Intersections
 		return fun;
 	}
 
-	static bool findNextPoint2(Surface surface1, Surface surface2,
+	static QPair<bool, bool> findNextPoint2(Surface surface1, Surface surface2,
 		const QVector4D &params, double delta, QVector4D &result, NewtonWrapTrim &paramsLogic)
 	{
-
 		int i = 0;
 		result = params;
 		double dist = std::numeric_limits<double>::infinity();
@@ -774,25 +779,18 @@ namespace Intersections
 			QVector4D next = result - jacobiFun * jacobiMat;
 
 			result = next;
+
 			if (checkParametrization(result, surface1, surface2, paramsLogic, params))
 			{
 				if (paramsLogic.wasTrimmed)
 				{
-					return false;
+					return QPair<bool, bool>(false, abs(delta) > newtonEps);
 				}
-				//if (paramsLogic.wasWrapped)
-				//{
-					//return true;
-					//continue;
-					//point1 = surface1->getPointByUV(result.x(), result.y());
-					//point2 = surface2->getPointByUV(result.z(), result.w());
-					//dist = (point1 - point2).lengthSquared();
-					//break;
-				//}
 			}
 			point1 = surface1->getPointByUV(result.x(), result.y());
 			point2 = surface2->getPointByUV(result.z(), result.w());
 			dist = (point1 - point2).lengthSquared();
+
 			++i;
 			if (i >= maxIterNewton)
 			{
@@ -801,9 +799,10 @@ namespace Intersections
 				i = 0;
 			}
 		}
+		return QPair<bool, bool>(abs(delta) > newtonEps, abs(delta) > newtonEps);
 
-		return true;
-		return dist > newtonEps * newtonEps;
+		//return true;
+		//return dist > newtonEps * newtonEps;
 
 	}
 
@@ -982,11 +981,19 @@ namespace Intersections
 		{
 			//QVector3D versor = dir * getTangentVector(surface1, surface2, lastPoint);
 			//if (!findNextPoint(surface1, surface2, lastPoint, versor, delta, nextPoint, paramsLogic))
-			if (!findNextPoint2(surface1, surface2, lastPoint, delta, nextPoint, paramsLogic))
+			QPair<bool, bool> foundPoint = findNextPoint2(surface1, surface2, lastPoint, delta, nextPoint, paramsLogic);
+			//if (!findNextPoint2(surface1, surface2, lastPoint, delta, nextPoint, paramsLogic))
+			if (!foundPoint.first)
 			{
+				if (!foundPoint.second)
+				{
+					vertices.clear();
+					return vertices;
+				}
 				i = 0;
 				if (delta < 0)
 				{
+					vertices.push_back(nextPoint);
 					curves.emplace_back(vertices);
 					vertices.clear();
 					break;
@@ -995,6 +1002,7 @@ namespace Intersections
 				//vertices.push_back(nextPoint);
 				paramsLogic.wasTrimmed = false;
 				paramsLogic.wasWrapped = false;
+				vertices.push_back(nextPoint);
 				curves.emplace_back(vertices);
 				vertices.clear();
 				lastPoint = intersectionPoint;
@@ -1070,8 +1078,17 @@ namespace Intersections
 		NewtonWrapTrim paramsLogic;
 		while (i++ < maxIterNewton)
 		{
-			if (!findNextPoint2(surface, surface, lastPoint, delta, nextPoint, paramsLogic))
+			QPair<bool, bool> foundPoint = findNextPoint2(surface, surface, lastPoint, delta, nextPoint, paramsLogic);
+			//if (!findNextPoint2(surface1, surface2, lastPoint, delta, nextPoint, paramsLogic))
+			if (!foundPoint.first)
 			{
+				if (!foundPoint.second)
+				{
+					vertices.clear();
+					return vertices;
+				}
+				/*if (!findNextPoint2(surface, surface, lastPoint, delta, nextPoint, paramsLogic))
+				{*/
 				i = 0;
 				if (delta < 0)
 				{

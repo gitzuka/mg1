@@ -24,16 +24,19 @@ public:
 	
 	//void updatePosition(float posX, float posY, float posZ, const Camera &camera);
 	void updatePosition(float x, float y, int width, int height, const Camera &camera, bool z);
-	void translateObjects(const QVector3D &pos, const QVector3D &translate);
+	//void translateObjects(const QVector3D &pos, const QVector3D &translate);
+	void translateObjects(const QVector3D &pos);
 	void clearAllObjects();
 	Mode getMode() const;
 	void changeMode(Mode mode);
+	QVector3D moveToObject();
 	//mouse was pressed, take action based on cursor mode
 	void performAction(std::unordered_map<int, std::unique_ptr<UiConnector>> &sceneObjects, bool multiple = false);
 	void setActiveObject(std::shared_ptr<DrawableObject> sceneObject);
 	void addActiveObject(std::shared_ptr<DrawableObject> sceneObject);
 	//returns object if there is only one active, otherwise nullptr
 	std::shared_ptr<DrawableObject> getActiveObject() const;
+	void markObject(std::shared_ptr<DrawableObject> sceneObject, bool multiple);
 
 private:
 	float m_posX;

@@ -359,7 +359,21 @@ void BezierSurface::setPosition(QVector3D pos)
 	{
 		m_points.at(i)->setBezierSurfacePosition(pos, m_rotation);
 	}
-	m_modelMatrix = Camera::createTranslation(pos) * QMatrix4x4(m_rotation.toRotationMatrix());
+	createVertices();
+	//m_modelMatrix = Camera::createTranslation(pos) * QMatrix4x4(m_rotation.toRotationMatrix());
+}
+
+void BezierSurface::translate(const QVector4D& vec)
+{
+	m_pos += vec.toVector3D();
+	for (int i = 0; i < m_points.size(); ++i)
+	{
+		m_points.at(i)->setBezierSurfacePosition(m_pos, m_rotation);
+	}
+	createVertices();
+	//m_modelMatrix = Camera::createTranslation(m_pos) * QMatrix4x4(m_rotation.toRotationMatrix());
+	//m_modelMatrix.translate(vec.toVector3D());
+
 }
 
 void BezierSurface::rotate(QVector3D eulerAngles)
