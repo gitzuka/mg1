@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-
 class QVector3D;
 class BezierSurface;
 class QVector2D;
@@ -1153,3 +1152,4 @@ namespace Intersections
 		return vertices;
 	}
 }
+

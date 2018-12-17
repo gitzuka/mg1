@@ -18,6 +18,8 @@
 #include "fileManager.h"
 #include "Intersections.h"
 #include "3dmath.h"
+#include "HeightmapGenerator.h"
+#include "pathsGenerator.h"
 
 Scene::Scene() : m_stereoscopy(false), m_isCursor3d(false)
 {
@@ -482,9 +484,9 @@ void Scene::newtonWrapIterChanged(int val)
 
 void Scene::translateObjects(const QVector3D& pos)
 {
-		//QMatrix4x4 PV = m_camera.m_projectionMatrix * m_camera.m_viewMatrix;
+	//QMatrix4x4 PV = m_camera.m_projectionMatrix * m_camera.m_viewMatrix;
 
-	//QVector3D position =  PV * pos;
+//QVector3D position =  PV * pos;
 	m_cursor->translateObjects(pos);
 }
 
@@ -545,7 +547,7 @@ void Scene::draw() const
 		{
 			vertices.reserve(sceneObject.second.get()->getObject()->getVertices().size());
 			QMatrix4x4 PVM = PV * sceneObject.second.get()->getObject()->getModelMatrix();
-			for (std::vector<QVector4D>::const_iterator it = sceneObject.second.get()->getObject()->getVertices().begin(); it != sceneObject.second.get()->getObject()->getVertices().end(); ++it)
+			for (auto it = sceneObject.second.get()->getObject()->getVertices().begin(); it != sceneObject.second.get()->getObject()->getVertices().end(); ++it)
 			{
 				QVector4D vec = PVM * (*it);
 				vec /= vec.w();
@@ -685,6 +687,51 @@ void Scene::createBezierSurfaceC2(const std::shared_ptr<BezierSurfaceC2>& surfac
 	addUiConnector(std::move(uiConnector));
 	//emit addedBezierSurfaceC2("BezierSurfaceC2", id, static_cast<UiBezierSurfaceC2*>(getUiConntector(id)));
 	emit addedBezierSurfaceC2(getUiConntector(id)->getObject()->getName(), id, static_cast<UiBezierSurfaceC2*>(getUiConntector(id)));
+}
+
+void Scene::generateHeightMap() const
+{
+	/*int size = 1500;
+	float precision = 500.0f;
+	float millRadius = 0.85f;
+	HeightmapGenerator hmGenerator(size, precision);
+	hmGenerator.initSphereData(millRadius);
+	for (const auto &obj : m_uiConnectors)
+	{
+		if (obj.second->getObject()->m_type == DrawableObject::ObjectType::bezierSurfaceC2)
+		{
+			hmGenerator.updateMap(std::static_pointer_cast<BezierSurface>(obj.second->getObject()), millRadius);
+			hmGenerator.updateMapSpheres(std::static_pointer_cast<BezierSurface>(obj.second->getObject()));
+		}
+	}
+	
+
+	float *map = hmGenerator.getMap();
+	fileManager::saveHeightmap(map, size, size, "hem.json");*/
+
+	QFile file("hem.json");
+
+	if (!file.open(QIODevice::ReadOnly))
+	{
+		qDebug("Unable to open file");
+		return;
+	}
+	QString fileContent = file.readAll();
+
+	PathsGenerator pg;
+	pg.generateCrudePaths(fileContent);
+
+
+
+	/*QImage img (size, size, QImage::Format::Format_RGB32);
+	for (int i = 0; i < img.width(); ++i)
+	{
+		for (int j = 0; j < img.height(); ++j)
+		{
+			img.setPixel(i, j, map[i * img.width() + j]);
+		}
+	}
+	bool save = img.save("test.jpg", "jpg");*/
 }
 
 void Scene::showAxes(char axis) const

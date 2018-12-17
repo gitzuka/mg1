@@ -81,6 +81,9 @@
     <Filter Include="Source Files\Objects\Surfaces">
       <UniqueIdentifier>{76d1a463-44b9-44f2-8a6b-e4533e4d854c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{c9378a3c-9a6c-4580-b9fb-a1229cf07191}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -350,6 +353,21 @@
     <ClCompile Include="GeneratedFiles\Release\moc_formPV.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="HeightmapGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="openGLHeightmap.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_openGLHeightmap.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_openGLHeightmap.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="pathsGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="modelowaniegeometryczne1.ui">
@@ -435,6 +453,12 @@
     </CustomBuild>
     <CustomBuild Include="GeneratedFiles\formPV.ui">
       <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="heightmapViewer.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="openGLHeightmap.h">
+      <Filter>Header Files\UI</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -531,5 +555,19 @@
     <ClInclude Include="GeneratedFiles\ui_formPV.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="HeightmapGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pathsGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pathsUtils.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="heightmap.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

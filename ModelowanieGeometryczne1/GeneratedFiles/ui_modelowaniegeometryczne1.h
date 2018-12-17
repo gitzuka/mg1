@@ -134,6 +134,7 @@ public:
     QDoubleSpinBox *doubleSpinBox_intersectionStep;
     QLabel *label_19;
     QDoubleSpinBox *doubleSpinBox_2;
+    QPushButton *pushButton_heightmap;
     QSpacerItem *verticalSpacer_2;
     QVBoxLayout *verticalLayout_9;
     QVBoxLayout *verticalLayout_16;
@@ -278,7 +279,7 @@ public:
         toolBox->setObjectName(QStringLiteral("toolBox"));
         page_Torus = new QWidget();
         page_Torus->setObjectName(QStringLiteral("page_Torus"));
-        page_Torus->setGeometry(QRect(0, 0, 98, 176));
+        page_Torus->setGeometry(QRect(0, 0, 296, 471));
         verticalLayout_8 = new QVBoxLayout(page_Torus);
         verticalLayout_8->setSpacing(0);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -646,6 +647,11 @@ public:
 
         verticalLayout_5->addLayout(formLayout);
 
+        pushButton_heightmap = new QPushButton(tab_Other);
+        pushButton_heightmap->setObjectName(QStringLiteral("pushButton_heightmap"));
+
+        verticalLayout_5->addWidget(pushButton_heightmap);
+
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_5->addItem(verticalSpacer_2);
@@ -919,6 +925,7 @@ public:
         label_17->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Newton wrap iterations", Q_NULLPTR));
         label_18->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Intersection step", Q_NULLPTR));
         label_19->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Closes point step", Q_NULLPTR));
+        pushButton_heightmap->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Generate Heightmap", Q_NULLPTR));
         myTabWidget->setTabText(myTabWidget->indexOf(tab_Other), QApplication::translate("ModelowanieGeometryczne1Class", "Other features", Q_NULLPTR));
         label_7->setText(QApplication::translate("ModelowanieGeometryczne1Class", "X", Q_NULLPTR));
         label_8->setText(QApplication::translate("ModelowanieGeometryczne1Class", "Z", Q_NULLPTR));

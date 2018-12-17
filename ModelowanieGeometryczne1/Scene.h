@@ -81,6 +81,7 @@ private slots:
 	//void translateObjects(const QVector3D &pos, const QVector3D &translate);
 	void translateObjects(const QVector3D &pos);
 	void findClosestPoint(const QPoint &pos, int width, int height, bool add);
+	void generateHeightMap() const;
 
 signals:
 	void addedTorus(const QString &name, int id, const UiTorus *uiTorus);

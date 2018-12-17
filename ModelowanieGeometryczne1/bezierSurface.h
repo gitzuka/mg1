@@ -55,6 +55,7 @@ public:
 	void rotate(QVector3D eulerAngles) override;
 	void undoTrimming();
 	virtual void initializeFromPoints(const std::vector<int> &ids, const std::vector<std::shared_ptr<Point3D>> &points) = 0;
+	QVector3D getPointOnSurface(const BezierPatch& patch, double u, double v) const;
 
 protected:
 	BezierSurface(ObjectType type, const QString &name, const BezierSurfaceData &parameters);
@@ -73,7 +74,7 @@ protected:
 	virtual void planeSurfacePatchesPoints() = 0;
 	virtual void cylinderSurfacePatchesPoints() = 0;
 	virtual QVector3D calculateSurfacePoint(float t, QVector3D a, QVector3D b, QVector3D c, QVector3D d) const = 0;
-	QVector3D getPointOnSurface(const BezierPatch& patch, double u, double v) const;
+	//QVector3D getPointOnSurface(const BezierPatch& patch, double u, double v) const;
 	void generateControlPointsIndices();
 	void generateIndices() override;
 	void createVertices() override;

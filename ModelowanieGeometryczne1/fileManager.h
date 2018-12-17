@@ -1,25 +1,15 @@
 #pragma once
-#include <vector>
-#include <memory>
-
-//#include "bezierSurfaceC0.h"
-//#include "bezierSurfaceC2.h"
-//#include "point3d.h"
-//#include "torus.h"
-//class Torus;
-//class BezierSurfaceC2;
-//class BezierSurfaceC0;
-//class QString;
-//class QFile;
-//class Point3D;
-
-namespace fileManager
-{
-
 #include "bezierSurfaceC0.h"
 #include "bezierSurfaceC2.h"
 #include "point3d.h"
 #include "torus.h"
+#include "uiConnector.h"
+#include <vector>
+#include <memory>
+namespace fileManager
+{
+
+
 
 	using surfaceC0Ids = QPair<std::vector<std::shared_ptr<BezierSurfaceC0>>, std::vector<int>>;
 	using surfaceC2Ids = QPair<std::vector<std::shared_ptr<BezierSurfaceC2>>, std::vector<std::vector<int>>>;
@@ -271,6 +261,55 @@ namespace fileManager
 		return jTorus;
 	}
 
+	static float* loadHeightmap(const QString &fileContent, int &height, int &width)
+	{
+		QJsonDocument document = QJsonDocument::fromJson(fileContent.toUtf8());
+		QJsonObject jsonObj = document.object();
+		height = jsonObj["height"].toInt();
+		width = jsonObj["width"].toInt();
+		float *heightmap = new float[width * height];
+		QJsonArray heights = jsonObj["heights"].toArray();
+		for (int i = 0; i < width; ++i)
+		{
+			for (int j = 0; j < height; ++j)
+			{
+				heightmap[i * width + j] = heights[i * width + j].toDouble();
+			}
+		}
+		return heightmap;
+	}
+
+	static void saveHeightmap(const float *map, int width, int height, const QString &path)
+	{
+		QJsonObject jwidth;
+		jwidth["width"] = width;
+		QJsonObject jheight;
+		jheight["height"] = height;
+		QJsonArray heights;
+		for (int i = 0; i < width; ++i)
+		{
+			for (int j = 0; j < height; ++j)
+			{
+				heights.append(map[i * width + j]);
+			}
+		}
+
+		QFile saveFile(path);
+
+		if (!saveFile.open(QIODevice::WriteOnly))
+		{
+			qWarning("Couldn't open save file.");
+			return;
+		}
+
+		QJsonObject heightmap;
+		heightmap["width"] = width;
+		heightmap["height"] = height;
+		heightmap["heights"] = heights;
+		QJsonDocument saveDoc(heightmap);
+		saveFile.write(saveDoc.toJson());
+	}
+
 	static void saveScene(const std::unordered_map<int, std::unique_ptr<UiConnector>> &uiConnectors, const QString &path)
 	{
 		//std::vector<std::shared_ptr<Point3D>> points;
@@ -289,20 +328,17 @@ namespace fileManager
 			{
 			case DrawableObject::ObjectType::bezierSurfaceC0:
 			{
-				//surfaces0.emplace_back(std::static_pointer_cast<BezierSurfaceC0>(obj.second->getObject()));
 				jSurfsC0.append(saveSurfaceC0(std::static_pointer_cast<BezierSurfaceC0>(obj.second->getObject()), points));
 				break;
 			}
 			case DrawableObject::ObjectType::bezierSurfaceC2:
 			{
-				//surfaces2.emplace_back(std::static_pointer_cast<BezierSurfaceC2>(obj.second->getObject()));
 				jSurfsC2.append(saveSurfaceC2(std::static_pointer_cast<BezierSurfaceC2>(obj.second->getObject()), points));
 				break;
 			}
 			case DrawableObject::ObjectType::torus:
 			{
 				jTori.append(saveTorus(std::static_pointer_cast<Torus>(obj.second->getObject())));
-				//tori.emplace_back(std::static_pointer_cast<Torus>(obj.second->getObject()));
 				break;
 			}
 			default:
@@ -317,12 +353,6 @@ namespace fileManager
 			qWarning("Couldn't open save file.");
 			return;
 		}
-		/*std::shared_ptr<BezierSurfaceC0> surf;
-		for (const auto &obj : m_uiConnectors)
-		{
-			if (obj.second.get()->getObject()->m_type == DrawableObject::ObjectType::bezierSurfaceC0)
-				surf = std::static_pointer_cast<BezierSurfaceC0>(obj.second.get()->getObject());
-		}*/
 
 		QJsonObject scene;
 		scene["points"] = points;
@@ -331,24 +361,5 @@ namespace fileManager
 		scene["toruses"] = jTori;
 		QJsonDocument saveDoc(scene);
 		saveFile.write(saveDoc.toJson());
-
-		//QJsonArray jPoints;
-		//QJsonArray jSurfaces0;
-		//QJsonArray jSurfaces2;
-		//QJsonArray jTori;
-
-
-		//QJsonDocument d = QJsonDocument::fromJson(fileContent.toUtf8());
-		//QJsonObject jsonObj = d.object();
-		////QJsonArray jPoints = jsonObj["points"].toArray();
-		//std::vector<QString> pointsNames;
-		//std::vector<QVector3D> pointsCoords;
-		//for (const auto &point : jPoints)
-		//{
-		//	QJsonObject obj = point.toObject();
-		//	points.emplace_back(std::make_shared<Point3D>(DrawableObject::ObjectType::point3D, obj["name"].toString(),
-		//		QVector4D(obj["x"].toDouble(), obj["y"].toDouble(),
-		//			obj["z"].toDouble(), 1)));
-		//}
 	}
-};
+}

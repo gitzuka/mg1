@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Scene_t {
-    QByteArrayData data[78];
-    char stringdata0[1164];
+    QByteArrayData data[79];
+    char stringdata0[1182];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -109,7 +109,8 @@ QT_MOC_LITERAL(73, 1113, 16), // "translateObjects"
 QT_MOC_LITERAL(74, 1130, 16), // "findClosestPoint"
 QT_MOC_LITERAL(75, 1147, 5), // "width"
 QT_MOC_LITERAL(76, 1153, 6), // "height"
-QT_MOC_LITERAL(77, 1160, 3) // "add"
+QT_MOC_LITERAL(77, 1160, 3), // "add"
+QT_MOC_LITERAL(78, 1164, 17) // "generateHeightMap"
 
     },
     "Scene\0addedTorus\0\0name\0id\0const UiTorus*\0"
@@ -142,7 +143,7 @@ QT_MOC_LITERAL(77, 1160, 3) // "add"
     "newtonWrapDistChanged\0gradientStepChanged\0"
     "closestPointStepChanged\0newtonWrapIterChanged\0"
     "translateObjects\0findClosestPoint\0"
-    "width\0height\0add"
+    "width\0height\0add\0generateHeightMap"
 };
 #undef QT_MOC_LITERAL
 
@@ -152,7 +153,7 @@ static const uint qt_meta_data_Scene[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      35,   14, // methods
+      36,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -160,43 +161,44 @@ static const uint qt_meta_data_Scene[] = {
       17,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    3,  189,    2, 0x06 /* Public */,
-       7,    3,  196,    2, 0x06 /* Public */,
-      10,    3,  203,    2, 0x06 /* Public */,
-      13,    3,  210,    2, 0x06 /* Public */,
-      15,    3,  217,    2, 0x06 /* Public */,
-      18,    3,  224,    2, 0x06 /* Public */,
-      21,    3,  231,    2, 0x06 /* Public */,
-      24,    3,  238,    2, 0x06 /* Public */,
-      27,    0,  245,    2, 0x06 /* Public */,
-      28,    1,  246,    2, 0x06 /* Public */,
-      29,    1,  249,    2, 0x06 /* Public */,
-      30,    1,  252,    2, 0x06 /* Public */,
-      31,    1,  255,    2, 0x06 /* Public */,
-      32,    1,  258,    2, 0x06 /* Public */,
-      33,    3,  261,    2, 0x06 /* Public */,
-      34,    0,  268,    2, 0x06 /* Public */,
-      35,    7,  269,    2, 0x06 /* Public */,
+       1,    3,  194,    2, 0x06 /* Public */,
+       7,    3,  201,    2, 0x06 /* Public */,
+      10,    3,  208,    2, 0x06 /* Public */,
+      13,    3,  215,    2, 0x06 /* Public */,
+      15,    3,  222,    2, 0x06 /* Public */,
+      18,    3,  229,    2, 0x06 /* Public */,
+      21,    3,  236,    2, 0x06 /* Public */,
+      24,    3,  243,    2, 0x06 /* Public */,
+      27,    0,  250,    2, 0x06 /* Public */,
+      28,    1,  251,    2, 0x06 /* Public */,
+      29,    1,  254,    2, 0x06 /* Public */,
+      30,    1,  257,    2, 0x06 /* Public */,
+      31,    1,  260,    2, 0x06 /* Public */,
+      32,    1,  263,    2, 0x06 /* Public */,
+      33,    3,  266,    2, 0x06 /* Public */,
+      34,    0,  273,    2, 0x06 /* Public */,
+      35,    7,  274,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      46,    2,  284,    2, 0x0a /* Public */,
-      51,    1,  289,    2, 0x0a /* Public */,
-      53,    1,  292,    2, 0x08 /* Private */,
-      53,    0,  295,    2, 0x28 /* Private | MethodCloned */,
-      55,    0,  296,    2, 0x08 /* Private */,
-      56,    2,  297,    2, 0x08 /* Private */,
-      59,    1,  302,    2, 0x08 /* Private */,
-      60,    1,  305,    2, 0x08 /* Private */,
-      62,    1,  308,    2, 0x08 /* Private */,
-      64,    1,  311,    2, 0x08 /* Private */,
-      66,    1,  314,    2, 0x08 /* Private */,
-      68,    1,  317,    2, 0x08 /* Private */,
-      69,    1,  320,    2, 0x08 /* Private */,
-      70,    1,  323,    2, 0x08 /* Private */,
-      71,    1,  326,    2, 0x08 /* Private */,
-      72,    1,  329,    2, 0x08 /* Private */,
-      73,    1,  332,    2, 0x08 /* Private */,
-      74,    4,  335,    2, 0x08 /* Private */,
+      46,    2,  289,    2, 0x0a /* Public */,
+      51,    1,  294,    2, 0x0a /* Public */,
+      53,    1,  297,    2, 0x08 /* Private */,
+      53,    0,  300,    2, 0x28 /* Private | MethodCloned */,
+      55,    0,  301,    2, 0x08 /* Private */,
+      56,    2,  302,    2, 0x08 /* Private */,
+      59,    1,  307,    2, 0x08 /* Private */,
+      60,    1,  310,    2, 0x08 /* Private */,
+      62,    1,  313,    2, 0x08 /* Private */,
+      64,    1,  316,    2, 0x08 /* Private */,
+      66,    1,  319,    2, 0x08 /* Private */,
+      68,    1,  322,    2, 0x08 /* Private */,
+      69,    1,  325,    2, 0x08 /* Private */,
+      70,    1,  328,    2, 0x08 /* Private */,
+      71,    1,  331,    2, 0x08 /* Private */,
+      72,    1,  334,    2, 0x08 /* Private */,
+      73,    1,  337,    2, 0x08 /* Private */,
+      74,    4,  340,    2, 0x08 /* Private */,
+      78,    0,  349,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString, QMetaType::Int, 0x80000000 | 5,    3,    4,    6,
@@ -236,6 +238,7 @@ static const uint qt_meta_data_Scene[] = {
     QMetaType::Void, QMetaType::Int,   67,
     QMetaType::Void, QMetaType::QVector3D,   57,
     QMetaType::Void, QMetaType::QPoint, QMetaType::Int, QMetaType::Int, QMetaType::Bool,   57,   75,   76,   77,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -281,6 +284,7 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         case 32: _t->newtonWrapIterChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 33: _t->translateObjects((*reinterpret_cast< const QVector3D(*)>(_a[1]))); break;
         case 34: _t->findClosestPoint((*reinterpret_cast< const QPoint(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])),(*reinterpret_cast< bool(*)>(_a[4]))); break;
+        case 35: _t->generateHeightMap(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -444,13 +448,13 @@ int Scene::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 35)
+        if (_id < 36)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 35;
+        _id -= 36;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 35)
+        if (_id < 36)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 35;
+        _id -= 36;
     }
     return _id;
 }

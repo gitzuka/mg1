@@ -159,6 +159,7 @@ void ModelowanieGeometryczne1::connectSignals()
 
 	connect(ui.checkBox_pointer, SIGNAL(stateChanged(int)), ui.myGLWidget, SLOT(checkBox_pointerStateChanged(int)));
 	connect(ui.pushButton_AddObject, SIGNAL(clicked()), this, SLOT(pushButton_AddObjectClicked()));
+	connect(ui.pushButton_heightmap, SIGNAL(clicked()), &m_scene, SLOT(generateHeightMap()));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.listWidget_ObjectsList, SLOT(removeItem()));
 	connect(ui.checkBox_HidePoints, SIGNAL(stateChanged(int)), ui.listWidget_ObjectsList, SLOT(hideShowPoints(int)));
 	connect(ui.pushButton_DeleteObject, SIGNAL(clicked()), ui.myGLWidget, SLOT(updateGL()));

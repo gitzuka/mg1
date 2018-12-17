@@ -224,8 +224,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>98</width>
-                   <height>176</height>
+                   <width>296</width>
+                   <height>471</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -825,6 +825,13 @@
                  </widget>
                 </item>
                </layout>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_heightmap">
+                <property name="text">
+                 <string>Generate Heightmap</string>
+                </property>
+               </widget>
               </item>
               <item>
                <spacer name="verticalSpacer_2">
