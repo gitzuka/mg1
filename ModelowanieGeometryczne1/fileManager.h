@@ -308,6 +308,7 @@ namespace fileManager
 		heightmap["heights"] = heights;
 		QJsonDocument saveDoc(heightmap);
 		saveFile.write(saveDoc.toJson());
+		saveFile.close();
 	}
 
 	static void saveScene(const std::unordered_map<int, std::unique_ptr<UiConnector>> &uiConnectors, const QString &path)

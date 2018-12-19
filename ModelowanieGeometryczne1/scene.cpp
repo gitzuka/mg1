@@ -709,7 +709,7 @@ void Scene::generateHeightMap() const
 	float *map = hmGenerator.getMap();
 	fileManager::saveHeightmap(map, size, size, "hem.json");*/
 
-	QFile file("hem.json");
+	QFile file("hem2.json");
 
 	if (!file.open(QIODevice::ReadOnly))
 	{
@@ -731,7 +731,7 @@ void Scene::generateHeightMap() const
 			img.setPixel(i, j, map[i * img.width() + j]);
 		}
 	}
-	bool save = img.save("test.jpg", "jpg");*/
+	bool save = img.save("0final.jpg", "jpg");*/
 }
 
 void Scene::showAxes(char axis) const

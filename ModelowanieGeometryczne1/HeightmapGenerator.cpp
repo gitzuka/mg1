@@ -146,7 +146,10 @@ void HeightmapGenerator::initSphereData(float radius)
 			if (i * i + j * j <= r * r)
 			{
 				float x = static_cast<float>(i) / static_cast<float>(r) * radius;
-				float height = sqrt(pow(radius, 2.0f) - pow(x, 2.0f));
+				float y = static_cast<float>(j) / static_cast<float>(r) * radius;
+				float dist = sqrt(pow(x, 2.0f) + pow(y, 2.0f));
+				//float height = sqrt(pow(radius, 2.0f) - pow(x, 2.0f));
+				float height = sqrt(pow(radius, 2.0f) - pow(dist, 2.0f));
 				m_sphereHeights.emplace_back(QPair<int, float>(i + m_size * j, height));
 				m_sphereIndices.emplace_back(QPair<int, int>(i, j));
 			}
