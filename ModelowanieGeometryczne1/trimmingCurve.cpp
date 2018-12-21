@@ -109,6 +109,16 @@ void TrimmingCurve::upgradeToInterpolating()
 	}
 }
 
+void TrimmingCurve::rotate(QVector3D eulerAngles)
+{
+	QQuaternion q1 = QQuaternion::fromAxisAndAngle(QVector3D(1, 0, 0), eulerAngles.x()).normalized();
+	QQuaternion q2 = QQuaternion::fromAxisAndAngle(QVector3D(0, 1, 0), eulerAngles.y()).normalized();
+	QQuaternion q3 = QQuaternion::fromAxisAndAngle(QVector3D(0, 0, 1), eulerAngles.z()).normalized();
+	//m_rotation = q3 * q1 * q2;
+	m_rotation = q1 * q2 * q3;
+	m_modelMatrix = QMatrix4x4(m_rotation.toRotationMatrix());
+}
+
 std::vector<float> TrimmingCurve::calculateDistances(const std::vector<QVector4D> &controlPoints) const
 {
 	std::vector<float> distances;

@@ -224,8 +224,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>296</width>
-                   <height>471</height>
+                   <width>98</width>
+                   <height>176</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -894,6 +894,9 @@
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="minimum">
+                 <double>-360.000000000000000</double>
+                </property>
                 <property name="maximum">
                  <double>360.000000000000000</double>
                 </property>
@@ -957,6 +960,9 @@
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
+                </property>
+                <property name="minimum">
+                 <double>-360.000000000000000</double>
                 </property>
                 <property name="maximum">
                  <double>360.000000000000000</double>
@@ -1041,6 +1047,9 @@
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
+                </property>
+                <property name="minimum">
+                 <double>-360.000000000000000</double>
                 </property>
                 <property name="maximum">
                  <double>360.000000000000000</double>

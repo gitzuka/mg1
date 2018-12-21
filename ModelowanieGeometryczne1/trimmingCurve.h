@@ -16,6 +16,7 @@ public:
 	void setParametrization(std::vector<QVector4D> &parametrization);
 	const std::vector<QVector4D>& getParametrization() const;
 	void upgradeToInterpolating();
+	void rotate(QVector3D eulerAngles) override;
 
 private:
 	void createVertices() override;

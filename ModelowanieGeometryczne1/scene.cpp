@@ -712,8 +712,9 @@ void Scene::generateHeightMap()
 	}
 
 	std::vector<QVector4D> positions;
-	positions.reserve(40000);
+	positions.reserve(500);
 	std::vector<QVector4D> verts = getUiConntector(cruveIds[3])->getObject()->getVertices();
+	QVector4D v = verts[3159];
 	for (int i = 3159; i < 4601; i += 103)
 	{
 		positions.emplace_back(verts[i]);
@@ -776,8 +777,9 @@ void Scene::generateHeightMap()
 	}
 	positions.emplace_back(verts[11251]);
 	verts = getUiConntector(cruveIds[2])->getObject()->getVertices();
-	positions.emplace_back(verts[1575]);
 	positions.emplace_back(verts[1325]);
+	positions.emplace_back(verts[1575]);
+	//positions.emplace_back(v);
 	/*std::vector<QVector4D> verts = getUiConntector(cruveIds[3])->getObject()->getVertices();
 	for (int i = 3159; i < verts.size(); ++i)
 	{
@@ -817,23 +819,71 @@ void Scene::generateHeightMap()
 		positions.emplace_back(verts[i]);
 	}*/
 
-	int id = createDrawableObject("TrimmingCurve");
+
+
+	std::vector<QVector4D> positions2;
+	positions2.reserve(500);
+	verts = getUiConntector(cruveIds[1])->getObject()->getVertices();
+	for (int i = 1783; i < 3339; i += 50)
+	{
+		positions2.emplace_back(verts[i]);
+	}
+	positions2.emplace_back(verts[3339]);
+	v = verts[1783];
+	verts = getUiConntector(cruveIds[0])->getObject()->getVertices();
+	for (int i = 4700; i > 4264; i -= 25)
+	{
+		positions2.emplace_back(verts[i]);
+	}
+	positions2.emplace_back(verts[4264]);
+	positions2.emplace_back(v);
+	QQuaternion q1 = QQuaternion::fromAxisAndAngle(QVector3D(1, 0, 0), 180).normalized();
+	QQuaternion q2 = QQuaternion::fromAxisAndAngle(QVector3D(0, 1, 0), 90).normalized();
+	QQuaternion q3 = QQuaternion::fromAxisAndAngle(QVector3D(0, 0, 1), 0).normalized();
+	//m_rotation = q3 * q1 * q2;
+	QQuaternion q = q1 * q2 * q3;
+	QMatrix4x4 rot = QMatrix4x4(q.toRotationMatrix());
+	for (int i = 0; i < positions.size(); ++i)
+	{
+		positions[i] = rot * positions[i];
+	}
+
+	for (int i = 0; i < positions2.size(); ++i)
+	{
+		positions2[i] = positions2[i] * rot;
+	}
+
+	/*int id = createDrawableObject("TrimmingCurve");
 	std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
 	curve->setVertices(positions);
+*/
+
+//QMatrix4x4 rot = Camera::createRotationY(-45) * Camera::createRotationX(180) * Camera::createRotationY(90);
+//QMatrix4x4 rot = Camera::createRotationY(45);
+//curve->setModelMatrix(rot);
+	PathsGenerator pg;
+	pg.generateEnvelopePaths(positions, positions2);
+
+	/*int id2 = createDrawableObject("TrimmingCurve");
+	std::shared_ptr<TrimmingCurve> curve2 = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id2)->getObject());
+	curve2->setVertices(positions2);*/
+
+
+
 	/*float *map = hmGenerator.getMap();
 	fileManager::saveHeightmap(map, size, size, "hmf3.json");*/
 
-	/*QFile file("hmf3.json");
+	//QFile file("hmf3.json");
 
-	if (!file.open(QIODevice::ReadOnly))
-	{
-		qDebug("Unable to open file");
-		return;
-	}
-	QString fileContent = file.readAll();
+	//if (!file.open(QIODevice::ReadOnly))
+	//{
+	//	qDebug("Unable to open file");
+	//	return;
+	//}
+	//QString fileContent = file.readAll();
 
-	PathsGenerator pg;
-	pg.generateCleaningPaths(fileContent);*/
+	////PathsGenerator pg;
+	//pg.generateCleaningPaths(fileContent);
 
 
 

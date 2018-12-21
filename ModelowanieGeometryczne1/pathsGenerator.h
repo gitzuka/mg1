@@ -18,7 +18,7 @@ public:
 	void savePaths(float radius, Paths::CutterType type, const QString &path) const;
 	void generateCrudePaths(const QString& fileHeightmap) const;
 	void generateCleaningPaths(const QString& fileHeightmap) const;
-	void generateEnvelopePaths(const std::vector<QVector4D> &positions) const;
+	void generateEnvelopePaths(const std::vector<QVector4D> &outer, const std::vector<QVector4D>& inner) const;
 
 private:
 	std::vector<QVector3D> trimPaths(const std::vector<QVector3D> &paths) const;

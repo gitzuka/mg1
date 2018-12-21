@@ -279,7 +279,7 @@ public:
         toolBox->setObjectName(QStringLiteral("toolBox"));
         page_Torus = new QWidget();
         page_Torus->setObjectName(QStringLiteral("page_Torus"));
-        page_Torus->setGeometry(QRect(0, 0, 296, 471));
+        page_Torus->setGeometry(QRect(0, 0, 98, 176));
         verticalLayout_8 = new QVBoxLayout(page_Torus);
         verticalLayout_8->setSpacing(0);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -691,6 +691,7 @@ public:
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(doubleSpinBox_RotY->sizePolicy().hasHeightForWidth());
         doubleSpinBox_RotY->setSizePolicy(sizePolicy2);
+        doubleSpinBox_RotY->setMinimum(-360);
         doubleSpinBox_RotY->setMaximum(360);
 
         gridLayout_ObjectDetails->addWidget(doubleSpinBox_RotY, 3, 3, 1, 1);
@@ -726,6 +727,7 @@ public:
         doubleSpinBox_RotX->setObjectName(QStringLiteral("doubleSpinBox_RotX"));
         sizePolicy2.setHeightForWidth(doubleSpinBox_RotX->sizePolicy().hasHeightForWidth());
         doubleSpinBox_RotX->setSizePolicy(sizePolicy2);
+        doubleSpinBox_RotX->setMinimum(-360);
         doubleSpinBox_RotX->setMaximum(360);
 
         gridLayout_ObjectDetails->addWidget(doubleSpinBox_RotX, 3, 1, 1, 1);
@@ -772,6 +774,7 @@ public:
         doubleSpinBox_RotZ->setObjectName(QStringLiteral("doubleSpinBox_RotZ"));
         sizePolicy2.setHeightForWidth(doubleSpinBox_RotZ->sizePolicy().hasHeightForWidth());
         doubleSpinBox_RotZ->setSizePolicy(sizePolicy2);
+        doubleSpinBox_RotZ->setMinimum(-360);
         doubleSpinBox_RotZ->setMaximum(360);
 
         gridLayout_ObjectDetails->addWidget(doubleSpinBox_RotZ, 3, 5, 1, 1);

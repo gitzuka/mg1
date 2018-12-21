@@ -20,6 +20,7 @@ void PathsGenerator::generateCrudePaths(const QString &fileHeightmap) const
 	paths.reserve(width * height / 100);
 	paths.emplace_back(QVector3D(0, 0, 80));
 	paths.emplace_back(QVector3D(-75, -75, 80));
+	paths.emplace_back(QVector3D(-75, -75, 80));
 	float conversionFactor = 10;
 	float initialHeight = 3.5f;
 	float secondHeight = 2.1f;
@@ -95,9 +96,10 @@ void PathsGenerator::generateCleaningPaths(const QString &fileHeightmap) const
 	std::vector<QVector3D> paths;
 	paths.reserve(width * height / 100);
 	paths.emplace_back(QVector3D(0, 0, safeHeight));
-	paths.emplace_back(QVector3D(-bound, -bound, safeHeight));
+	paths.emplace_back(QVector3D(-bound, -bound - 7, safeHeight));
+	paths.emplace_back(QVector3D(-bound, -bound - 7, heightMilling));
 	paths.emplace_back(QVector3D(-bound, -bound, heightMilling));
-	paths.emplace_back(QVector3D(xStep / 10.0f - 75, - 75, heightMilling));
+	paths.emplace_back(QVector3D(xStep / 10.0f - 75, -75, heightMilling));
 	for (int i = xStep; i < width; i += xStep)
 	{
 		std::vector<QVector3D> partialPath;
@@ -119,8 +121,8 @@ void PathsGenerator::generateCleaningPaths(const QString &fileHeightmap) const
 	}
 	paths.emplace_back(QVector3D(paths[paths.size() - 2].x(), paths[paths.size() - 2].y(), heightMilling));
 	//paths.emplace_back(QVector3D((width - xStep / 2) / 10.0f - bound, 0 / 10.0f - bound, heightMilling));
-	paths.emplace_back(QVector3D(width  / 10.0f - bound, 0 / 10.0f - bound, heightMilling));
-	paths.emplace_back(QVector3D(width  / 10.0f - bound, height / 10.0f - bound, heightMilling));
+	paths.emplace_back(QVector3D(width / 10.0f - bound, 0 / 10.0f - bound, heightMilling));
+	paths.emplace_back(QVector3D(width / 10.0f - bound, height / 10.0f - bound, heightMilling));
 	//paths.emplace_back(QVector3D(width  / 10.0f - bound, height / 10.0f - bound, heightMilling));
 	/*int y = -1;
 	for (int j = 0; j <= height; j += yStep)
@@ -145,7 +147,7 @@ void PathsGenerator::generateCleaningPaths(const QString &fileHeightmap) const
 			partialPath.emplace_back(QVector3D(i / 10.0f - bound, j / 10.0f - bound, heightMilling));
 			if (heightmap[i * width + j] >= heightHM)
 			{
-			//qDebug("collision " + QString::number(j).toLatin1());
+				//qDebug("collision " + QString::number(j).toLatin1());
 				break;
 			}
 		}
@@ -158,7 +160,7 @@ void PathsGenerator::generateCleaningPaths(const QString &fileHeightmap) const
 
 	paths.emplace_back(QVector3D(paths[paths.size() - 2].x(), paths[paths.size() - 2].y(), heightMilling));
 	paths.emplace_back(QVector3D(-bound, height / 10.0f - bound, heightMilling));
-	paths.emplace_back(QVector3D(-bound, - bound, heightMilling));
+	paths.emplace_back(QVector3D(-bound, -bound, heightMilling));
 
 
 	paths.emplace_back(QVector3D(paths[paths.size() - 1].x(), paths[paths.size() - 1].y(), safeHeight));
@@ -178,9 +180,54 @@ void PathsGenerator::generateCleaningPaths(const QString &fileHeightmap) const
 	outputFile.close();
 }
 
-void PathsGenerator::generateEnvelopePaths(const std::vector<QVector4D>& positions) const
+void PathsGenerator::generateEnvelopePaths(const std::vector<QVector4D> &outer, const std::vector<QVector4D> &inner) const
 {
+	float conversionFactor = 10.0f;
+	float height = 20.0f;
+	float safeHeight = 80.0f;
 
+	std::vector<QVector3D> paths;
+	paths.reserve(outer.size() + inner.size() + 100);
+	paths.emplace_back(QVector3D(0, 0, 80));
+	int start = outer.size() / 5;
+	//paths.emplace_back(QVector3D(outer[start].x() * conversionFactor, outer[start].z() * conversionFactor, 80));
+	paths.emplace_back(QVector3D(39.117f, 15, safeHeight));
+	paths.emplace_back(QVector3D(39.117f, 15, height));
+	for (int i = start; i < outer.size(); ++i)
+	{
+		paths.emplace_back(QVector3D(outer[i].x() * conversionFactor, outer[i].z() * conversionFactor, height));
+	}
+	for (int i = 0; i <= start; ++i)
+	{
+		paths.emplace_back(QVector3D(outer[i].x() * conversionFactor, outer[i].z() * conversionFactor, height));
+	}
+	/*
+	paths.emplace_back(QVector3D(outer[0].x() * conversionFactor, outer[0].z() * conversionFactor, 80));
+	for (const auto vec : outer)
+	{
+		paths.emplace_back(QVector3D(vec.x() * conversionFactor, vec.z() * conversionFactor, height));
+	}*/
+	paths.emplace_back(QVector3D(paths[paths.size() - 1].x(), paths[paths.size() - 1].y(), safeHeight));
+	paths.emplace_back(QVector3D(inner[0].x() * conversionFactor, inner[0].z() * conversionFactor, safeHeight));
+	for (const auto vec : inner)
+	{
+		paths.emplace_back(QVector3D(vec.x() * conversionFactor, vec.z() * conversionFactor, height));
+	}
+	paths.emplace_back(QVector3D(paths[paths.size() - 1].x(), paths[paths.size() - 1].y(), safeHeight));
+	paths.emplace_back(QVector3D(0, 0, 80));
+
+	QString path = "paths//a3.f10";
+	QFile outputFile(path);
+	outputFile.open(QFile::ReadWrite | QIODevice::Truncate | QIODevice::Text);
+
+	QTextStream out(&outputFile);
+
+	for (int i = 0; i < paths.size(); i++)
+	{
+		out << "N" << QString::number(i) << "G01" << "X" << QString::number(paths.at(i).x(), 'f', 3).toUtf8() << "Y" << QString::
+			number(paths.at(i).y(), 'f', 3).toUtf8() << "Z" << QString::number(paths.at(i).z(), 'f', 3).toUtf8() << endl;
+	}
+	outputFile.close();
 }
 
 std::vector<QVector3D> PathsGenerator::trimPaths(const std::vector<QVector3D> &paths) const

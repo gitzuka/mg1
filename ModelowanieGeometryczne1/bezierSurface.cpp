@@ -3,7 +3,7 @@
 #include "camera.h"
 
 BezierSurface::BezierSurface(ObjectType type, const QString &name, const BezierSurfaceData &parameters) : DrawableObject(type, name, true, true),
-m_width(800), m_height(600), m_showBezierGrid(false), m_showControlGrid(false), m_curveFactor(40), m_parameters(parameters)
+m_width(800), m_height(600), m_showBezierGrid(false), m_showControlGrid(false), m_curveFactor(10), m_parameters(parameters)
 {
 }
 
