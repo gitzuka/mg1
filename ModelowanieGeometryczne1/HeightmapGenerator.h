@@ -13,9 +13,11 @@ public:
 	~HeightmapGenerator();
 	void updateMap(const std::shared_ptr<BezierSurface> &surface, float radius);
 	void updateMapSpheres(const std::shared_ptr<BezierSurface> &surface);
-	//QOpenGLTexture *getTexture() const;
+	std::vector<QVector4D> updateEnvelopeMap(const std::shared_ptr<BezierSurface> &surface, float radius);
+	void updateEnvelopeMapCircles(const std::shared_ptr<BezierSurface> &surface);
 	float *getMap() const;
 	void initSphereData(float radius);
+	void initCircleData(float radius);
 
 private:
 	int m_size;
@@ -26,11 +28,12 @@ private:
 	float m_precision;
 	float m_xfactor;
 	float m_zfactor;
-	//std::vector<std::vector<float>> m_map;
 	float *m_map;
 	QVector3D *m_normals;
 	std::vector<QPair<int, float>> m_sphereHeights;
 	std::vector<QPair<int, int>> m_sphereIndices;
+	std::vector<QPair<int, float>> m_circleHeights;
+	std::vector<QPair<int, int>> m_circleIndices;
 
 	QPoint convertToPoint(const QVector3D &position) const;
 	QVector3D getNormal(const std::shared_ptr<BezierSurface> &surface, double u, double v) const;

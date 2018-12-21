@@ -8,6 +8,7 @@ namespace Paths {
 
 class QString;
 class QVector3D;
+class QVector4D;
 
 class PathsGenerator
 {
@@ -15,8 +16,9 @@ public:
 	PathsGenerator();
 
 	void savePaths(float radius, Paths::CutterType type, const QString &path) const;
-	void generateCrudePaths(const QString& fileContent) const;
-	void generateCleaningPaths(const QString& fileContent) const;
+	void generateCrudePaths(const QString& fileHeightmap) const;
+	void generateCleaningPaths(const QString& fileHeightmap) const;
+	void generateEnvelopePaths(const std::vector<QVector4D> &positions) const;
 
 private:
 	std::vector<QVector3D> trimPaths(const std::vector<QVector3D> &paths) const;

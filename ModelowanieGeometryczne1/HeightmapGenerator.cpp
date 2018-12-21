@@ -36,9 +36,9 @@ void HeightmapGenerator::updateMap(const std::shared_ptr<BezierSurface>& surface
 				{
 					continue;
 					//qDebug("name: " + surface->getName().toLatin1() + " u: " + QString::number(precision * i).toLatin1() +" v: " + QString::number(precision * j).toLatin1() + " length: " + QString::number(normal.length()).toLatin1());
-					QPoint coords = convertToPoint(pos);
-					addSphere(coords, pos.y());
-					continue;
+					//QPoint coords = convertToPoint(pos);
+					//addSphere(coords, pos.y());
+					//continue;
 				}
 				if (normal.y() < 0)
 				{
@@ -81,15 +81,237 @@ void HeightmapGenerator::updateMapSpheres(const std::shared_ptr<BezierSurface>& 
 	}
 }
 
-//QOpenGLTexture *HeightmapGenerator::getTexture() const
-//{
-//	QOpenGLTexture *texture = new QOpenGLTexture(QOpenGLTexture::Target::Target2DArray);
-//	texture->setMinificationFilter(QOpenGLTexture::Nearest);
-//	texture->setMagnificationFilter(QOpenGLTexture::Linear);
-//	texture->setWrapMode(QOpenGLTexture::Repeat);
-//	texture->setData(QOpenGLTexture::Depth, QOpenGLTexture::Float32, m_map);
-//	return texture;
-//}
+std::vector<QVector4D> HeightmapGenerator::updateEnvelopeMap(const std::shared_ptr<BezierSurface>& surface, float radius)
+{
+	std::vector<QVector4D> positions;
+	positions.reserve(16000);
+	float eps = 10e-6;
+	float safeHeight = 2.0f;
+	float precision = 1.0f / m_precision;
+
+	if (surface->getName() == "kadlub")
+	{
+		float constU = 1.99f;
+		float constU2 = 5.005f;
+		QVector4D uv = surface->getRangeUV();
+		for (int v = uv.z(); v < uv.w() * m_precision; ++v)
+		{
+			if (v >= 0 && v <= 0.08f || v >= 7.911 && v <= 7.999f)
+				continue;
+			QVector3D pos = surface->getPointByUV(constU, v * precision);
+			QVector3D normal = getNormal(surface, constU, v * precision).normalized();
+			if (normal.length() < eps || !isfinite(normal.length()))
+			{
+				//qDebug(surface->getName().toLatin1() + "u: " + QString::number(constU).toLatin1() + " v: " + QString::number(v * precision).toLatin1());
+				continue;
+			}
+			pos.setX(pos.x() + normal.x() * radius);
+			pos.setZ(pos.z() + normal.z() * radius);
+			positions.emplace_back(QVector4D(pos, 1.0f));
+		}
+		std::vector<QVector4D> tmp;
+		for (int v = uv.z(); v < uv.w() * m_precision; ++v)
+		{
+			if (v >= 0 && v <= 0.107f || v >= 7.932f && v <= 7.999f)
+				continue;
+			QVector3D pos = surface->getPointByUV(constU2, v * precision);
+			QVector3D normal = getNormal(surface, constU2, v * precision).normalized();
+			if (normal.length() < eps || !isfinite(normal.length()))
+			{
+				//qDebug(surface->getName().toLatin1() + "u: " + QString::number(constU2).toLatin1() + " v: " + QString::number(v * precision).toLatin1());
+				continue;
+			}
+			pos.setX(pos.x() + normal.x() * radius);
+			pos.setZ(pos.z() + normal.z() * radius);
+			tmp.emplace_back(QVector4D(pos, 1.0f));
+		}
+		positions.insert(positions.end(), std::make_move_iterator(tmp.rbegin()), std::make_move_iterator(tmp.rend()));
+
+	}
+	if (surface->getName() == "smiglo")
+	{
+		float constU = 2.99f;
+		float constU2 = 7.00f;
+		QVector4D uv = surface->getRangeUV();
+		for (int v = uv.z(); v < uv.w() * m_precision; ++v)
+		{
+			if (v >= 0 && v <= 0.118f || v >= 5.881 && v <= 5.999f)
+				continue;
+			QVector3D pos = surface->getPointByUV(constU, v * precision);
+			QVector3D normal = getNormal(surface, constU, v * precision).normalized();
+			if (normal.length() < eps || !isfinite(normal.length()))
+			{
+				//qDebug(surface->getName().toLatin1() + "u: " + QString::number(constU).toLatin1() + " v: " + QString::number(v * precision).toLatin1());
+				continue;
+			}
+			pos.setX(pos.x() + normal.x() * radius);
+			pos.setZ(pos.z() + normal.z() * radius);
+			positions.emplace_back(QVector4D(pos, 1.0f));
+		}
+		std::vector<QVector4D> tmp;
+		for (int v = uv.z(); v < uv.w() * m_precision; ++v)
+		{
+			if (v >= 0 && v <= 0.176f || v >= 5.826 && v <= 5.999f)
+				continue;
+			QVector3D pos = surface->getPointByUV(constU2, v * precision);
+			QVector3D normal = getNormal(surface, constU2, v * precision).normalized();
+			if (normal.length() < eps || !isfinite(normal.length()))
+			{
+				//qDebug(surface->getName().toLatin1() + "u: " + QString::number(constU2).toLatin1() + " v: " + QString::number(v * precision).toLatin1());
+				continue;
+			}
+			pos.setX(pos.x() + normal.x() * radius);
+			pos.setZ(pos.z() + normal.z() * radius);
+			tmp.emplace_back(QVector4D(pos, 1.0f));
+		}
+		positions.insert(positions.end(), std::make_move_iterator(tmp.rbegin()), std::make_move_iterator(tmp.rend()));
+
+	}
+	if (surface->getName() == "ploza")
+	{
+		float constU = 4.0017f;
+		float constU2 = 1.4982f;
+		QVector4D uv = surface->getRangeUV();
+		for (int v = uv.z(); v < uv.w() * m_precision; ++v)
+		{
+			QVector3D pos = surface->getPointByUV(constU, v * precision);
+			QVector3D normal = getNormal(surface, constU, v * precision).normalized();
+			if (normal.length() < eps || !isfinite(normal.length()))
+			{
+				//qDebug(surface->getName().toLatin1() + "u: " + QString::number(constU).toLatin1() + " v: " + QString::number(v * precision).toLatin1());
+				continue;
+			}
+			pos.setX(pos.x() + normal.x() * radius);
+			pos.setZ(pos.z() + normal.z() * radius);
+			positions.emplace_back(QVector4D(pos, 1.0f));
+		}
+		for (int v = uv.z(); v < uv.w() * m_precision; ++v)
+		{
+			QVector3D pos = surface->getPointByUV(constU2, v * precision);
+			QVector3D normal = getNormal(surface, constU2, v * precision).normalized();
+			if (normal.length() < eps || !isfinite(normal.length()))
+			{
+				qDebug(surface->getName().toLatin1() + "u: " + QString::number(constU2).toLatin1() + " v: " + QString::number(v * precision).toLatin1());
+				continue;
+			}
+			pos.setX(pos.x() + normal.x() * radius);
+			pos.setZ(pos.z() + normal.z() * radius);
+			positions.emplace_back(QVector4D(pos, 1.0f));
+		}
+
+	}
+	if (surface->getName() == "podstawka")
+	{
+		float constU = 0.99f;
+		float constU2 = 3.0015f;
+		QVector4D uv = surface->getRangeUV();
+		for (int v = uv.z(); v < uv.w() * m_precision; ++v)
+		{
+			QVector3D pos = surface->getPointByUV(constU, v * precision);
+			QVector3D normal = getNormal(surface, constU, v * precision).normalized();
+			if (normal.length() < eps || !isfinite(normal.length()))
+			{
+				qDebug(surface->getName().toLatin1() + "u: " + QString::number(constU).toLatin1() + " v: " + QString::number(v * precision).toLatin1());
+				continue;
+			}
+			pos.setX(pos.x() + normal.x() * radius);
+			pos.setZ(pos.z() + normal.z() * radius);
+			positions.emplace_back(QVector4D(pos, 1.0f));
+		}
+		for (int v = uv.z(); v < uv.w() * m_precision; ++v)
+		{
+			QVector3D pos = surface->getPointByUV(constU2, v * precision);
+			QVector3D normal = getNormal(surface, constU2, v * precision).normalized();
+			if (normal.length() < eps || !isfinite(normal.length()))
+			{
+				qDebug(surface->getName().toLatin1() + "u: " + QString::number(constU2).toLatin1() + " v: " + QString::number(v * precision).toLatin1());
+				continue;
+			}
+			pos.setX(pos.x() + normal.x() * radius);
+			pos.setZ(pos.z() + normal.z() * radius);
+			positions.emplace_back(QVector4D(pos, 1.0f));
+		}
+
+	}
+	return positions;
+	//if (surface->getName() == "smiglo")
+	//{
+	//	for (const auto &it : smigloPatchU)
+	//	{
+	//		for (int j = 0; j <= m_precision; j += 100)
+	//		{
+	//			QVector3D pos = surface->getPointOnSurface(surface->getPatches()[it.first], j * precision, it.second * precision);
+	//			//QVector3D pos2 = surface->getPointOnSurface(surface->getPatches()[it.first], it.second * precision, 1);
+	//			qDebug(surface->getName().toLatin1() + " patch: " + QString::number(it.first).toLatin1() + " u: "
+	//				+ QString::number(it.second).toLatin1() + " v: " + QString::number(j).toLatin1() + " x: "
+	//				+ QString::number(pos.x()).toLatin1() + " y: " + QString::number(pos.y()).toLatin1() + " z: " + QString::number(pos.z()).toLatin1());
+	//			/*qDebug(surface->getName().toLatin1() + " patch: " + QString::number(it.first).toLatin1() + " u: "
+	//				+ QString::number(it.second).toLatin1() +	" v: " + QString::number(0).toLatin1() + " x: "
+	//				+ QString::number(pos2.x()).toLatin1() + " y: " + QString::number(pos2.y()).toLatin1() + " z: " + QString::number(pos2.z()).toLatin1());*/
+	//		}
+	//	}
+	//}
+	//if (surface->getName() == "ploza")
+	//{
+	//	for (const auto &it : plozaPatchU)
+	//	{
+	//		for (int j = 0; j <= m_precision; j+= 100)
+	//		{
+	//			QVector3D pos = surface->getPointOnSurface(surface->getPatches()[it.first], it.second * precision, j * precision);
+	//			//QVector3D pos2 = surface->getPointOnSurface(surface->getPatches()[it.first], it.second * precision, 1);
+	//			qDebug(surface->getName().toLatin1() + " patch: " + QString::number(it.first).toLatin1() + " u: "
+	//				+ QString::number(it.second).toLatin1() + " v: " + QString::number(j).toLatin1() + " x: "
+	//				+ QString::number(pos.x()).toLatin1() + " y: " + QString::number(pos.y()).toLatin1() + " z: " + QString::number(pos.z()).toLatin1());
+	//			/*qDebug(surface->getName().toLatin1() + " patch: " + QString::number(it.first).toLatin1() + " u: "
+	//				+ QString::number(it.second).toLatin1() +	" v: " + QString::number(0).toLatin1() + " x: "
+	//				+ QString::number(pos2.x()).toLatin1() + " y: " + QString::number(pos2.y()).toLatin1() + " z: " + QString::number(pos2.z()).toLatin1());*/
+	//		}
+	//	}
+	//}
+	//if (surface->getName() == "podstawka")
+	//{
+	//	for (const auto &it : podstawkaPatchU)
+	//	{
+	//		for (int j = 0; j <= m_precision; j+= 100)
+	//		{
+	//			QVector3D pos = surface->getPointOnSurface(surface->getPatches()[it.first], it.second * precision, j * precision);
+	//			//QVector3D pos2 = surface->getPointOnSurface(surface->getPatches()[it.first], it.second * precision, 1);
+	//			qDebug(surface->getName().toLatin1() + " patch: " + QString::number(it.first).toLatin1() + " u: "
+	//				+ QString::number(it.second).toLatin1() + " v: " + QString::number(j).toLatin1() + " x: "
+	//				+ QString::number(pos.x()).toLatin1() + " y: " + QString::number(pos.y()).toLatin1() + " z: " + QString::number(pos.z()).toLatin1());
+	//			/*qDebug(surface->getName().toLatin1() + " patch: " + QString::number(it.first).toLatin1() + " u: "
+	//				+ QString::number(it.second).toLatin1() +	" v: " + QString::number(0).toLatin1() + " x: "
+	//				+ QString::number(pos2.x()).toLatin1() + " y: " + QString::number(pos2.y()).toLatin1() + " z: " + QString::number(pos2.z()).toLatin1());*/
+	//		}
+	//	}
+	//}
+	/*float precision = 1.0f / m_precision;
+	float eps = 10e-7;
+	float safeHeight = 2.0f;
+	int k = 0;
+	for (const auto &patch : surface->getPatches())
+	{
+		for (int i = 0; i <= m_precision; ++i)
+		{
+			for (int j = 0; j <= m_precision; ++j)
+			{
+				QVector3D pos = surface->getPointOnSurface(patch, precision * i, precision * j);
+				if (pos.y() >= safeHeight && pos.y() < safeHeight + eps)
+				{
+					qDebug(surface->getName().toLatin1() + " patch: " + QString::number(k).toLatin1() + " u: " + QString::number(i).toLatin1() +
+						" v: " + QString::number(j).toLatin1() + " h: " + QString::number(pos.y()).toLatin1());
+					break;
+				}
+			}
+		}
+		++k;
+	}*/
+}
+
+void HeightmapGenerator::updateEnvelopeMapCircles(const std::shared_ptr<BezierSurface>& surface)
+{
+
+}
 
 float* HeightmapGenerator::getMap() const
 {
@@ -152,6 +374,29 @@ void HeightmapGenerator::initSphereData(float radius)
 				float height = sqrt(pow(radius, 2.0f) - pow(dist, 2.0f));
 				m_sphereHeights.emplace_back(QPair<int, float>(i + m_size * j, height));
 				m_sphereIndices.emplace_back(QPair<int, int>(i, j));
+			}
+		}
+	}
+}
+
+void HeightmapGenerator::initCircleData(float radius)
+{
+	m_circleHeights.clear();
+	m_circleIndices.clear();
+	int r = radius / (abs(m_maxX - m_minX)) * m_size;
+	float height = 3.0f;
+	for (int i = -r; i <= r; ++i)
+	{
+		for (int j = -r; j <= r; ++j)
+		{
+			if (i * i + j * j == r * r)
+			{
+				/*	float x = static_cast<float>(i) / static_cast<float>(r) * radius;
+					float y = static_cast<float>(j) / static_cast<float>(r) * radius;
+					float dist = sqrt(pow(x, 2.0f) + pow(y, 2.0f));
+					float height = sqrt(pow(radius, 2.0f) - pow(dist, 2.0f));*/
+				m_circleHeights.emplace_back(QPair<int, float>(i + m_size * j, height));
+				m_circleIndices.emplace_back(QPair<int, int>(i, j));
 			}
 		}
 	}

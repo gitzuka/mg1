@@ -689,27 +689,141 @@ void Scene::createBezierSurfaceC2(const std::shared_ptr<BezierSurfaceC2>& surfac
 	emit addedBezierSurfaceC2(getUiConntector(id)->getObject()->getName(), id, static_cast<UiBezierSurfaceC2*>(getUiConntector(id)));
 }
 
-void Scene::generateHeightMap() const
+void Scene::generateHeightMap()
 {
-	/*int size = 1500;
-	float precision = 500.0f;
-	float millRadius = 0.85f;
+	int size = 150;
+	float precision = 1000.0f;
+	//float millRadius = 0.85f;
+	float millRadius = 0.5f;
 	HeightmapGenerator hmGenerator(size, precision);
 	hmGenerator.initSphereData(millRadius);
+	std::vector<int> cruveIds;
 	for (const auto &obj : m_uiConnectors)
 	{
 		if (obj.second->getObject()->m_type == DrawableObject::ObjectType::bezierSurfaceC2)
 		{
-			hmGenerator.updateMap(std::static_pointer_cast<BezierSurface>(obj.second->getObject()), millRadius);
-			hmGenerator.updateMapSpheres(std::static_pointer_cast<BezierSurface>(obj.second->getObject()));
+			int id = createDrawableObject("TrimmingCurve");
+			cruveIds.push_back(id);
+			std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
+			std::vector<QVector4D> v = hmGenerator.updateEnvelopeMap(std::static_pointer_cast<BezierSurface>(obj.second->getObject()), millRadius);
+			curve->setVertices(v);
+			//hmGenerator.updateMapSpheres(std::static_pointer_cast<BezierSurface>(obj.second->getObject()));
 		}
 	}
-	
 
-	float *map = hmGenerator.getMap();
-	fileManager::saveHeightmap(map, size, size, "hem.json");*/
+	std::vector<QVector4D> positions;
+	positions.reserve(40000);
+	std::vector<QVector4D> verts = getUiConntector(cruveIds[3])->getObject()->getVertices();
+	for (int i = 3159; i < 4601; i += 103)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	for (int i = 4601; i < 7105; i += 50)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	for (int i = 7105; i < 8480; i += 150)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	for (int i = 8480; i < verts.size(); i += 50)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	for (int i = 0; i < 2846; i += 75)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	positions.emplace_back(verts[2846]);
+	verts = getUiConntector(cruveIds[2])->getObject()->getVertices();
+	positions.emplace_back(verts[3452]);
+	positions.emplace_back(verts[2987]);
+	verts = getUiConntector(cruveIds[0])->getObject()->getVertices();
+	for (int i = 11961; i < 13982; i += 100)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	for (int i = 13982; i < 14615; i += 50)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	for (int i = 14615; i < verts.size(); i += 100)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	for (int i = 0; i < 3247; i += 100)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	verts = getUiConntector(cruveIds[1])->getObject()->getVertices();
+	for (int i = 4293; i < 7409; i += 100)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	verts = getUiConntector(cruveIds[0])->getObject()->getVertices();
+	for (int i = 5265; i < 6095; i += 100)
+	{
+		positions.emplace_back(verts[i]);
+	}
 
-	QFile file("hem2.json");
+	for (int i = 6095; i < 6707; i += 50)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	for (int i = 6707; i < 11251; i += 75)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	positions.emplace_back(verts[11251]);
+	verts = getUiConntector(cruveIds[2])->getObject()->getVertices();
+	positions.emplace_back(verts[1575]);
+	positions.emplace_back(verts[1325]);
+	/*std::vector<QVector4D> verts = getUiConntector(cruveIds[3])->getObject()->getVertices();
+	for (int i = 3159; i < verts.size(); ++i)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	for (int i = 0; i < 2846; ++i)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	verts = getUiConntector(cruveIds[2])->getObject()->getVertices();
+	for (int i = 3452; i > 2987; --i)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	verts = getUiConntector(cruveIds[0])->getObject()->getVertices();
+	for (int i = 11961; i < verts.size(); ++i)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	for (int i = 0; i < 3247; ++i)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	verts = getUiConntector(cruveIds[1])->getObject()->getVertices();
+	for (int i = 4293; i < 7409; ++i)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	verts = getUiConntector(cruveIds[0])->getObject()->getVertices();
+	for (int i = 5265; i < 11251; ++i)
+	{
+		positions.emplace_back(verts[i]);
+	}
+	verts = getUiConntector(cruveIds[2])->getObject()->getVertices();
+	for (int i = 1575; i > 1325; --i)
+	{
+		positions.emplace_back(verts[i]);
+	}*/
+
+	int id = createDrawableObject("TrimmingCurve");
+	std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
+	curve->setVertices(positions);
+	/*float *map = hmGenerator.getMap();
+	fileManager::saveHeightmap(map, size, size, "hmf3.json");*/
+
+	/*QFile file("hmf3.json");
 
 	if (!file.open(QIODevice::ReadOnly))
 	{
@@ -719,7 +833,7 @@ void Scene::generateHeightMap() const
 	QString fileContent = file.readAll();
 
 	PathsGenerator pg;
-	pg.generateCrudePaths(fileContent);
+	pg.generateCleaningPaths(fileContent);*/
 
 
 
