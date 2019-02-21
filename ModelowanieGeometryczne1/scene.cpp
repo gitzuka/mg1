@@ -199,26 +199,6 @@ void Scene::checkIntersections(const QList<int>& ids)
 				QPair<bool, bool>(surface->isUWrapped(), surface->isVWrapped()));
 		}
 		return;
-		/*for (const auto c : curves)
-		{
-			vertices.reserve(c.size());
-			for (int i = 0; i < c.size(); ++i)
-			{
-				vertices.emplace_back(surface->getPointByUV(c.at(i).x(), c.at(i).y()), 1.0f);
-			}
-			int id = createDrawableObject("TrimmingCurve");
-			std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
-			curve->setVertices(vertices);
-			auto params = c;
-			curve->setParametrization(params);
-			if (curve->getVertices().size() >= 2)
-			{
-				emit intersectionFound(curve->getParametrization(), surface->getRangeUV(), surface->getRangeUV(),
-					getUiConntector(ids.at(0))->getObject(), getUiConntector(ids.at(0))->getObject(),
-					QPair<bool, bool>(surface->isUWrapped(), surface->isVWrapped()),
-					QPair<bool, bool>(surface->isUWrapped(), surface->isVWrapped()));
-			}
-		}*/
 	}
 
 
@@ -239,13 +219,7 @@ void Scene::checkIntersections(const QList<int>& ids)
 	{
 		vertices.emplace_back(QVector4D(surface1->getPointByUV(p.x(), p.y()), 1.0f));
 	}
-	//
-	/*std::vector<QVector4D> vertices2;
-	for (const auto p : params)
-	{
-		vertices2.emplace_back(QVector4D(surface2->getPointByUV(p.z(), p.w()), 1.0f));
-	}*/
-	//
+
 	int id = createDrawableObject("TrimmingCurve");
 	std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
 	curve->setVertices(vertices);
@@ -258,13 +232,6 @@ void Scene::checkIntersections(const QList<int>& ids)
 			QPair<bool, bool>(surface1->isUWrapped(), surface1->isVWrapped()),
 			QPair<bool, bool>(surface2->isUWrapped(), surface2->isVWrapped()));
 	}
-
-
-	/*id = createDrawableObject("TrimmingCurve");
-	std::shared_ptr<TrimmingCurve> curve2 = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
-	curve2->setColor(0, 255, 0);
-	curve2->setVertices(vertices2);*/
-	//curve2->setParametrization(params);
 }
 
 void Scene::setActiveObject(int id)
@@ -430,26 +397,6 @@ void Scene::loadScene(const QString& fileContent)
 void Scene::saveScene(const QString& path)
 {
 	fileManager::saveScene(m_uiConnectors, path);
-	/*QFile saveFile(path);
-
-	if (!saveFile.open(QIODevice::WriteOnly)) {
-		qWarning("Couldn't open save file.");
-		return;
-	}
-	std::shared_ptr<BezierSurfaceC0> surf;
-	for (const auto &obj : m_uiConnectors)
-	{
-		if (obj.second.get()->getObject()->m_type == DrawableObject::ObjectType::bezierSurfaceC0)
-			surf = std::static_pointer_cast<BezierSurfaceC0>(obj.second.get()->getObject());
-	}
-	QJsonArray points;
-	QJsonArray jSurfs;
-	jSurfs.append(fileManager::saveSurfaceC0(surf, points));
-	QJsonObject scene;
-	scene["points"] = points;
-	scene["surfacesC0"] = jSurfs;
-	QJsonDocument saveDoc(scene);
-	saveFile.write(saveDoc.toJson());*/
 }
 
 void Scene::newtonStepChanged(double val)
@@ -484,17 +431,9 @@ void Scene::newtonWrapIterChanged(int val)
 
 void Scene::translateObjects(const QVector3D& pos)
 {
-	//QMatrix4x4 PV = m_camera.m_projectionMatrix * m_camera.m_viewMatrix;
-
-//QVector3D position =  PV * pos;
 	m_cursor->translateObjects(pos);
 }
 
-//void Scene::translateObjects(const QVector3D& pos, const QVector3D& translate)
-//{
-//	m_cursor->translateObjects(pos, translate);
-//
-//}
 
 void Scene::findClosestPoint(const QPoint& pos, int width, int height, bool add)
 {
@@ -585,14 +524,6 @@ void Scene::draw() const
 
 void Scene::toggleCursor3D(bool isActive)
 {
-	/*if (isActive)
-	{
-		addUiConnector(std::make_unique<UiCursor3D>(m_cursor));
-	}
-	else
-	{
-		m_uiConnectors.erase(m_cursor->getId());
-	}*/
 	m_isCursor3d = isActive;
 }
 
@@ -691,211 +622,8 @@ void Scene::createBezierSurfaceC2(const std::shared_ptr<BezierSurfaceC2>& surfac
 
 void Scene::generateHeightMap()
 {
-	int size = 150;
-	float precision = 1000.0f;
-	//float millRadius = 0.85f;
-	float millRadius = 0.5f;
-	HeightmapGenerator hmGenerator(size, precision);
-	hmGenerator.initSphereData(millRadius);
-	std::vector<int> cruveIds;
-	for (const auto &obj : m_uiConnectors)
-	{
-		if (obj.second->getObject()->m_type == DrawableObject::ObjectType::bezierSurfaceC2)
-		{
-			int id = createDrawableObject("TrimmingCurve");
-			cruveIds.push_back(id);
-			std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
-			std::vector<QVector4D> v = hmGenerator.updateEnvelopeMap(std::static_pointer_cast<BezierSurface>(obj.second->getObject()), millRadius);
-			curve->setVertices(v);
-			//hmGenerator.updateMapSpheres(std::static_pointer_cast<BezierSurface>(obj.second->getObject()));
-		}
-	}
-
-	std::vector<QVector4D> positions;
-	positions.reserve(500);
-	std::vector<QVector4D> verts = getUiConntector(cruveIds[3])->getObject()->getVertices();
-	QVector4D v = verts[3159];
-	for (int i = 3159; i < 4601; i += 103)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	for (int i = 4601; i < 7105; i += 50)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	for (int i = 7105; i < 8480; i += 150)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	for (int i = 8480; i < verts.size(); i += 50)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	for (int i = 0; i < 2846; i += 75)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	positions.emplace_back(verts[2846]);
-	verts = getUiConntector(cruveIds[2])->getObject()->getVertices();
-	positions.emplace_back(verts[3452]);
-	positions.emplace_back(verts[2987]);
-	verts = getUiConntector(cruveIds[0])->getObject()->getVertices();
-	for (int i = 11961; i < 13982; i += 100)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	for (int i = 13982; i < 14615; i += 50)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	for (int i = 14615; i < verts.size(); i += 100)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	for (int i = 0; i < 3247; i += 100)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	verts = getUiConntector(cruveIds[1])->getObject()->getVertices();
-	for (int i = 4293; i < 7409; i += 100)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	verts = getUiConntector(cruveIds[0])->getObject()->getVertices();
-	for (int i = 5265; i < 6095; i += 100)
-	{
-		positions.emplace_back(verts[i]);
-	}
-
-	for (int i = 6095; i < 6707; i += 50)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	for (int i = 6707; i < 11251; i += 75)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	positions.emplace_back(verts[11251]);
-	verts = getUiConntector(cruveIds[2])->getObject()->getVertices();
-	positions.emplace_back(verts[1325]);
-	positions.emplace_back(verts[1575]);
-	//positions.emplace_back(v);
-	/*std::vector<QVector4D> verts = getUiConntector(cruveIds[3])->getObject()->getVertices();
-	for (int i = 3159; i < verts.size(); ++i)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	for (int i = 0; i < 2846; ++i)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	verts = getUiConntector(cruveIds[2])->getObject()->getVertices();
-	for (int i = 3452; i > 2987; --i)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	verts = getUiConntector(cruveIds[0])->getObject()->getVertices();
-	for (int i = 11961; i < verts.size(); ++i)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	for (int i = 0; i < 3247; ++i)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	verts = getUiConntector(cruveIds[1])->getObject()->getVertices();
-	for (int i = 4293; i < 7409; ++i)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	verts = getUiConntector(cruveIds[0])->getObject()->getVertices();
-	for (int i = 5265; i < 11251; ++i)
-	{
-		positions.emplace_back(verts[i]);
-	}
-	verts = getUiConntector(cruveIds[2])->getObject()->getVertices();
-	for (int i = 1575; i > 1325; --i)
-	{
-		positions.emplace_back(verts[i]);
-	}*/
-
-
-
-	std::vector<QVector4D> positions2;
-	positions2.reserve(500);
-	verts = getUiConntector(cruveIds[1])->getObject()->getVertices();
-	for (int i = 1783; i < 3339; i += 50)
-	{
-		positions2.emplace_back(verts[i]);
-	}
-	positions2.emplace_back(verts[3339]);
-	v = verts[1783];
-	verts = getUiConntector(cruveIds[0])->getObject()->getVertices();
-	for (int i = 4700; i > 4264; i -= 25)
-	{
-		positions2.emplace_back(verts[i]);
-	}
-	positions2.emplace_back(verts[4264]);
-	positions2.emplace_back(v);
-	QQuaternion q1 = QQuaternion::fromAxisAndAngle(QVector3D(1, 0, 0), 180).normalized();
-	QQuaternion q2 = QQuaternion::fromAxisAndAngle(QVector3D(0, 1, 0), 90).normalized();
-	QQuaternion q3 = QQuaternion::fromAxisAndAngle(QVector3D(0, 0, 1), 0).normalized();
-	//m_rotation = q3 * q1 * q2;
-	QQuaternion q = q1 * q2 * q3;
-	QMatrix4x4 rot = QMatrix4x4(q.toRotationMatrix());
-	for (int i = 0; i < positions.size(); ++i)
-	{
-		positions[i] = rot * positions[i];
-	}
-
-	for (int i = 0; i < positions2.size(); ++i)
-	{
-		positions2[i] = positions2[i] * rot;
-	}
-
-	/*int id = createDrawableObject("TrimmingCurve");
-	std::shared_ptr<TrimmingCurve> curve = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id)->getObject());
-	curve->setVertices(positions);
-*/
-
-//QMatrix4x4 rot = Camera::createRotationY(-45) * Camera::createRotationX(180) * Camera::createRotationY(90);
-//QMatrix4x4 rot = Camera::createRotationY(45);
-//curve->setModelMatrix(rot);
-	PathsGenerator pg;
-	pg.generateEnvelopePaths(positions, positions2);
-
-	/*int id2 = createDrawableObject("TrimmingCurve");
-	std::shared_ptr<TrimmingCurve> curve2 = std::dynamic_pointer_cast<TrimmingCurve>(getUiConntector(id2)->getObject());
-	curve2->setVertices(positions2);*/
-
-
-
-	/*float *map = hmGenerator.getMap();
-	fileManager::saveHeightmap(map, size, size, "hmf3.json");*/
-
-	//QFile file("hmf3.json");
-
-	//if (!file.open(QIODevice::ReadOnly))
-	//{
-	//	qDebug("Unable to open file");
-	//	return;
-	//}
-	//QString fileContent = file.readAll();
-
-	////PathsGenerator pg;
-	//pg.generateCleaningPaths(fileContent);
-
-
-
-	/*QImage img (size, size, QImage::Format::Format_RGB32);
-	for (int i = 0; i < img.width(); ++i)
-	{
-		for (int j = 0; j < img.height(); ++j)
-		{
-			img.setPixel(i, j, map[i * img.width() + j]);
-		}
-	}
-	bool save = img.save("0final.jpg", "jpg");*/
+	//PathsGenerator pg;
+	//pg.clearFile("paths//a3.f10");
 }
 
 void Scene::showAxes(char axis) const

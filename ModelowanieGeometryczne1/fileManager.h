@@ -236,6 +236,8 @@ namespace fileManager
 		return jSurface;
 	}
 
+	
+
 	static QJsonObject saveTorus(const std::shared_ptr<Torus> &torus)
 	{
 		QJsonObject jTorus;
@@ -260,6 +262,10 @@ namespace fileManager
 		jTorus["scale"] = scale;
 		return jTorus;
 	}
+
+
+
+
 
 	static float* loadHeightmap(const QString &fileContent, int &height, int &width)
 	{
