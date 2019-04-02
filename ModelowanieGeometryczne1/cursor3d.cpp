@@ -229,7 +229,7 @@ void Cursor3D::markObject(std::shared_ptr<DrawableObject> sceneObject, bool mult
 //	//	m_obtainedObject->setModelMatrix(m_modelMatrix);
 //	//}
 //}
-void Cursor3D::updatePosition(float x, float y, int width, int height, const Camera &camera, bool z)
+void Cursor3D::updatePosition(float x, float y, int width, int height, const Camera &camera, bool translate)
 {
 	m_posX = x / (width * 0.5f) - 1.0f;
 	m_posY = -y / (height * 0.5f) + 1.0f;
@@ -249,18 +249,18 @@ void Cursor3D::updatePosition(float x, float y, int width, int height, const Cam
 		pos = m_posX * right - (forward - eye) + m_posY * up;
 	}*/
 	setModelMatrix(Camera::createTranslation(m_worldCoords));
-	if (m_mode == Mode::Translate)
+	if (m_mode == Mode::Translate || translate)
 	{
 		prevPos = m_worldCoords - prevPos;
-		for (auto activeObject : m_activeObjects)
+		translateObjects(prevPos);
+		/*for (auto activeObject : m_activeObjects)
 		{
 			activeObject.second->translate(prevPos);
-			//activeObject.second->setModelMatrix(m_modelMatrix);
 			if (activeObject.second->m_type == ObjectType::point3D)
 			{
 				std::static_pointer_cast<Point3D>(activeObject.second)->notifyAncestorsPositionChanged();
 			}
-		}
+		}*/
 	}
 }
 

@@ -14,7 +14,7 @@
 #include "scene.h"
 
 ModelowanieGeometryczne1::ModelowanieGeometryczne1(QWidget *parent)
-	: QMainWindow(parent), m_activeObjectId(-1)
+	: QMainWindow(parent), m_activeObjectId(-1), m_mouseX(0), m_mouseY(0)
 {
 	ui.setupUi(this);
 	m_scene.initialize();
@@ -468,6 +468,8 @@ void ModelowanieGeometryczne1::myGLWidgetMouseMoved(QMouseEvent *event)
 	{
 		m_scene.m_camera.mouseMoved(dx, dy);
 	}
+	dx = event->x() - m_mouseX;
+	dy = event->y() - m_mouseY;
 	if (m_scene.m_isCursor3d)
 	{
 		m_scene.updateCursorPosition(event->x(), event->y(), ui.myGLWidget->getWidth(), ui.myGLWidget->getHeight(), QGuiApplication::keyboardModifiers() & Qt::ControlModifier);
@@ -476,9 +478,32 @@ void ModelowanieGeometryczne1::myGLWidgetMouseMoved(QMouseEvent *event)
 		ui.doubleSpinBox_CursorY->setValue(pos.y());
 		ui.doubleSpinBox_CursorZ->setValue(pos.z());
 	}
+	//else if (QGuiApplication::keyboardModifiers() )
+	else
+	{
+		QVector3D pos;
+		const float speed = 0.001f;
+		if (QGuiApplication::keyboardModifiers() & Qt::ControlModifier && QGuiApplication::keyboardModifiers() & Qt::AltModifier)
+		{
+			pos = QVector3D(dx * speed, 0, 0);
+			emit translate(pos);
+		}
+		else if (QGuiApplication::keyboardModifiers() & Qt::ShiftModifier && QGuiApplication::keyboardModifiers() & Qt::AltModifier)
+		{
+			pos = QVector3D(0, -dy * speed, 0);
+			emit translate(pos);
+		}
+		else if (QGuiApplication::keyboardModifiers() & Qt::ShiftModifier && QGuiApplication::keyboardModifiers()  & Qt::ControlModifier)
+		{
+			pos = QVector3D(0, 0, dy * speed);
+			emit translate(pos);
+		}
+	}
 	m_scene.m_camera.m_mousePos = event->pos();
-		pos = m_scene.m_cursor->getPosition();
+	pos = m_scene.m_cursor->getPosition();
 	label_3dCoordsChangeText(pos.x(), pos.y(), pos.z());
+	m_mouseX = event->x();
+	m_mouseY = event->y();
 }
 
 void ModelowanieGeometryczne1::myGLWidgetMousePressed(QMouseEvent *event)
@@ -698,10 +723,6 @@ void ModelowanieGeometryczne1::doubleSpinbox_PosYValueChanged(double val)
 	{
 		return;
 	}
-	//float step = 0.01f;
-	//QVector3D pos(val, ui.doubleSpinBox_PosY->value(), ui.doubleSpinBox_PosZ->value());
-	//QVector3D translate(ui.doubleSpinBox_PosX->value(), step, ui.doubleSpinBox_PosZ->value());
-	//emit posChanged(pos, translate);
 	object->getObject()->setPosition(QVector3D(ui.doubleSpinBox_PosX->value(), val, ui.doubleSpinBox_PosZ->value()));
 	updateMyGLWidget();
 }
@@ -713,10 +734,6 @@ void ModelowanieGeometryczne1::doubleSpinbox_PosZValueChanged(double val)
 	{
 		return;
 	}
-	//float step = 0.01f;
-	//QVector3D pos(val, ui.doubleSpinBox_PosY->value(), ui.doubleSpinBox_PosZ->value());
-	//QVector3D translate(ui.doubleSpinBox_PosX->value(), ui.doubleSpinBox_PosY->value(), val);
-	//emit posChanged(pos, translate);
 	object->getObject()->setPosition(QVector3D(ui.doubleSpinBox_PosX->value(), ui.doubleSpinBox_PosY->value(), val));
 	updateMyGLWidget();
 }

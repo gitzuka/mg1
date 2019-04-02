@@ -279,7 +279,7 @@ public:
         toolBox->setObjectName(QStringLiteral("toolBox"));
         page_Torus = new QWidget();
         page_Torus->setObjectName(QStringLiteral("page_Torus"));
-        page_Torus->setGeometry(QRect(0, 0, 98, 176));
+        page_Torus->setGeometry(QRect(0, 0, 99, 185));
         verticalLayout_8 = new QVBoxLayout(page_Torus);
         verticalLayout_8->setSpacing(0);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -357,7 +357,7 @@ public:
         toolBox->addItem(page_Torus, QStringLiteral("Torus"));
         page_BezierCurveC0 = new QWidget();
         page_BezierCurveC0->setObjectName(QStringLiteral("page_BezierCurveC0"));
-        page_BezierCurveC0->setGeometry(QRect(0, 0, 98, 118));
+        page_BezierCurveC0->setGeometry(QRect(0, 0, 98, 107));
         verticalLayout_11 = new QVBoxLayout(page_BezierCurveC0);
         verticalLayout_11->setSpacing(0);
         verticalLayout_11->setContentsMargins(11, 11, 11, 11);
@@ -383,7 +383,7 @@ public:
         toolBox->addItem(page_BezierCurveC0, QStringLiteral("Bezier Curve C0"));
         page_BezierCurveC2 = new QWidget();
         page_BezierCurveC2->setObjectName(QStringLiteral("page_BezierCurveC2"));
-        page_BezierCurveC2->setGeometry(QRect(0, 0, 98, 118));
+        page_BezierCurveC2->setGeometry(QRect(0, 0, 98, 107));
         verticalLayout_12 = new QVBoxLayout(page_BezierCurveC2);
         verticalLayout_12->setSpacing(6);
         verticalLayout_12->setContentsMargins(11, 11, 11, 11);
@@ -408,7 +408,7 @@ public:
         toolBox->addItem(page_BezierCurveC2, QStringLiteral("Bezier Curve C2"));
         page_BezierC2Int = new QWidget();
         page_BezierC2Int->setObjectName(QStringLiteral("page_BezierC2Int"));
-        page_BezierC2Int->setGeometry(QRect(0, 0, 98, 118));
+        page_BezierC2Int->setGeometry(QRect(0, 0, 98, 107));
         verticalLayout_10 = new QVBoxLayout(page_BezierC2Int);
         verticalLayout_10->setSpacing(0);
         verticalLayout_10->setContentsMargins(11, 11, 11, 11);
@@ -433,7 +433,7 @@ public:
         toolBox->addItem(page_BezierC2Int, QStringLiteral("Bezier Curve C2 Interpolated"));
         page_bezierSurfaceC0 = new QWidget();
         page_bezierSurfaceC0->setObjectName(QStringLiteral("page_bezierSurfaceC0"));
-        page_bezierSurfaceC0->setGeometry(QRect(0, 0, 98, 151));
+        page_bezierSurfaceC0->setGeometry(QRect(0, 0, 98, 140));
         verticalLayout_13 = new QVBoxLayout(page_bezierSurfaceC0);
         verticalLayout_13->setSpacing(6);
         verticalLayout_13->setContentsMargins(11, 11, 11, 11);
@@ -463,7 +463,7 @@ public:
         toolBox->addItem(page_bezierSurfaceC0, QStringLiteral("Bezier Surface C0"));
         page_bezierSurfaceC2 = new QWidget();
         page_bezierSurfaceC2->setObjectName(QStringLiteral("page_bezierSurfaceC2"));
-        page_bezierSurfaceC2->setGeometry(QRect(0, 0, 98, 151));
+        page_bezierSurfaceC2->setGeometry(QRect(0, 0, 98, 140));
         verticalLayout_14 = new QVBoxLayout(page_bezierSurfaceC2);
         verticalLayout_14->setSpacing(6);
         verticalLayout_14->setContentsMargins(11, 11, 11, 11);
@@ -860,7 +860,7 @@ public:
         horizontalLayout->addLayout(verticalLayout);
 
         horizontalLayout->setStretch(0, 30);
-        horizontalLayout->setStretch(1, 11);
+        horizontalLayout->setStretch(1, 1);
 
         gridLayout_2->addLayout(horizontalLayout, 0, 0, 2, 1);
 

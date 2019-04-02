@@ -1,5 +1,15 @@
-﻿  pathsGenerator.cpp
-  scene.cpp
+﻿  Uic'ing modelowaniegeometryczne1.ui...
+  moc_modelowaniegeometryczne1.cpp
+  UiBezierSurfaceC0.cpp
+  main.cpp
+  modelowaniegeometryczne1.cpp
+  myGLWidget.cpp
+  point3d.cpp
+  uiBezierCurveC0.cpp
+  uiBezierCurveC2.cpp
+  uiCursor3d.cpp
+  uiPoint3d.cpp
+  uiTorus.cpp
   Generating Code...
   ModelowanieGeometryczne1.vcxproj -> C:\Users\Andrzej\Documents\Visual Studio 2015\Projects\ModelowanieGeometryczne1\Win32\Debug\ModelowanieGeometryczne1.exe
   ModelowanieGeometryczne1.vcxproj -> C:\Users\Andrzej\Documents\Visual Studio 2015\Projects\ModelowanieGeometryczne1\Win32\Debug\ModelowanieGeometryczne1.pdb (Full PDB)

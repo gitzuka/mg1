@@ -85,27 +85,27 @@ QT_MOC_LITERAL(49, 772, 16), // "std::vector<int>"
 QT_MOC_LITERAL(50, 789, 7), // "prevIds"
 QT_MOC_LITERAL(51, 797, 18), // "removeUiConnectors"
 QT_MOC_LITERAL(52, 816, 3), // "ids"
-QT_MOC_LITERAL(53, 820, 19), // "performCursorAction"
-QT_MOC_LITERAL(54, 840, 8), // "multiple"
-QT_MOC_LITERAL(55, 849, 11), // "resetCursor"
-QT_MOC_LITERAL(56, 861, 16), // "createObjectMenu"
-QT_MOC_LITERAL(57, 878, 3), // "pos"
-QT_MOC_LITERAL(58, 882, 10), // "QList<int>"
-QT_MOC_LITERAL(59, 893, 12), // "deleteObject"
-QT_MOC_LITERAL(60, 906, 19), // "selectCursorObjects"
-QT_MOC_LITERAL(61, 926, 11), // "QList<int>&"
-QT_MOC_LITERAL(62, 938, 9), // "loadScene"
-QT_MOC_LITERAL(63, 948, 11), // "fileContent"
-QT_MOC_LITERAL(64, 960, 9), // "saveScene"
-QT_MOC_LITERAL(65, 970, 4), // "path"
-QT_MOC_LITERAL(66, 975, 17), // "newtonStepChanged"
-QT_MOC_LITERAL(67, 993, 3), // "val"
-QT_MOC_LITERAL(68, 997, 27), // "selfIntersectionDistChanged"
-QT_MOC_LITERAL(69, 1025, 21), // "newtonWrapDistChanged"
-QT_MOC_LITERAL(70, 1047, 19), // "gradientStepChanged"
-QT_MOC_LITERAL(71, 1067, 23), // "closestPointStepChanged"
-QT_MOC_LITERAL(72, 1091, 21), // "newtonWrapIterChanged"
-QT_MOC_LITERAL(73, 1113, 16), // "translateObjects"
+QT_MOC_LITERAL(53, 820, 16), // "translateObjects"
+QT_MOC_LITERAL(54, 837, 3), // "pos"
+QT_MOC_LITERAL(55, 841, 19), // "performCursorAction"
+QT_MOC_LITERAL(56, 861, 8), // "multiple"
+QT_MOC_LITERAL(57, 870, 11), // "resetCursor"
+QT_MOC_LITERAL(58, 882, 16), // "createObjectMenu"
+QT_MOC_LITERAL(59, 899, 10), // "QList<int>"
+QT_MOC_LITERAL(60, 910, 12), // "deleteObject"
+QT_MOC_LITERAL(61, 923, 19), // "selectCursorObjects"
+QT_MOC_LITERAL(62, 943, 11), // "QList<int>&"
+QT_MOC_LITERAL(63, 955, 9), // "loadScene"
+QT_MOC_LITERAL(64, 965, 11), // "fileContent"
+QT_MOC_LITERAL(65, 977, 9), // "saveScene"
+QT_MOC_LITERAL(66, 987, 4), // "path"
+QT_MOC_LITERAL(67, 992, 17), // "newtonStepChanged"
+QT_MOC_LITERAL(68, 1010, 3), // "val"
+QT_MOC_LITERAL(69, 1014, 27), // "selfIntersectionDistChanged"
+QT_MOC_LITERAL(70, 1042, 21), // "newtonWrapDistChanged"
+QT_MOC_LITERAL(71, 1064, 19), // "gradientStepChanged"
+QT_MOC_LITERAL(72, 1084, 23), // "closestPointStepChanged"
+QT_MOC_LITERAL(73, 1108, 21), // "newtonWrapIterChanged"
 QT_MOC_LITERAL(74, 1130, 16), // "findClosestPoint"
 QT_MOC_LITERAL(75, 1147, 5), // "width"
 QT_MOC_LITERAL(76, 1153, 6), // "height"
@@ -134,16 +134,17 @@ QT_MOC_LITERAL(78, 1164, 17) // "generateHeightMap"
     "s1Wrap\0s2Wrap\0updateControlPoints\0"
     "std::vector<std::shared_ptr<Point3D> >\0"
     "controlPoints\0std::vector<int>\0prevIds\0"
-    "removeUiConnectors\0ids\0performCursorAction\0"
-    "multiple\0resetCursor\0createObjectMenu\0"
-    "pos\0QList<int>\0deleteObject\0"
-    "selectCursorObjects\0QList<int>&\0"
-    "loadScene\0fileContent\0saveScene\0path\0"
-    "newtonStepChanged\0val\0selfIntersectionDistChanged\0"
+    "removeUiConnectors\0ids\0translateObjects\0"
+    "pos\0performCursorAction\0multiple\0"
+    "resetCursor\0createObjectMenu\0QList<int>\0"
+    "deleteObject\0selectCursorObjects\0"
+    "QList<int>&\0loadScene\0fileContent\0"
+    "saveScene\0path\0newtonStepChanged\0val\0"
+    "selfIntersectionDistChanged\0"
     "newtonWrapDistChanged\0gradientStepChanged\0"
     "closestPointStepChanged\0newtonWrapIterChanged\0"
-    "translateObjects\0findClosestPoint\0"
-    "width\0height\0add\0generateHeightMap"
+    "findClosestPoint\0width\0height\0add\0"
+    "generateHeightMap"
 };
 #undef QT_MOC_LITERAL
 
@@ -182,16 +183,16 @@ static const uint qt_meta_data_Scene[] = {
  // slots: name, argc, parameters, tag, flags
       46,    2,  289,    2, 0x0a /* Public */,
       51,    1,  294,    2, 0x0a /* Public */,
-      53,    1,  297,    2, 0x08 /* Private */,
-      53,    0,  300,    2, 0x28 /* Private | MethodCloned */,
-      55,    0,  301,    2, 0x08 /* Private */,
-      56,    2,  302,    2, 0x08 /* Private */,
-      59,    1,  307,    2, 0x08 /* Private */,
+      53,    1,  297,    2, 0x0a /* Public */,
+      55,    1,  300,    2, 0x08 /* Private */,
+      55,    0,  303,    2, 0x28 /* Private | MethodCloned */,
+      57,    0,  304,    2, 0x08 /* Private */,
+      58,    2,  305,    2, 0x08 /* Private */,
       60,    1,  310,    2, 0x08 /* Private */,
-      62,    1,  313,    2, 0x08 /* Private */,
-      64,    1,  316,    2, 0x08 /* Private */,
-      66,    1,  319,    2, 0x08 /* Private */,
-      68,    1,  322,    2, 0x08 /* Private */,
+      61,    1,  313,    2, 0x08 /* Private */,
+      63,    1,  316,    2, 0x08 /* Private */,
+      65,    1,  319,    2, 0x08 /* Private */,
+      67,    1,  322,    2, 0x08 /* Private */,
       69,    1,  325,    2, 0x08 /* Private */,
       70,    1,  328,    2, 0x08 /* Private */,
       71,    1,  331,    2, 0x08 /* Private */,
@@ -222,22 +223,22 @@ static const uint qt_meta_data_Scene[] = {
  // slots: parameters
     QMetaType::Void, 0x80000000 | 47, 0x80000000 | 49,   48,   50,
     QMetaType::Void, 0x80000000 | 49,   52,
-    QMetaType::Void, QMetaType::Bool,   54,
+    QMetaType::Void, QMetaType::QVector3D,   54,
+    QMetaType::Void, QMetaType::Bool,   56,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QPoint, 0x80000000 | 58,   57,   52,
+    QMetaType::Void, QMetaType::QPoint, 0x80000000 | 59,   54,   52,
     QMetaType::Void, QMetaType::Int,    4,
-    QMetaType::Void, 0x80000000 | 61,   52,
-    QMetaType::Void, QMetaType::QString,   63,
-    QMetaType::Void, QMetaType::QString,   65,
-    QMetaType::Void, QMetaType::Double,   67,
-    QMetaType::Void, QMetaType::Double,   67,
-    QMetaType::Void, QMetaType::Double,   67,
-    QMetaType::Void, QMetaType::Double,   67,
-    QMetaType::Void, QMetaType::Double,   67,
-    QMetaType::Void, QMetaType::Int,   67,
-    QMetaType::Void, QMetaType::QVector3D,   57,
-    QMetaType::Void, QMetaType::QPoint, QMetaType::Int, QMetaType::Int, QMetaType::Bool,   57,   75,   76,   77,
+    QMetaType::Void, 0x80000000 | 62,   52,
+    QMetaType::Void, QMetaType::QString,   64,
+    QMetaType::Void, QMetaType::QString,   66,
+    QMetaType::Void, QMetaType::Double,   68,
+    QMetaType::Void, QMetaType::Double,   68,
+    QMetaType::Void, QMetaType::Double,   68,
+    QMetaType::Void, QMetaType::Double,   68,
+    QMetaType::Void, QMetaType::Double,   68,
+    QMetaType::Void, QMetaType::Int,   68,
+    QMetaType::Void, QMetaType::QPoint, QMetaType::Int, QMetaType::Int, QMetaType::Bool,   54,   75,   76,   77,
     QMetaType::Void,
 
        0        // eod
@@ -268,21 +269,21 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         case 16: _t->intersectionFound((*reinterpret_cast< const std::vector<QVector4D>(*)>(_a[1])),(*reinterpret_cast< const QVector4D(*)>(_a[2])),(*reinterpret_cast< const QVector4D(*)>(_a[3])),(*reinterpret_cast< std::shared_ptr<DrawableObject>(*)>(_a[4])),(*reinterpret_cast< std::shared_ptr<DrawableObject>(*)>(_a[5])),(*reinterpret_cast< QPair<bool,bool>(*)>(_a[6])),(*reinterpret_cast< QPair<bool,bool>(*)>(_a[7]))); break;
         case 17: _t->updateControlPoints((*reinterpret_cast< std::vector<std::shared_ptr<Point3D> >(*)>(_a[1])),(*reinterpret_cast< const std::vector<int>(*)>(_a[2]))); break;
         case 18: _t->removeUiConnectors((*reinterpret_cast< const std::vector<int>(*)>(_a[1]))); break;
-        case 19: _t->performCursorAction((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 20: _t->performCursorAction(); break;
-        case 21: _t->resetCursor(); break;
-        case 22: _t->createObjectMenu((*reinterpret_cast< const QPoint(*)>(_a[1])),(*reinterpret_cast< const QList<int>(*)>(_a[2]))); break;
-        case 23: _t->deleteObject((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 24: _t->selectCursorObjects((*reinterpret_cast< QList<int>(*)>(_a[1]))); break;
-        case 25: _t->loadScene((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 26: _t->saveScene((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 27: _t->newtonStepChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 28: _t->selfIntersectionDistChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 29: _t->newtonWrapDistChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 30: _t->gradientStepChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 31: _t->closestPointStepChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 32: _t->newtonWrapIterChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 33: _t->translateObjects((*reinterpret_cast< const QVector3D(*)>(_a[1]))); break;
+        case 19: _t->translateObjects((*reinterpret_cast< const QVector3D(*)>(_a[1]))); break;
+        case 20: _t->performCursorAction((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 21: _t->performCursorAction(); break;
+        case 22: _t->resetCursor(); break;
+        case 23: _t->createObjectMenu((*reinterpret_cast< const QPoint(*)>(_a[1])),(*reinterpret_cast< const QList<int>(*)>(_a[2]))); break;
+        case 24: _t->deleteObject((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 25: _t->selectCursorObjects((*reinterpret_cast< QList<int>(*)>(_a[1]))); break;
+        case 26: _t->loadScene((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 27: _t->saveScene((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 28: _t->newtonStepChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 29: _t->selfIntersectionDistChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 30: _t->newtonWrapDistChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 31: _t->gradientStepChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 32: _t->closestPointStepChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 33: _t->newtonWrapIterChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 34: _t->findClosestPoint((*reinterpret_cast< const QPoint(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])),(*reinterpret_cast< bool(*)>(_a[4]))); break;
         case 35: _t->generateHeightMap(); break;
         default: ;
@@ -290,7 +291,7 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         switch (_id) {
         default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-        case 22:
+        case 23:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 1:

@@ -30,6 +30,8 @@ private:
 	QList<int> m_selectedObjectsIds;
 	int m_activeObjectId;
 	int m_prevActiveObjectId;
+	int m_mouseX;
+	int m_mouseY;
 
 	void connectSignals();
 	void label_3dCoordsChangeText(float x, float y, float z);

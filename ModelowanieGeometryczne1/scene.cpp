@@ -18,8 +18,6 @@
 #include "fileManager.h"
 #include "Intersections.h"
 #include "3dmath.h"
-#include "HeightmapGenerator.h"
-#include "pathsGenerator.h"
 
 Scene::Scene() : m_stereoscopy(false), m_isCursor3d(false)
 {
@@ -429,11 +427,12 @@ void Scene::newtonWrapIterChanged(int val)
 	Intersections::wrapIter = val;
 }
 
-void Scene::translateObjects(const QVector3D& pos)
+void Scene::translateObjects(const QVector3D &pos)
 {
+	//x = x / (width * 0.5f) - 1.0f;
+	//y = -y / (height * 0.5f) + 1.0f;
 	m_cursor->translateObjects(pos);
 }
-
 
 void Scene::findClosestPoint(const QPoint& pos, int width, int height, bool add)
 {
@@ -451,7 +450,8 @@ void Scene::findClosestPoint(const QPoint& pos, int width, int height, bool add)
 				continue;
 			float posX = (position.x() + 1) * width;
 			float posY = (-position.y() + 1) * height;
-			float dist = math3d::calculateDistance2D((position.x() + 1) * width, pos.x(), (-position.y() + 1) * height, pos.y());
+			//float dist = math3d::calculateDistance2D((position.x() + 1) * width, pos.x(), (-position.y() + 1) * height, pos.y());
+			float dist = math3d::calculateDistance2D(posX, pos.x(), posY, pos.y());
 			if (dist < minDist && dist <= TARGETING_DISTANCE2D)
 			{
 				id = obj.first;

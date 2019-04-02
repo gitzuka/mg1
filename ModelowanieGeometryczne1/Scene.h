@@ -31,7 +31,7 @@ public:
 
 	void draw() const;
 	void toggleCursor3D(bool isActive);
-	void updateCursorPosition(float x, float y, int width, int heigth, bool z);
+	void updateCursorPosition(float x, float y, int width, int height, bool z);
 	int createDrawableObject(const QString &name);
 	UiConnector* getUiConntector(int id) const;
 	void createBezierSurfaceC0(const BezierSurfaceData &data);
@@ -63,6 +63,7 @@ private:
 public slots:
 	void updateControlPoints(std::vector<std::shared_ptr<Point3D>> controlPoints, const std::vector<int> &prevIds);
 	void removeUiConnectors(const std::vector<int> &ids);
+	void translateObjects(const QVector3D &pos);
 
 private slots:
 	void performCursorAction(bool multiple = false);
@@ -79,7 +80,6 @@ private slots:
 	void closestPointStepChanged(double val);
 	void newtonWrapIterChanged(int val);
 	//void translateObjects(const QVector3D &pos, const QVector3D &translate);
-	void translateObjects(const QVector3D &pos);
 	void findClosestPoint(const QPoint &pos, int width, int height, bool add);
 	void generateHeightMap();
 
